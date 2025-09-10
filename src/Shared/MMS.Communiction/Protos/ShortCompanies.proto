@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package MMS.Communication;
+
+message ResponseShortCompanies {
+    repeated ResponseShortCompany companies = 1;
+}
+
+message ResponseShortCompany {
+    string id = 1;
+    string doing_business_as = 2;
+    bool subscription_status = 3;
+}

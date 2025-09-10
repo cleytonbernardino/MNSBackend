@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+package MMS.Communication;
+
+message ResponseToken {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message RequestRefreshAccessToken{
+    string refresh_token = 1;
+}
+
+message RequestRefreshToken {
+    string access_token = 1;
+    string refresh_token = 2;
+}

@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+package MMS.Communication;
+
+message RequestRegisterCompanySubscription {
+	string company_id = 1;
+	string subscription_id = 2;
+	bool is_billing_annual = 3;
+	string payment_status = 4;
+	string next_billing_date = 5;
+	string payment_method = 6;
+}

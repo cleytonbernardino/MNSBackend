@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MMS.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Sqids" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\MMS.Communiction\MMS.Communication.csproj" />
+    <ProjectReference Include="..\..\Shared\MMS.Exceptions\MMS.Exceptions.csproj" />
+    <ProjectReference Include="..\..\Shared\MMS.Communiction\MMS.Communication.csproj" />
+    <ProjectReference Include="..\MMS.Domain\MMS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

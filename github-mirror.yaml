@@ -1,0 +1,40 @@
+﻿trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: GitHubMirror   # 🔗 importa variáveis da Library
+
+stages:
+- stage: MirrorToGitHub
+  displayName: "Mirror main → GitHub"
+  jobs:
+  - job: PushMain
+    displayName: "Push main + tags"
+    steps:
+    - checkout: self
+      fetchDepth: 0
+
+    - script: |
+        set -eux
+        git config user.name  "$GIT_USER"
+        git config user.email "$GIT_EMAIL"
+
+        git checkout main
+
+        git remote remove github || true
+        git remote add github https://$GITHUB_TOKEN@github.com/$GITHUB_OWNER/$GITHUB_REPO.git
+
+        git push github main:main
+        git push github --tags
+      displayName: "Enviar para GitHub"
+      env:
+        GIT_USER: $(GIT_USER)
+        GIT_EMAIL: $(GIT_EMAIL)
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+        GITHUB_OWNER: $(GITHUB_OWNER)
+        GITHUB_REPO: $(GITHUB_REPO)
