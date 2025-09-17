@@ -3,7 +3,7 @@ using MMS.API.Attributes;
 
 namespace MMS.API.Controllers;
 
-[Route("[Controller]")]
+[Route("api/[Controller]")]
 [ApiController]
 [AuthenticatedUser]
 public class MMSBaseController : ControllerBase

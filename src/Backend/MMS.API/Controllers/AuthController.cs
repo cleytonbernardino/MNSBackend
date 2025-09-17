@@ -6,7 +6,6 @@ using MMS.Communication;
 
 namespace MMS.API.Controllers;
 
-[Route("[Controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {

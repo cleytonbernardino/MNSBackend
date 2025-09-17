@@ -13,7 +13,7 @@ public class DoLoginTest(
     ) : MmsClassFixture(factory)
 {
 
-    private const string METHOD = "auth/login";
+    private const string METHOD = "api/auth/login";
     
     [Fact]
     public async Task Success()

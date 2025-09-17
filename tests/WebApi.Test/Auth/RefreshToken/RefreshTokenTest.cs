@@ -13,6 +13,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
 {
     private const string METHOD = "/auth/refresh";
 
+    private const string METHOD = "api/auth/refresh";
     [Fact]
     public async Task Success()
     {

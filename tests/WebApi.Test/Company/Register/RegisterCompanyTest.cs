@@ -11,7 +11,7 @@ namespace WebApi.Test.Company.Register;
 
 public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "admin/Company";
+    private const string METHOD = "api/admin/Company";
 
     [Fact]
     public async Task Success()

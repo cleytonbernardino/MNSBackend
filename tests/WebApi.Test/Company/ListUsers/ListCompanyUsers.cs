@@ -7,7 +7,7 @@ namespace WebApi.Test.Company.ListUsers;
 
 public class ListCompanyUsers(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "company/users";
+    private const string METHOD = "api/company/users";
 
     [Fact]
     public async Task Success()

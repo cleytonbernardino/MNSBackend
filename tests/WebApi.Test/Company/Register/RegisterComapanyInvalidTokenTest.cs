@@ -9,7 +9,7 @@ namespace WebApi.Test.Company.Register;
 
 public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "admin/Company";
+    private const string METHOD = "api/admin/Company";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]

@@ -12,7 +12,7 @@ namespace WebApi.Test.User.Update;
 
 public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "user/change-password";
+    private const string METHOD = "api/user/change-password";
 
     [Fact]
     public async Task Success()

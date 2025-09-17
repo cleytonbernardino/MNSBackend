@@ -12,7 +12,7 @@ namespace WebApi.Test.User.Delete;
 
 public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "user";
+    private const string METHOD = "api/user";
     
     private readonly IdEncoderForTests _idEncoder = new();
     

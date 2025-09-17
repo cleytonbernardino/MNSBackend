@@ -8,7 +8,7 @@ namespace WebApi.Test.Company.ListUsers;
 
 public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "company/users";
+    private const string METHOD = "api/company/users";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]

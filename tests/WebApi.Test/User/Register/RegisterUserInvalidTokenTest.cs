@@ -9,7 +9,7 @@ namespace WebApi.Test.User.Register;
 
 public class RegisterUserInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "user";
+    private const string METHOD = "api/user";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]

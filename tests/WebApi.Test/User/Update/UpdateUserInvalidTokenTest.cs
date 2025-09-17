@@ -9,7 +9,7 @@ namespace WebApi.Test.User.Update;
 
 public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "user";
+    private const string METHOD = "api/user";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]

@@ -9,7 +9,7 @@ public class ReceiverMessageTest(
     ) : MmsClassFixture(factory)
 {
 
-    private const string METHOD = "WhatsappWebHook";
+    private const string METHOD = "api/WhatsappWebHook";
 
     [Fact(Skip = "Desativado Temporariamente")]
     public async Task Success()

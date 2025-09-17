@@ -13,7 +13,7 @@ namespace WebApi.Test.User.Update;
 
 public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "User";
+    private const string METHOD = "api/User";
     private readonly IdEncoderForTests _idEncoder = new();
 
     [Fact]

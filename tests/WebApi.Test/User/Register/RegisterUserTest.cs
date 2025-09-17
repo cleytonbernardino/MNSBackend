@@ -13,7 +13,7 @@ public class RegisterUserTest(
     CustomWebApplicationFactory factory
     ) : MmsClassFixture(factory)
 {
-    private const string METHOD = "user";
+    private const string METHOD = "api/user";
 
     [Fact]
     public async Task Success()
