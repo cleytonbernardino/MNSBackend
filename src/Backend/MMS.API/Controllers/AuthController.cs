@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MMS.Application.UseCases.Login;
+using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Login.DoLogin;
-using MMS.Application.UseCases.Login.RefreshToken;
 using MMS.Communication;
 
 namespace MMS.API.Controllers;

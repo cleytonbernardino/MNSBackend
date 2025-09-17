@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>MMS.API</RootNamespace>
+    <UserSecretsId>fd47223d-da50-473e-944a-61d583f3292d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

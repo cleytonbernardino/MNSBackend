@@ -1,6 +1,6 @@
 ﻿using CommonTestUtilities.Requests;
+using MMS.Application.UseCases.Auth.RefreshToken;
 using Shouldly;
-using MMS.Application.UseCases.Login.RefreshToken;
 
 namespace Validators.Test.Auth;
 

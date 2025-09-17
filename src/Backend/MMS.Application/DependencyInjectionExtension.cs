@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Application.UseCases.Login.DoLogin;
-using MMS.Application.UseCases.Login.RefreshToken;
 using MMS.Application.UseCases.User.Delete;
 using MMS.Application.UseCases.User.Register;
 using MMS.Application.UseCases.User.Update;

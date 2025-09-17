@@ -4,7 +4,7 @@ using MMS.Domain.Security.Token;
 using MMS.Domain.ValueObjects;
 using MMS.Exceptions.ExceptionsBase;
 
-namespace MMS.Application.UseCases.Login.RefreshToken;
+namespace MMS.Application.UseCases.Auth.RefreshToken;
 
 public class RefreshTokenUseCase(
     IRefreshTokenHandler refreshTokenHandler,
@@ -14,28 +14,28 @@ public class RefreshTokenUseCase(
     private readonly IRefreshTokenHandler _refreshTokenHandler = refreshTokenHandler;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     
-    public async Task<ResponseToken> Execute(RequestRefreshToken request)
+    public async Task<ResponseToken> Execute(RequestRefreshAccessToken request, string refreshToken)
     {
         await Validate(request);
         
-        var accessTokenData = _refreshTokenHandler.GetDataFromAccessToken(request.AccessToken);
+        var accessTokenData = _refreshTokenHandler.ValidateAccessTokenAndGetData(request.AccessToken);
 
-        var refreshToken = await _refreshTokenHandler.GetToken(request.RefreshToken, accessTokenData.userIdentifier);
-        if (refreshToken is null)
+        var refreshTokenValidated = await _refreshTokenHandler.GetToken(refreshToken, accessTokenData.userIdentifier);
+        if (refreshTokenValidated is null)
             throw new NoPermissionException();
         
-        if(refreshToken.ExpiryDate < DateTime.UtcNow.AddDays(MMSConst.SECURITY_DAYS_TO_REMAKE_TOKEN))
-            refreshToken.Token = await _refreshTokenHandler.GenerateTokenAndSave(accessTokenData.userIdentifier);
+        if(refreshTokenValidated.ExpiryDate < DateTime.UtcNow.AddDays(MMSConst.SECURITY_DAYS_TO_REMAKE_TOKEN))
+            refreshTokenValidated.Token = await _refreshTokenHandler.GenerateTokenAndSave(accessTokenData.userIdentifier);
         
         return new ResponseToken
         {
             AccessToken = _accessTokenGenerator.Generate(
                 accessTokenData.userIdentifier, Enum.Parse<UserRolesEnum>(accessTokenData.role)),
-            RefreshToken = refreshToken.Token
+            RefreshToken = refreshTokenValidated.Token
         };
     }
 
-    private static async Task Validate(RequestRefreshToken request)
+    private static async Task Validate(RequestRefreshAccessToken request)
     {
         RefreshTokenValidator validator = new();
         var result = await validator.ValidateAsync(request);

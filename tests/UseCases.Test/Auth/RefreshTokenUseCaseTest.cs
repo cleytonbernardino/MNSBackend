@@ -1,8 +1,8 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Application.UseCases.Auth.RefreshToken;
 using Shouldly;
-using MMS.Application.UseCases.Login.RefreshToken;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 using Entity = MMS.Domain.Entities;
