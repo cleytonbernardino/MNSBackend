@@ -424,7 +424,7 @@ FodyWeavers.xsd
 # Rider ignored files
 /modules.xml
 /projectSettingsUpdater.xml
-/.idea.TechSyence.iml
+/.idea.MMS.iml
 /contentModel.xml
 # Editor-based HTTP Client requests
 /httpRequests/
@@ -433,4 +433,4 @@ FodyWeavers.xsd
 /dataSources.local.xml
 
 # Appsetting Dev
-/src/Backend/TechSyence.API/appsettings.Development.json
+src/Backend/MMS.API/appsettings.Development.json
