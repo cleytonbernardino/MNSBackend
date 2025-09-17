@@ -1,22 +1,30 @@
-﻿using System.Net.Http.Headers;
+﻿using MMS.Domain.ValueObjects;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace WebApi.Test;
 
-public class MmsClassFixture(
-    CustomWebApplicationFactory factory
-    ) : IClassFixture<CustomWebApplicationFactory>
+public class MmsClassFixture(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly HttpClient _client = factory.CreateClient();
-
+    
     protected async Task<HttpResponseMessage> DoPostAsync(string method, object request, string token = "", string culture = "en")
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
         return await _client.PostAsJsonAsync(method, request);
     }
-
+    
+    protected async Task<HttpResponseMessage> DoPostWithRefreshTokenAsync(
+        string method, object request, string refreshToken, string culture = "en"
+        )
+    {
+        ChangeRequestCulture(culture);
+        _client.DefaultRequestHeaders.Add("Cookie", $"{MMSConst.REFRESH_TOKEN_COOKIE_KEY}={refreshToken}");
+        return await _client.PostAsJsonAsync(method, request);
+    }
+    
     protected async Task<HttpResponseMessage> DoGetAsync(string method, string token = "", string culture = "en")
     {
         ChangeRequestCulture(culture);

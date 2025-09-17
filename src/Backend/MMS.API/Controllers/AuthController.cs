@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MMS.Application.UseCases.Auth.Logout;
 using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Login.DoLogin;
 using MMS.Communication;
@@ -55,9 +56,22 @@ public class AuthController : ControllerBase
         
         return Ok(responseResult);
     }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Logout(
+        [FromServices] ILogoutUseCase useCase,
+        [FromBody] RequestRefreshAccessToken request
         )
     {
-        var response = await useCase.Execute(request);
-        return Ok(response);
+        string? refreshToken = Request.Cookies[MMSConst.REFRESH_TOKEN_COOKIE_KEY];
+        if (refreshToken is null)
+            throw new ErrorOnValidationException([ResourceMessagesException.NO_REFRESH_TOKEN]);
+        
+        Response.Cookies.Delete(MMSConst.REFRESH_TOKEN_COOKIE_KEY, _secureTokenParam);
+        await useCase.Execute(request, refreshToken);
+
+        return NoContent();
     }
 }

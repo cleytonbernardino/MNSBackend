@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MMS.Application.UseCases.Auth.Logout;
 using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
@@ -28,6 +29,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
         service.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
         service.AddScoped<IRefreshTokenUseCase, RefreshTokenUseCase>();
+        service.AddScoped<ILogoutUseCase, LogoutUseCase>();
         service.AddScoped<IListCompanyUsersUseCase, ListCompanyUsersUseCase>();
         service.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
         service.AddScoped<IUpdateUserPasswordUseCase, UpdateUserPasswordUseCase>();
