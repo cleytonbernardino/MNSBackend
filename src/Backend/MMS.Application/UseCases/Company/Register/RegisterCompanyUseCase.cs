@@ -1,5 +1,4 @@
 ﻿using MMS.Application.Extensions;
-using MMS.Application.Services.Encoders;
 using MMS.Communication;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.Company;
@@ -9,13 +8,11 @@ using MMS.Exceptions.ExceptionsBase;
 namespace MMS.Application.UseCases.Company.Register;
 
 public class RegisterCompanyUseCase(
-    IIdEncoder idEncoder,
     ILoggedUser loggedUser,
     ICompanyWriteOnlyRepository repository,
     IUnitOfWork unitOfWork
     ) : IRegisterCompanyUseCase
 {
-    private readonly IIdEncoder _idEncoder = idEncoder;
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyWriteOnlyRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -33,8 +30,6 @@ public class RegisterCompanyUseCase(
         
         company.UpdatedOn = DateTime.UtcNow;
         company.Active = true;
-        if (!string.IsNullOrEmpty(request.SubscriptionPlan))
-            company.SubscriptionPlan = (short)_idEncoder.Decode(request.SubscriptionPlan);
 
         await _repository.RegisterCompany(company);
         await _unitOfWork.Commit();

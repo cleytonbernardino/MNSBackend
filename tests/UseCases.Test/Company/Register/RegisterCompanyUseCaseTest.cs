@@ -1,12 +1,11 @@
-﻿using CommonTestUtilities.Cryptography;
-using CommonTestUtilities.Entities;
+﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
-using Shouldly;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
+using Shouldly;
 using Entity = MMS.Domain.Entities;
 
 namespace UseCases.Test.Company.Register;
@@ -64,11 +63,10 @@ public class RegisterCompanyUseCaseTest
 
     private static RegisterCompanyUseCase CreateUseCase(Entity.User user)
     {
-        var idEncoder = new IdEncoderBuilder();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = CompanyWriteOnlyRepositoryBuilder.Build();
         var unityOfWork = UnitOfWorkBuilder.Build();
 
-        return new RegisterCompanyUseCase(idEncoder.Build(), loggedUser, repository, unityOfWork);
+        return new RegisterCompanyUseCase(loggedUser, repository, unityOfWork);
     }
 }

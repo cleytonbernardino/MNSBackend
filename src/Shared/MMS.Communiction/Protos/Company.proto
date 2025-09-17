@@ -14,7 +14,6 @@ message RequestRegisterCompany {
     string phone_number = 7;
     optional string whatsapp_API_number = 8;
     optional string manager_id = 9;
-    string subscription_plan = 10;
     bool subscription_status = 11;
     optional string website = 12;
 }

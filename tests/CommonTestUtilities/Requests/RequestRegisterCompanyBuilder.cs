@@ -16,7 +16,6 @@ public static class RequestRegisterCompanyBuilder
             .RuleFor(req => req.BusinessEmail, f => f.Internet.Email())
             .RuleFor(req => req.PhoneNumber, () => "11987125344")
             //.RuleFor(req => req.WhatsappAPINumber, () => "11987125344")
-            .RuleFor(req => req.SubscriptionPlan, () => "yyy")
             .RuleFor(req => req.SubscriptionStatus, () => true)
             .RuleFor(req => req.Website, () => @"https://google.com");
     }
