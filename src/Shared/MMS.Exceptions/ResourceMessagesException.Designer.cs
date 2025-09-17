@@ -240,6 +240,15 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no refresh token in the current request..
+        /// </summary>
+        public static string NO_REFRESH_TOKEN {
+            get {
+                return ResourceManager.GetString("NO_REFRESH_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No token was found in the request..
         /// </summary>
         public static string NO_TOKEN {

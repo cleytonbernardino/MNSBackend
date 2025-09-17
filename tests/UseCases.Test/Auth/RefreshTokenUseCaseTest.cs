@@ -22,7 +22,7 @@ public class RefreshTokenUseCaseTest
         
         var useCase = CreateUseCase(user, token);
         
-        async Task act() => await useCase.Execute(refreshRequest);
+        async Task act() => await useCase.Execute(refreshRequest, token.Token!);
         
         await act().ShouldNotThrowAsync();
     }
@@ -38,7 +38,7 @@ public class RefreshTokenUseCaseTest
         
         var useCase = CreateUseCase(user, token, invalidRequestToken: true);
         
-        async Task act() => await useCase.Execute(refreshRequest);
+        async Task act() => await useCase.Execute(refreshRequest, "Invalid");
         
         var errors = await act().ShouldThrowAsync<NoPermissionException>();
         errors.Message.ShouldBe(ResourceMessagesException.NO_PERMISSION);
@@ -56,7 +56,7 @@ public class RefreshTokenUseCaseTest
         
         var useCase = CreateUseCase(user, token);
         
-        async Task act() => await  useCase.Execute(refreshRequest);
+        async Task act() => await useCase.Execute(refreshRequest, token.Token!);
         
         var errors = await act().ShouldThrowAsync<ErrorOnValidationException>();
         errors.ErrorMessages
@@ -72,7 +72,7 @@ public class RefreshTokenUseCaseTest
 
         var refreshTokenGenerator = new RefreshTokenHandlerBuilder()
             .GenerateTokenAndSave(user.UserIdentifier, token.Token)
-            .GetDataFromAccessToken(user.UserIdentifier);
+            .ValidateAccessTokenAndGetData(user.UserIdentifier);
         if (!invalidRequestToken)
             refreshTokenGenerator.GetToken(token);
         

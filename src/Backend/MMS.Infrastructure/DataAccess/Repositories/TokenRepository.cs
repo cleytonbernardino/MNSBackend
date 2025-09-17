@@ -23,4 +23,13 @@ public class TokenRepository(
                 token.UserIdentifier == userIdentifier && token.Token == refreshToken
                 );
     }
+
+    public async Task<int> Delete(string refreshToken, Guid userIdentifier)
+    {
+        return await _DbContext.RefreshTokens
+            .Where(repository =>
+                repository.Token == refreshToken
+                && repository.UserIdentifier == userIdentifier)
+            .ExecuteDeleteAsync();
+    }
 }

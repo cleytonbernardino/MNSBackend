@@ -28,16 +28,4 @@ public class RefreshTokenValidatorTest
         
         result.IsValid.ShouldBeFalse();
     }
-    
-    [Fact]
-    public void Error_Refresh_Token_Empty()
-    {
-        var request = RequestRefreshTokenBuilder.Build();
-        request.RefreshToken = string.Empty;
-
-        RefreshTokenValidator validator = new();
-        var result = validator.Validate(request);
-        
-        result.IsValid.ShouldBeFalse();
-    }
 }

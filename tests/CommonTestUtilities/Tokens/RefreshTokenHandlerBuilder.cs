@@ -32,11 +32,18 @@ public class RefreshTokenHandlerBuilder
         return this;
     }
 
-    public RefreshTokenHandlerBuilder GetDataFromAccessToken(Guid userIdentifier)
+    public RefreshTokenHandlerBuilder ValidateAccessTokenAndGetData(Guid userIdentifier)
     {
-        _mock.Setup(mock => mock.GetDataFromAccessToken(
+        _mock.Setup(mock => mock.ValidateAccessTokenAndGetData(
             It.IsAny<string>()
-            )).Returns((userIdentifier, UserRolesEnum.MANAGER.ToString(), false));
+            )).Returns((userIdentifier, nameof(UserRolesEnum.MANAGER)));
+        return this;
+    }
+
+    public RefreshTokenHandlerBuilder Delete(Guid userIdentifier)
+    {
+        _mock.Setup(mock => mock.Delete(It.IsAny<string>(), userIdentifier))
+            .ReturnsAsync(1);
         return this;
     }
 }

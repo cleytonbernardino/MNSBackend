@@ -214,4 +214,7 @@
   <data name="INVALID_REFRESH_TOKEN" xml:space="preserve">
     <value>The refresh token is not valid.</value>
   </data>
+  <data name="NO_REFRESH_TOKEN" xml:space="preserve">
+    <value>There is no refresh token in the current request.</value>
+  </data>
 </root>

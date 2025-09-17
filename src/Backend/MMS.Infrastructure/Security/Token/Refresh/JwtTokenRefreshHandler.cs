@@ -44,7 +44,7 @@ public class JwtTokenRefreshHandler(
         return token.Token;
     }
     
-    public (Guid userIdentifier, string role, bool isAdmin) GetDataFromAccessToken(string token)
+    public (Guid userIdentifier, string role) ValidateAccessTokenAndGetData(string token)
     {
         var validationParaments = _accessTokenValidator.GetParameters();
 
@@ -58,9 +58,16 @@ public class JwtTokenRefreshHandler(
         
         string role = principal.Claims.First(c => c.Type == ClaimTypes.Role).Value;
 
-        return (userIdentifier, role, role.Equals("ADMIN"));
+        return (userIdentifier, role);
     }
 
     public async Task<RefreshToken?> GetToken(string token, Guid userIdentifier) =>
         await _refreshTokenRepository.GetRefreshTokenWithUserIdentifier(token, userIdentifier);
+
+    public async Task<int> Delete(string refreshToken, Guid userIdentifier)
+    {
+        var rowsAffect =  await _refreshTokenRepository.Delete(refreshToken, userIdentifier);
+        await _unitOfWork.Commit();
+        return rowsAffect;
+    }
 }

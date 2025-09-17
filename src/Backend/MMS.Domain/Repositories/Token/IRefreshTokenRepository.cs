@@ -6,4 +6,5 @@ public interface IRefreshTokenRepository
 {
     Task SaveTokenAsync(RefreshToken token);
     Task<RefreshToken?> GetRefreshTokenWithUserIdentifier(string refreshToken, Guid userIdentifier);
+    Task<int> Delete(string refreshToken, Guid userIdentifier);
 }

@@ -11,21 +11,19 @@ namespace WebApi.Test.Auth.RefreshToken;
 
 public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "/auth/refresh";
-
     private const string METHOD = "api/auth/refresh";
+    
     [Fact]
     public async Task Success()
     {
-        RequestRefreshToken request = new()
+        RequestRefreshAccessToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER
-            ),
-            RefreshToken = factory.TokenRefresh.Token
+            )
         };
 
-        var response = await DoPostAsync(METHOD, request);
+        var response = await DoPostWithRefreshTokenAsync(METHOD, request, factory.TokenRefresh.Token);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
     
@@ -33,13 +31,12 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Access_Token_Empty(string culture)
     {
-        RequestRefreshToken request = new()
+        RequestRefreshAccessToken request = new()
         {
-            AccessToken = string.Empty,
-            RefreshToken = factory.TokenRefresh.Token
+            AccessToken = string.Empty
         };
-
-        var response = await DoPostAsync(METHOD, request, culture:culture);
+        
+        var response = await DoPostWithRefreshTokenAsync(METHOD, request, factory.TokenRefresh.Token, culture:culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await GetArrayFromResponse(response);
@@ -53,12 +50,11 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Refresh_Token_Empty(string culture)
     {
-        RequestRefreshToken request = new()
+        RequestRefreshAccessToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER
             ),
-            RefreshToken = string.Empty
         };
 
         var response = await DoPostAsync(METHOD, request, culture:culture);
@@ -68,28 +64,27 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
         errors
             .ShouldHaveSingleItem()
             .ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("INVALID_REFRESH_TOKEN", new CultureInfo(culture)));
+            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_REFRESH_TOKEN", new CultureInfo(culture)));
     }
     
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Refresh_Token_No_Registered(string culture)
     {
-        RequestRefreshToken request = new()
+        RequestRefreshAccessToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER
-            ),
-            RefreshToken = factory.TokenRefresh.Token + "Invalid"
+            )
         };
 
         var response = await DoPostAsync(METHOD, request, culture:culture);
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await GetArrayFromResponse(response);
         errors
             .ShouldHaveSingleItem()
             .ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_PERMISSION", new CultureInfo(culture)));
+            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_REFRESH_TOKEN", new CultureInfo(culture)));
     }
 }

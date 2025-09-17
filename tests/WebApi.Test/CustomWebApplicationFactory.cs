@@ -73,7 +73,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             UserIdentifier = user.UserIdentifier,
             ExpiryDate = DateTime.UtcNow.AddDays(1),
-            Token = RandomNumberGenerator.Create().ToString()
+            Token = new Random().Next().ToString()
         };
         TokenRefresh = token;
         dbContext.RefreshTokens.Add(token);

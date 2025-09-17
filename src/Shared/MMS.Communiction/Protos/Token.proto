@@ -8,10 +8,9 @@ message ResponseToken {
 }
 
 message RequestRefreshAccessToken{
-    string refresh_token = 1;
+    string access_token = 1;
 }
 
-message RequestRefreshToken {
+message ResponseRefreshAccessToken{
     string access_token = 1;
-    string refresh_token = 2;
 }
