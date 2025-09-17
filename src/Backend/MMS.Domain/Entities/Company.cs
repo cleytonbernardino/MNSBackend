@@ -13,7 +13,7 @@ public class Company : EntityBase
     public string PhoneNumber { get; set; } = string.Empty;
     public string? WhatsappAPINumber { get; set; }
     public long? ManagerId { get; set; }
-    public Int16? SubscriptionPlan { get; set; }
+    public CompanySubscription? CompanySubscription { get; set; }
     public bool SubscriptionStatus { get; set; }
     public string? Website { get; set; }
 }

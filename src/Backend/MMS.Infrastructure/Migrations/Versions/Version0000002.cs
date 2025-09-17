@@ -2,7 +2,10 @@
 
 namespace MMS.Infrastructure.Migrations.Versions;
 
-[Migration(DatabaseVersions.TABLE_COMPANY, "Creating the company table")]
+[Migration(
+    DatabaseVersions.TABLE_COMPANY, 
+    "Creating the companies table and a table for a 1:1 relationship to control payments and plans."
+    )]
 public class Version0000002 : VersionBase
 {
     public override void Up()
@@ -18,8 +21,16 @@ public class Version0000002 : VersionBase
             .WithColumn("BusinessEmail").AsString().Nullable()
             .WithColumn("PhoneNumber").AsString(13).NotNullable()
             .WithColumn("WhatsappAPINumber").AsString(20).Nullable()
-            .WithColumn("SubscriptionPlan").AsInt64().Nullable().ForeignKey("fk_company_subscription_id", TableNames.TABLE_COMPANY_SUBSCRIPTION, "Id")
             .WithColumn("SubscriptionStatus").AsBoolean().NotNullable().WithDefaultValue(value: false)
             .WithColumn("Website").AsString().Nullable();
+        
+        CreateTable(TableNames.TABLE_COMPANY_SUBSCRIPTION)
+            .WithColumn("SubscriptionPlanId").AsInt16().Nullable()
+                .ForeignKey("fk_subscriptions_plans_id", TableNames.TABLE_SUBSCRIPTIONS_PLANS, "Id")
+                .OnDelete(System.Data.Rule.SetNull)
+            .WithColumn("IsBillingAnnual").AsBoolean().NotNullable().WithDefaultValue(value: false)
+            .WithColumn("PaymentStatus").AsInt16().NotNullable()
+            .WithColumn("NextBillingDate").AsDateTime().NotNullable()
+            .WithColumn("PaymentMethod").AsInt16().NotNullable();
     }
 }

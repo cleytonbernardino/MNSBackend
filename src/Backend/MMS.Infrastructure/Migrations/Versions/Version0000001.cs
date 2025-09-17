@@ -2,16 +2,14 @@
 
 namespace MMS.Infrastructure.Migrations.Versions;
 
-[Migration(DatabaseVersions.TABLE_COMPANY_SUBSCRIPTION, "Creating the company subscription table")]
+[Migration(DatabaseVersions.TABLE_SUBSCRIPTIONS, "Creating the subscriptions table")]
 public class Version0000001 : VersionBase
 {
     public override void Up()
     {
-        CreateTable(TableNames.TABLE_COMPANY_SUBSCRIPTION)
-            .WithColumn("SubscriptionId").AsInt16()
-            .WithColumn("IsBillingAnnual").AsBoolean().NotNullable().WithDefaultValue(value: false)
-            .WithColumn("PaymentStatus").AsInt16().NotNullable()
-            .WithColumn("NextBillingDate").AsDateTime().NotNullable()
-            .WithColumn("PaymentMethod").AsInt16().NotNullable();
+        CreateTableShortId(TableNames.TABLE_SUBSCRIPTIONS_PLANS)
+            .WithColumn("Name").AsString(30).NotNullable()
+            .WithColumn("Description").AsString(100).Nullable()
+            .WithColumn("Price").AsDouble().NotNullable();
     }
 }
