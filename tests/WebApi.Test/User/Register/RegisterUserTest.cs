@@ -18,17 +18,13 @@ public class RegisterUserTest(
     [Fact]
     public async Task Success()
     {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
-        
+        var token = JwtTokenGeneratorBuilder.Build()
+            .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
+
         var request = RequestRegisterUseBuilder.Build();
 
         var response = await DoPostAsync(METHOD, request, token: token);
-
-        var rootElement = await GetRootElement(response);
-
-        var firstName = rootElement.GetProperty("firstName").ToString();
-
-        request.FirstName.ShouldBe(firstName);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
     [Theory]

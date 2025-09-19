@@ -9,7 +9,7 @@ public record ResponseShortUser
     public DateTime? LastLogin { get; set; }
 }
 
-public record ResponseListShortUser
+public record ResponseListShortUsers
 {
     public List<ResponseShortUser> Users { get; set; } = [];
 }

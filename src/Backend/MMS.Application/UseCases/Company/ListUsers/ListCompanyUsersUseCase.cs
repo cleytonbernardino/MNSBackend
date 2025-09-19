@@ -19,13 +19,13 @@ public class ListCompanyUsersUseCase(
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyReadOnlyRepository _repository = repository;
 
-    public async Task<ResponseListShortUser> Execute()
+    public async Task<ResponseListShortUsers> Execute()
     {
         var loggedUser = await _loggedUser.User();
         CanGetUsers(loggedUser);
 
         var users = _repository.ListUsers(loggedUser.CompanyId);
-        var response = new ResponseListCompanyUser();
+        var response = new ResponseListShortUsers();
         foreach(var user in users)
         {
             var shortUser = user.ToShortResponse();

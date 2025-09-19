@@ -1,10 +1,10 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Tokens;
-using Shouldly;
-using MMS.Application.UseCases.Login.DoLogin;
-using MMS.Communication;
+using MMS.Application.UseCases.Auth.DoLogin;
+using MMS.Communication.Requests.Auth;
 using MMS.Exceptions.ExceptionsBase;
+using Shouldly;
 using Entity = MMS.Domain.Entities;
 
 namespace UseCases.Test.Auth;
@@ -16,7 +16,7 @@ public class DoLoginUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var request = new RequestLogin
+        var request = new RequestDoLogin
         {
             Email = user.Email,
             Password = user.Password
@@ -34,7 +34,7 @@ public class DoLoginUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var request = new RequestLogin
+        var request = new RequestDoLogin
         {
             Email = "tes@gmail.com",
             Password = user.Password
@@ -52,7 +52,7 @@ public class DoLoginUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var request = new RequestLogin
+        var request = new RequestDoLogin
         {
             Email = user.Email,
             Password = $"{user.Password}123"
@@ -70,7 +70,7 @@ public class DoLoginUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var request = new RequestLogin
+        var request = new RequestDoLogin
         {
             Email = "Fake",
             Password = user.Password

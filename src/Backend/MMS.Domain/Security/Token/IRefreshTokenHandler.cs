@@ -6,6 +6,6 @@ public interface IRefreshTokenHandler
 {
     Task<string> GenerateTokenAndSave(Guid userIdentifier);
     (Guid userIdentifier, string role) ValidateAccessTokenAndGetData(string token);
-    Task<RefreshToken?> GetToken(string token, Guid userIdentifier);
-    Task<int> Delete(string refreshToken, Guid userIdentifier);
+    Task<RefreshToken?> GetRefreshToken(string token, Guid userIdentifier);
+    Task<bool> Delete(string refreshToken, Guid userIdentifier);
 }

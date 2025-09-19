@@ -4,6 +4,7 @@ using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
 using CommonTestUtilities.Tokens;
+using Microsoft.Extensions.Logging.Abstractions;
 using MMS.Application.UseCases.User.Register;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
@@ -95,16 +96,15 @@ public class RegisterUserUseCaseTest
         UserReadOnlyRepositoryBuilder readOnlyRepository = new();
         var writeOnlyRepository = UserWriteOnlyRepositoryBuilder.Build();
         var passwordEncrypter = PasswordEncrypterBuilder.Build();
-        var accessTokenGenerator = AccessTokenGeneratorBuilder.Build();
-        var refreshTokenHandler = new RefreshTokenHandlerBuilder().GenerateTokenAndSave();
         var unitOfWork = UnitOfWorkBuilder.Build();
+        var logger = NullLogger<RegisterUserUseCase>.Instance;
 
         if (!string.IsNullOrWhiteSpace(email))
             readOnlyRepository.ExistActiveUserWithEmail(email);
 
         return new RegisterUserUseCase(
            loggedUser, readOnlyRepository.Build(), writeOnlyRepository,
-           passwordEncrypter, accessTokenGenerator, refreshTokenHandler.Build(), unitOfWork
+           passwordEncrypter, unitOfWork, logger
         );
     }
 }

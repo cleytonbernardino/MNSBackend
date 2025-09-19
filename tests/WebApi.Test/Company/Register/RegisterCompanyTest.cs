@@ -54,7 +54,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);
 
         var request = RequestRegisterCompanyBuilder.Build();
-        request.Website = string.Empty;
+        request.WebSite = string.Empty;
 
         var response = await DoPostAsync(method: METHOD, request: request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -80,7 +80,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);
 
         var request = RequestRegisterCompanyBuilder.Build();
-        request.CNJP = "750068710001";
+        request.CNPJ = "750068710001";
 
         var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -99,7 +99,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);
 
         var request = RequestRegisterCompanyBuilder.Build();
-        request.CNJP = string.Empty;
+        request.CNPJ = string.Empty;
 
         var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

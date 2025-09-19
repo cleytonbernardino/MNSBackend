@@ -1,27 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MMS.Domain.Entities;
-using MMS.Domain.Enums;
 using MMS.Domain.Repositories.Company;
 
 namespace MMS.Infrastructure.DataAccess.Repositories;
 
 public class CompanyRepository(
     MmsDbContext dbContext
-    ) : ICompanyWriteOnlyRepository, ICompanyReadOnlyRepository
+) : ICompanyWriteOnlyRepository, ICompanyReadOnlyRepository
 {
     private readonly MmsDbContext _dbContext = dbContext;
 
-    public IList<ShortCompany> ListCompanies()
+    public IList<ShortCompany> ListShortCompanies()
     {
         return _dbContext
-               .Companies
-               .AsNoTracking()
-               .Select(field => new ShortCompany
-               {
-                   Id = field.Id,
-                   DoingBusinessAs = field.LegalName,
-                   SubscriptionStatus = field.SubscriptionStatus,
-               }).ToList();
+            .Companies
+            .AsNoTracking()
+            .Select(field => new ShortCompany
+            {
+                Id = field.Id,
+                DoingBusinessAs = field.LegalName,
+                SubscriptionStatus = field.SubscriptionStatus,
+                SubscriptionPlan =
+                    field.CompanySubscription != null
+                        ? field.CompanySubscription.SubscriptionPlan.Name
+                        : string.Empty,
+                ManagerName = field.Manager != null ? field.Manager.FirstName : string.Empty
+            }).ToList();
     }
 
     public IList<ShortUser> ListUsers(long companyId)
@@ -43,7 +47,7 @@ public class CompanyRepository(
     public async Task RegisterCompany(Company company)
     {
         await _dbContext
-                .Companies
-                .AddAsync(company);
+            .Companies
+            .AddAsync(company);
     }
 }

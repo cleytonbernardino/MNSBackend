@@ -4,5 +4,5 @@ namespace MMS.Application.UseCases.Company.ListUsers;
 
 public interface IListCompanyUsersUseCase
 {
-    Task<ResponseListShortUser> Execute();
+    Task<ResponseListShortUsers> Execute();
 }

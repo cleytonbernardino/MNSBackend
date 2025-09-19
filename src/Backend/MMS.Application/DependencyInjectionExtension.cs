@@ -43,7 +43,7 @@ public static class DependencyInjectionExtension
         SqidsEncoder<long> sqids = new(new SqidsOptions()
         {
             MinLength = 3,
-            Alphabet = configuration.GetValue<string>("Settings:IdCryptographyAlphabet")!
+            Alphabet = configuration.GetSection("Settings:IdCryptographyAlphabet").Value!
         });
         services.AddSingleton(sqids);
     }

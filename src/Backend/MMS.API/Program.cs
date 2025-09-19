@@ -84,8 +84,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-//app.MapGrpcService();
-
 app.UseMiddleware<CultureMiddleware>();
 
 app.UseHttpsRedirection();

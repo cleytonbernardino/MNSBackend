@@ -9,7 +9,7 @@ namespace MMS.API.Controllers;
 public class CompanyController : MMSBaseController
 {
     [HttpGet("Users")]
-    [ProducesResponseType(typeof(ResponseListShortUser), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseListShortUsers), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListUsers(
         [FromServices] IListCompanyUsersUseCase useCase
     )

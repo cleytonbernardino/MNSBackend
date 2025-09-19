@@ -63,7 +63,6 @@ public class RegisterUserUseCase(
             throw new ErrorOnValidationException(
                 result.Errors.Select(err => err.ErrorMessage).ToArray()
             );
-        }
     }
 
     private bool CanCreateUser(Entity.User loggedUser, UserRolesEnum userTargetRole)

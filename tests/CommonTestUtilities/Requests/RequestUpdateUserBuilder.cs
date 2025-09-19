@@ -15,6 +15,6 @@ public static class RequestUpdateUserBuilder
             .RuleFor(req => req.LastName, f => f.Person.LastName)
             .RuleFor(req => req.Email, f => f.Person.Email)
             .RuleFor(req => req.Phone, () => "11987424156")
-            .RuleFor(req => req.Role, () => (int)UserRolesEnum.MANAGER);
+            .RuleFor(req => req.Role, () => (short)UserRolesEnum.MANAGER);
     }
 }

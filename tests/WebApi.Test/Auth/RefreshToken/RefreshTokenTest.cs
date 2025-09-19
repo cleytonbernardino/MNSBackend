@@ -3,6 +3,7 @@ using Shouldly;
 using System.Globalization;
 using System.Net;
 using MMS.Communication;
+using MMS.Communication.Requests.Auth;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using WebApi.Test.InlineData;
@@ -16,7 +17,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [Fact]
     public async Task Success()
     {
-        RequestRefreshAccessToken request = new()
+        RequestRefreshToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER
@@ -31,7 +32,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Access_Token_Empty(string culture)
     {
-        RequestRefreshAccessToken request = new()
+        RequestRefreshToken request = new()
         {
             AccessToken = string.Empty
         };
@@ -50,7 +51,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Refresh_Token_Empty(string culture)
     {
-        RequestRefreshAccessToken request = new()
+        RequestRefreshToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER
@@ -71,7 +72,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Refresh_Token_No_Registered(string culture)
     {
-        RequestRefreshAccessToken request = new()
+        RequestRefreshToken request = new()
         {
             AccessToken = JwtTokenGeneratorBuilder.Build().Generate(
                 factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER

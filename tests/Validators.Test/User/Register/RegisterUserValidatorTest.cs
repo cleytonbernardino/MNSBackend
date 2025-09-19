@@ -1,8 +1,8 @@
 ﻿using CommonTestUtilities.Requests;
-using Shouldly;
 using MMS.Application.UseCases.User.Register;
-using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Exceptions;
+using Shouldly;
 
 namespace Validators.Test.User.Register;
 

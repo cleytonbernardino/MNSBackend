@@ -5,16 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MMS.Domain.Enums;
 using MMS.Infrastructure.DataAccess;
-using System.Security.Cryptography;
 using Entity = MMS.Domain.Entities;
 
 namespace WebApi.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    public Entity.User EmployeeUser { get; private set; } 
-    public Entity.User RHUser { get; private set; } 
-    public Entity.User SubManagerUser { get; private set; } 
+    public Entity.User EmployeeUser { get; private set; }
+    public Entity.User RHUser { get; private set; }
+    public Entity.User SubManagerUser { get; private set; }
     public Entity.User ManagerUser { get; private set; }
     public Entity.User AdminUser { get; private set; }
 
@@ -26,13 +25,26 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     public Entity.User InjectUser(Entity.User user)
     {
-        using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
+        using IServiceScope scope = Services.CreateScope();
+        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
 
         user.Id = ++UserInDataBase;
         dbContext.Add(user);
         dbContext.SaveChanges();
         return user;
+    }
+
+    public IList<Entity.Company> RegisterCompanies(IList<Entity.Company>? companies = null)
+    {
+        using IServiceScope scope = Services.CreateScope();
+        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
+
+        if (companies is null)
+            companies = CompanyBuilder.BuildInBatch();
+
+        dbContext.Companies.AddRange(companies);
+        dbContext.SaveChanges();
+        return companies;
     }
 
     private void RegisterInitialUsers(MmsDbContext dbContext)
@@ -42,15 +54,15 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         EmployeeUser = UserBuilder.Build();
         EmployeeUser.Id = ++UserInDataBase;
         EmployeeUser.Role = UserRolesEnum.EMPLOYEE;
-        
+
         RHUser = UserBuilder.Build();
         RHUser.Id = ++UserInDataBase;
         RHUser.Role = UserRolesEnum.RH;
-        
+
         SubManagerUser = UserBuilder.Build();
         SubManagerUser.Id = ++UserInDataBase;
         SubManagerUser.Role = UserRolesEnum.SUB_MANAGER;
-        
+
         AdminUser = UserBuilder.Build();
         AdminUser.Id = ++UserInDataBase;
         AdminUser.IsAdmin = true;
@@ -63,10 +75,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         dbContext.Add(AdminUser);
 
         RegisterRefreshTokenFor(ManagerUser, dbContext);
-        
+
         dbContext.SaveChanges();
     }
-    
+
     private void RegisterRefreshTokenFor(Entity.User user, MmsDbContext dbContext)
     {
         Entity.RefreshToken token = new()
@@ -78,17 +90,18 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         TokenRefresh = token;
         dbContext.RefreshTokens.Add(token);
     }
-    
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Test")
             .ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<MmsDbContext>));
+                ServiceDescriptor? descriptor =
+                    services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<MmsDbContext>));
                 if (descriptor is not null)
                     services.Remove(descriptor);
 
-                var provider = services.AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
+                ServiceProvider provider = services.AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
 
                 services.AddDbContext<MmsDbContext>(options =>
                 {
@@ -96,8 +109,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     options.UseInternalServiceProvider(provider);
                 });
 
-                using var scope = services.BuildServiceProvider().CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
+                using IServiceScope scope = services.BuildServiceProvider().CreateScope();
+                MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
                 dbContext.Database.EnsureDeleted();
 
                 RegisterInitialUsers(dbContext);

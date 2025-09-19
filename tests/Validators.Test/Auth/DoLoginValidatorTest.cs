@@ -1,5 +1,5 @@
 ﻿using CommonTestUtilities.Requests;
-using MMS.Application.UseCases.Login.DoLogin;
+using MMS.Application.UseCases.Auth.DoLogin;
 using Shouldly;
 
 namespace Validators.Test.Auth;

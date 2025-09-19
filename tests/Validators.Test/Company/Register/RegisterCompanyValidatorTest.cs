@@ -46,7 +46,7 @@ public class RegisterCompanyValidatorTest
     public void Success_Without_WebSite()
     {
         var request = RequestRegisterCompanyBuilder.Build();
-        request.Website = string.Empty;
+        request.WebSite = string.Empty;
 
         RegisterCompanyValidator validator = new();
         var result = validator.Validate(request);
@@ -58,7 +58,7 @@ public class RegisterCompanyValidatorTest
     public void Error_CNPJ_Not_Valid()
     {
         var request = RequestRegisterCompanyBuilder.Build();
-        request.CNJP = "750068710001";
+        request.CNPJ = "750068710001";
 
         RegisterCompanyValidator validator = new();
         var result = validator.Validate(request);
@@ -74,7 +74,7 @@ public class RegisterCompanyValidatorTest
     public void Error_CNPJ_Empty()
     {
         var request = RequestRegisterCompanyBuilder.Build();
-        request.CNJP = string.Empty;
+        request.CNPJ = string.Empty;
 
         RegisterCompanyValidator validator = new();
         var result = validator.Validate(request);

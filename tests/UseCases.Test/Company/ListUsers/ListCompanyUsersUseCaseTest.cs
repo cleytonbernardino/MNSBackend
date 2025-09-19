@@ -23,7 +23,7 @@ public class ListCompanyUsersUseCaseTest
         var user = UserBuilder.Build();
 
         var useCase = CreateUseCase(user, numberOfUsers);
-        async Task<ResponseListCompanyUser> act() => await useCase.Execute();
+        async Task<ResponseListShortUsers> act() => await useCase.Execute();
 
         var response = await act();
         response.Users

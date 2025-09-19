@@ -1,104 +1,81 @@
 ﻿using Bogus;
-using Google.Protobuf.Collections;
-using MMS.Communication;
+using MMS.Communication.Requests.WhatsAppMessage;
 
 namespace CommonTestUtilities.Requests;
 
 public static class RequestWhatsAppMessageBuilder
 {
-    public static RequestWhatsAppMessage Build()
+    private static readonly Faker _faker = new("pt_BR");
+
+    public static RequestWhatsAppWebHook Build()
     {
-        return new Faker<RequestWhatsAppMessage>()
-            .RuleFor(req => req.Object, () => "whatsapp_business_account")
-            .RuleFor(req => req.Entry, (_, _) => { 
-                var repeated = new RepeatedField<WhatsAppEntryRequest>
-                {
-                    CreateEntryObject()
-                };
-                return repeated; 
-            })
-            .Generate();
+        return new Faker<RequestWhatsAppWebHook>()
+            .RuleFor(o => o.Object, f => "whatsapp_business_account")
+            .RuleFor(o => o.Entry, f => new List<WhatsAppEntryRequest> { GenerateEntry() });
     }
 
-    private static WhatsAppEntryRequest CreateEntryObject()
+    private static WhatsAppEntryRequest GenerateEntry()
     {
         return new Faker<WhatsAppEntryRequest>()
-            .RuleFor(req => req.Id, f => f.Random.Int().ToString())
-            .RuleFor(req => req.Changes, (_, _) =>
-            {
-                var repeated = new RepeatedField<WhatsAppChangesRequest>
-                {
-                    CreateChangesObject()
-                };
-                return repeated;
-            })
+            .RuleFor(e => e.Id, f => f.Random.Guid().ToString())
+            .RuleFor(e => e.Changes, f => new List<WhatsAppChangesRequest> { GenerateChange() })
             .Generate();
     }
 
-    private static WhatsAppChangesRequest CreateChangesObject()
+    private static WhatsAppChangesRequest GenerateChange()
     {
         return new Faker<WhatsAppChangesRequest>()
-            .RuleFor(req => req.Field, f => f.Random.Word())
-            .RuleFor(req => req.Value, () => CreateValueObject())
+            .RuleFor(c => c.Field, f => "messages")
+            .RuleFor(c => c.Value, f => GenerateValue())
             .Generate();
     }
 
-    private static WhatsAppValueRequest CreateValueObject()
+    private static WhatsAppValueRequest GenerateValue()
     {
         return new Faker<WhatsAppValueRequest>()
-            .RuleFor(req => req.MessagingProduct, f => f.Random.Word())
-            .RuleFor(req => req.MetaData, () => CreateMetaDataObject())
-            .RuleFor(req => req.Contacts, (f, req) =>
-            {
-                var repeated = new RepeatedField<WhatsAppContactsRequest>
-                {
-                    CreateContactsObject()
-                };
-                return repeated;
-            })
-            .RuleFor(req => req.Messages, (f, req) =>
-            {
-                var repeated = new RepeatedField<WhatsAppMessagesRequest>
-                {
-                    CreateMessagesObject()
-                };
-                return repeated;
-            })
+            .RuleFor(v => v.MessagingProduct, f => "whatsapp")
+            .RuleFor(v => v.MetaData, f => GenerateMetaData())
+            .RuleFor(v => v.Contacts, f => new List<WhatsAppContactsRequest> { GenerateContact() })
+            .RuleFor(v => v.Messages, f => new List<WhatsAppMessagesRequest> { GenerateMessage() })
             .Generate();
     }
 
-    private static WhatsAppMetaDataRequest CreateMetaDataObject()
+    private static WhatsAppMetaDataRequest GenerateMetaData()
     {
-        return new Faker<WhatsAppMetaDataRequest>()
-            .RuleFor(req => req.DisplayPhone, f => f.Phone.PhoneNumber("###########"))
-            .RuleFor(req => req.PhoneNumberId, f => f.Random.Int(100000000).ToString())
-            .Generate();
+        return new WhatsAppMetaDataRequest
+        {
+            DisplayPhone = _faker.Phone.PhoneNumber("#########"),
+            PhoneNumberId = _faker.Random.Number(100000000, 999999999).ToString()
+        };
     }
 
-    private static WhatsAppContactsRequest CreateContactsObject()
+    private static WhatsAppContactsRequest GenerateContact()
     {
-        var profile = new Faker<WhatsAppProfileObject>()
-            .RuleFor(profile => profile.Name, f => f.Name.FirstName())
-            .Generate();
-
-        return new Faker<WhatsAppContactsRequest>()
-            .RuleFor(req => req.Profile, () => profile)
-            .RuleFor(req => req.WaId, f => f.Phone.PhoneNumberFormat(11))
-            .Generate();
+        return new WhatsAppContactsRequest
+        {
+            WaId = _faker.Phone.PhoneNumber("55##########"),
+            Profile = new WhatsAppProfileObject { Name = _faker.Person.FullName }
+        };
     }
 
-    private static WhatsAppMessagesRequest CreateMessagesObject()
+    private static WhatsAppMessagesRequest GenerateMessage()
     {
-        var textBody = new Faker<WhatsAppTextObject>()
-            .RuleFor(text => text.Body, f => f.Lorem.Paragraph())
-            .Generate();
+        return new WhatsAppMessagesRequest
+        {
+            From = _faker.Phone.PhoneNumber("55##########"),
+            Id = _faker.Random.Guid().ToString(),
+            Timestamp = _faker.Date.Recent().ToUniversalTime().ToString("yyyyMMddHHmmss"),
+            Type = "text",
+            Text = new WhatsAppTextObject { Body = _faker.Lorem.Sentence() },
+            Context = GenerateContext()
+        };
+    }
 
-        return new Faker<WhatsAppMessagesRequest>()
-            .RuleFor(req => req.From, f => f.Phone.PhoneNumber("###########"))
-            .RuleFor(req => req.Id, f => f.Random.AlphaNumeric(11))
-            .RuleFor(req => req.Timestamp, f => f.Random.AlphaNumeric(11))
-            .RuleFor(req => req.Type, () => "text")
-            .RuleFor(req => req.Text, () => textBody)
-            .Generate();
+    private static WhatsAppContextObject GenerateContext()
+    {
+        return new WhatsAppContextObject
+        {
+            From = _faker.Phone.PhoneNumber("55##########"), Id = _faker.Random.Guid().ToString()
+        };
     }
 }

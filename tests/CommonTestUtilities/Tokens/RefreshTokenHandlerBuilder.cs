@@ -43,7 +43,7 @@ public class RefreshTokenHandlerBuilder
     public RefreshTokenHandlerBuilder Delete(Guid userIdentifier)
     {
         _mock.Setup(mock => mock.Delete(It.IsAny<string>(), userIdentifier))
-            .ReturnsAsync(1);
+            .ReturnsAsync(true);
         return this;
     }
 }

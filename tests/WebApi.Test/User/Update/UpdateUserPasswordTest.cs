@@ -1,11 +1,11 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Communication.Requests.User;
+using MMS.Domain.Enums;
+using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
-using MMS.Communication;
-using MMS.Domain.Enums;
-using MMS.Exceptions;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Update;
