@@ -1,6 +1,6 @@
 ﻿namespace MMS.Domain.Enums;
 
-public enum PaymentMethodEnum
+public enum PaymentMethodEnum : short
 {
     CREDIT_CARD = 0,
     DEBIT_CARD = 1,

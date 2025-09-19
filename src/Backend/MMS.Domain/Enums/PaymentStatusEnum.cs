@@ -1,6 +1,6 @@
 ﻿namespace MMS.Domain.Enums;
 
-public enum PaymentStatusEnum
+public enum PaymentStatusEnum : short
 {
     PENDING = 0,
     PAID = 1,

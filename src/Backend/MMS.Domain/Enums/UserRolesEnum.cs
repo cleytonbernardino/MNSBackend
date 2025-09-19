@@ -1,6 +1,6 @@
 ﻿namespace MMS.Domain.Enums;
 
-public enum UserRolesEnum
+public enum UserRolesEnum : short
 {
     CUSTOMER = 0,
     EMPLOYEE = 1,
