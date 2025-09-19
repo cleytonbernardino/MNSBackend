@@ -51,9 +51,11 @@ public class ExceptionFilter : IExceptionFilter
 #if DEBUG
         responseError.Add(context.Exception.Message);
         context.Result = new ObjectResult(responseError);
+        context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 #else
         responseError.Add(ResourceMessagesException.UNKNOWN_ERROR);
         context.Result = new ObjectResult(new ResponseError());
+        context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 #endif
     }
 }
