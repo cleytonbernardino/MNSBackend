@@ -1,12 +1,10 @@
-﻿using MMS.Application.UseCases.WhatsApp.ReceiverJson;
-using MMS.Communication;
+﻿using MMS.Communication.Requests.WhatsAppMessage;
 
-namespace MMS.Application.UseCases.WhatsApp.ReciverJson;
+namespace MMS.Application.UseCases.WhatsApp.ReceiverJson;
 
 internal class ReceiverJsonUseCase : IReceiverJsonUseCase
 {
-
-    public Task Execute(RequestWhatsAppMessage request)
+    public Task Execute(RequestWhatsAppWebHook request)
     {
         throw new NotImplementedException();
     }

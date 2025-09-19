@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package MMS.Communication;
-
-message RequestLogin {
-    string email = 1;
-    string password = 2;
-}

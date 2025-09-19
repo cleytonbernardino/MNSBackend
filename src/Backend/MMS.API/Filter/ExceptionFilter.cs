@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MMS.Communication;
+using MMS.Communication.Responses;
 using MMS.Exceptions.ExceptionsBase;
 #if !DEBUG
 using MMS.Exceptions;
@@ -15,7 +15,8 @@ public class ExceptionFilter : IExceptionFilter
         if (context.Exception is MMSException)
         {
             HandleProjectException(context);
-        }else
+        }
+        else
         {
             ThrowUnknowException(context);
         }
@@ -24,21 +25,20 @@ public class ExceptionFilter : IExceptionFilter
     private static void HandleProjectException(ExceptionContext context)
     {
         ResponseError responseError = new();
-        var errorKey = responseError.Errors;
         switch (context.Exception)
         {
             case NoPermissionException or InvalidLoginException:
-                errorKey.Add(context.Exception.Message);
+                responseError.Errors.Add(context.Exception.Message);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Result = new UnauthorizedObjectResult(responseError);
                 break;
             case ErrorOnValidationException exception:
-                errorKey.Add(exception.ErrorMessages);
+                responseError.Errors.AddRange(exception.ErrorMessages);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Result = new BadRequestObjectResult(responseError);
                 break;
             case NotFoundException notFoundException:
-                errorKey.Add(notFoundException.Message);
+                responseError.Errors.Add(notFoundException.Message);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Result = new NotFoundObjectResult(responseError);
                 break;

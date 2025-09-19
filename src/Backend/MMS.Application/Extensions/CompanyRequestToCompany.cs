@@ -1,4 +1,4 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Requests.Company;
 using MMS.Domain.Entities;
 
 namespace MMS.Application.Extensions;
@@ -9,14 +9,13 @@ public static class CompanyRequestToCompany
     {
         Company company = new()
         {
-            CNPJ = request.CNJP,
+            CNPJ = request.CNPJ,
             LegalName = request.LegalName,
             DoingBusinessAs = request.DoingBusinessAs ?? string.Empty,
             CEP = request.CEP,
             AddressNumber = request.AddressNumber,
             BusinessEmail = request.BusinessEmail,
-            PhoneNumber = request.PhoneNumber,
-            Website = request.Website
+            PhoneNumber = request.PhoneNumber
         };
 
         return company;

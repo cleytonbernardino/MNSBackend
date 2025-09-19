@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using MMS.Application.SharedValidators;
-using MMS.Communication;
+using MMS.Communication.Requests.Auth;
 using MMS.Exceptions;
 
-namespace MMS.Application.UseCases.Login.DoLogin;
+namespace MMS.Application.UseCases.Auth.DoLogin;
 
-public class DoLoginValidator : AbstractValidator<RequestLogin>
+public class DoLoginValidator : AbstractValidator<RequestDoLogin>
 {
     public DoLoginValidator()
     {

@@ -1,8 +1,8 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Requests.User;
 
 namespace MMS.Application.UseCases.User.Register;
 
 public interface IRegisterUserUseCase
 {
-    Task<ResponseRegisteredUser> Execute(RequestRegisterUser request);
+    Task Execute(RequestRegisterUser request);
 }

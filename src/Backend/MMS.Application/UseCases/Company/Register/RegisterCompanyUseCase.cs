@@ -1,5 +1,7 @@
-﻿using MMS.Application.Extensions;
-using MMS.Communication;
+﻿using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
+using MMS.Application.Extensions;
+using MMS.Communication.Requests.Company;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.Company;
 using MMS.Domain.Services.LoggedUser;
@@ -10,19 +12,26 @@ namespace MMS.Application.UseCases.Company.Register;
 public class RegisterCompanyUseCase(
     ILoggedUser loggedUser,
     ICompanyWriteOnlyRepository repository,
-    IUnitOfWork unitOfWork
-    ) : IRegisterCompanyUseCase
+    IUnitOfWork unitOfWork,
+    ILogger<RegisterCompanyUseCase> logger) : IRegisterCompanyUseCase
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyWriteOnlyRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ILogger<RegisterCompanyUseCase> _logger = logger;
 
     public async Task Execute(RequestRegisterCompany request)
     {
         var loggedUser = await _loggedUser.User();
 
         if (loggedUser.IsAdmin == false)
+        {
+            _logger.LogCritical(
+                $"Tentativa de Acesso não Altorizada. Listar empresas. (UUID: {loggedUser.UserIdentifier})"
+                );
             throw new NoPermissionException();
+        }
+            
 
         await Validator(request);
 

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using MMS.Communication;
+using MMS.Communication.Requests.Auth;
 using MMS.Exceptions;
 
 namespace MMS.Application.UseCases.Auth.RefreshToken;
 
-public class RefreshTokenValidator : AbstractValidator<RequestRefreshAccessToken>
+public class RefreshTokenValidator : AbstractValidator<RequestRefreshToken>
 {
     public RefreshTokenValidator()
     {

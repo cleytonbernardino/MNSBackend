@@ -1,11 +1,11 @@
 ﻿using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using MMS.Application.Extensions;
-using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Domain.Enums;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.User;
 using MMS.Domain.Security.Cryptography;
-using MMS.Domain.Security.Token;
 using MMS.Domain.Services.LoggedUser;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
@@ -18,21 +18,19 @@ public class RegisterUserUseCase(
     IUserReadOnlyRepository readOnlyRepository,
     IUserWriteOnlyRepository writeOnlyRepository,
     IPasswordEncrypter encrypter,
-    IAccessTokenGenerator accessTokenGenerator,
-    IRefreshTokenHandler refreshTokenHandler,
-    IUnitOfWork unitOfWork
-    ) : IRegisterUserUseCase
+    IUnitOfWork unitOfWork,
+    ILogger<RegisterUserUseCase> logger
+) : IRegisterUserUseCase
 {
+    private readonly IPasswordEncrypter _encrypter = encrypter;
 
     private readonly ILoggedUser _loggedUser = loggedUser;
+    private readonly ILogger _logger = logger;
     private readonly IUserReadOnlyRepository _readOnlyRepository = readOnlyRepository;
-    private readonly IRefreshTokenHandler _refreshTokenHandler = refreshTokenHandler;
-    private readonly IUserWriteOnlyRepository _writeOnlyRepository = writeOnlyRepository;
-    private readonly IPasswordEncrypter _encrypter = encrypter;
-    private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
     private readonly IUnitOfWork _unityOfWork = unitOfWork;
+    private readonly IUserWriteOnlyRepository _writeOnlyRepository = writeOnlyRepository;
 
-    public async Task<ResponseRegisteredUser> Execute(RequestRegisterUser request)
+    public async Task Execute(RequestRegisterUser request)
     {
         var loggedUser = await _loggedUser.User();
 
@@ -43,7 +41,6 @@ public class RegisterUserUseCase(
         await Validate(request);
 
         Entity.User user = request.ToUser();
-        user.UpdatedOn = DateTime.UtcNow;
         user.LastLogin = DateTime.UtcNow;
         user.UserIdentifier = Guid.NewGuid();
         user.Password = _encrypter.Encrypt(request.Password);
@@ -51,16 +48,6 @@ public class RegisterUserUseCase(
 
         await _writeOnlyRepository.RegisterUser(user);
         await _unityOfWork.Commit();
-        
-        return new ResponseRegisteredUser
-        {
-            FirstName = user.FirstName,
-            Tokens = new ResponseToken
-            {
-                AccessToken = _accessTokenGenerator.Generate(user.UserIdentifier, user.Role),
-                RefreshToken = await _refreshTokenHandler.GenerateTokenAndSave(user.UserIdentifier)
-            }
-        };
     }
 
     private async Task Validate(RequestRegisterUser request)
@@ -76,11 +63,18 @@ public class RegisterUserUseCase(
             throw new ErrorOnValidationException(
                 result.Errors.Select(err => err.ErrorMessage).ToArray()
             );
+        }
     }
 
-    private static bool CanCreateUser(Entity.User loggedUser, UserRolesEnum userTargetRole)
+    private bool CanCreateUser(Entity.User loggedUser, UserRolesEnum userTargetRole)
     {
-        if (loggedUser.IsAdmin || loggedUser.Role == UserRolesEnum.MANAGER && userTargetRole != UserRolesEnum.ADMIN)
+        if (loggedUser.IsAdmin)
+        {
+            _logger.LogWarning($"Admin: {loggedUser.FirstName}, Registrou um novo usuário.");
+            return true;
+        }
+
+        if (loggedUser.Role == UserRolesEnum.MANAGER && userTargetRole != UserRolesEnum.ADMIN)
             return true;
 
         return loggedUser.Role > userTargetRole &&

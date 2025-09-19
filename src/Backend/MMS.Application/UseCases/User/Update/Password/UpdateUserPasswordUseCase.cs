@@ -1,4 +1,4 @@
-﻿using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.User;
 using MMS.Domain.Security.Cryptography;

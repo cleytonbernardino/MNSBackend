@@ -1,8 +1,0 @@
-﻿syntax = "proto3";
-
-package MMS.Communication;
-
-message ResponseError {
-	repeated string Errors = 1;
-
-}

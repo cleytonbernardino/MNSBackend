@@ -1,8 +1,8 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Responses.Company;
 
 namespace MMS.Application.UseCases.Company.List;
 
 public interface IListCompaniesUseCase
 {
-    ResponseShortCompanies Execute();
+    Task<ResponseShortCompanies> Execute();
 }

@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using CommonTestUtilities.Cryptography;
-using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Domain.Enums;
 
 namespace CommonTestUtilities.Requests;
@@ -9,7 +9,7 @@ public static class RequestUpdateUserBuilder
 {
     public static RequestUpdateUser Build()
     {
-        var encoder = new IdEncoderForTests();
+        IdEncoderForTests encoder = new();
         return new Faker<RequestUpdateUser>()
             .RuleFor(req => req.UserIdToUpdate, f => encoder.Encode(f.Random.Int(1, 100)))
             .RuleFor(req => req.LastName, f => f.Person.LastName)

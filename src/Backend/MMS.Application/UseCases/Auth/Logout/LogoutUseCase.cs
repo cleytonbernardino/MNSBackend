@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using MMS.Communication;
+using MMS.Communication.Requests.Auth;
 using MMS.Domain.Security.Token;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
@@ -7,27 +7,22 @@ using MMS.Exceptions.ExceptionsBase;
 namespace MMS.Application.UseCases.Auth.Logout;
 
 public class LogoutUseCase(
-    IRefreshTokenHandler tokenHandler,
-    ILogger logger
-    ): ILogoutUseCase
+    IRefreshTokenHandler tokenHandler
+) : ILogoutUseCase
 {
     private readonly IRefreshTokenHandler _tokenHandler = tokenHandler;
-    private readonly ILogger _logger = logger;
-    
-    public async Task Execute(RequestRefreshAccessToken request, string refreshToken)
-    {
-        var accessTokenData=  _tokenHandler.ValidateAccessTokenAndGetData(request.AccessToken);
-        var status = await  _tokenHandler.Delete(refreshToken, accessTokenData.userIdentifier);
 
-        switch (status)
+    public async Task Execute(RequestRefreshToken request, string refreshToken)
+    {
+        (Guid userIdentifier, string role) accessTokenData =
+            _tokenHandler.ValidateAccessTokenAndGetData(request.AccessToken);
+        bool status = await _tokenHandler.Delete(refreshToken, accessTokenData.userIdentifier);
+
+        if (!status)
         {
-            case 0:
-                throw new ErrorOnValidationException([
-                    ResourceMessagesException.INVALID_ACCESS_TOKEN, ResourceMessagesException.INVALID_REFRESH_TOKEN
-                ]);
-            case > 1:
-                _logger.LogCritical("Mais de um refresh token foi apagado, na ultima request");
-                break;
+            throw new ErrorOnValidationException([
+                ResourceMessagesException.INVALID_ACCESS_TOKEN, ResourceMessagesException.INVALID_REFRESH_TOKEN
+            ]);
         }
     }
 }

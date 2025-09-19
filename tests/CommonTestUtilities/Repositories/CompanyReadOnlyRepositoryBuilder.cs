@@ -1,6 +1,7 @@
 ﻿using CommonTestUtilities.Entities;
-using Moq;
 using MMS.Domain.Repositories.Company;
+using Moq;
+using Entity = MMS.Domain.Entities;
 
 namespace CommonTestUtilities.Repositories;
 
@@ -15,6 +16,12 @@ public class CompanyReadOnlyRepositoryBuilder
         var users = ShortUserBuilder.BuildInBatch(amount);
 
         _mock.Setup(rep => rep.ListUsers(0)).Returns(users);
+        return this;
+    }
+    
+    public CompanyReadOnlyRepositoryBuilder ListShortCompanies(IList<Entity.ShortCompany> companiesToMock)
+    {
+        _mock.Setup(rep => rep.ListShortCompanies()).Returns(companiesToMock);
         return this;
     }
 }

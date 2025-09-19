@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MMS.Application.UseCases.Auth.DoLogin;
 using MMS.Application.UseCases.Auth.Logout;
 using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
-using MMS.Application.UseCases.Login.DoLogin;
 using MMS.Application.UseCases.User.Delete;
 using MMS.Application.UseCases.User.Register;
 using MMS.Application.UseCases.User.Update;
 using MMS.Application.UseCases.User.Update.Password;
 using MMS.Application.UseCases.WhatsApp.ReceiverJson;
-using MMS.Application.UseCases.WhatsApp.ReciverJson;
 using Sqids;
 
 namespace MMS.Application;

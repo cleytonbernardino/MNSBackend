@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
-using MMS.Communication;
+using MMS.Communication.Responses;
 using MMS.Domain.Repositories.User;
 using MMS.Domain.Security.Token;
 using MMS.Exceptions;

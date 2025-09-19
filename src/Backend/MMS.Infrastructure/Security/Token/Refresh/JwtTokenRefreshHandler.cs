@@ -61,10 +61,10 @@ public class JwtTokenRefreshHandler(
         return (userIdentifier, role);
     }
 
-    public async Task<RefreshToken?> GetToken(string token, Guid userIdentifier) =>
+    public async Task<RefreshToken?> GetRefreshToken(string token, Guid userIdentifier) =>
         await _refreshTokenRepository.GetRefreshTokenWithUserIdentifier(token, userIdentifier);
 
-    public async Task<int> Delete(string refreshToken, Guid userIdentifier)
+    public async Task<bool> Delete(string refreshToken, Guid userIdentifier)
     {
         var rowsAffect =  await _refreshTokenRepository.Delete(refreshToken, userIdentifier);
         await _unitOfWork.Commit();

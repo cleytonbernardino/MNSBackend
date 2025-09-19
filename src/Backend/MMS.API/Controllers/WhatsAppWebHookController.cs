@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MMS.Application.Services.MessageQueue;
-using MMS.Communication;
-using MMS.Domain.Dtos;
+using MMS.Communication.Requests.WhatsAppMessage;
+using MMS.Communication.Responses;
 
 namespace MMS.API.Controllers;
 
@@ -9,16 +9,16 @@ namespace MMS.API.Controllers;
 [ApiController]
 public class WhatsappWebHookController(
     IMessageQueue queue
-    ) : ControllerBase
+) : ControllerBase
 {
     private readonly IMessageQueue _queue = queue;
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(RequestLogin), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ReciverMessage(
-        [FromBody] RequestWhatsAppMessage request
-        )
+        [FromBody] RequestWhatsAppWebHook request
+    )
     {
         //if (request.Entry.Count == 0)
         //    return BadRequest();

@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Domain.Enums;
 
 namespace CommonTestUtilities.Requests;

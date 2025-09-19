@@ -1,6 +1,6 @@
 ﻿using MMS.Application.Extensions;
 using MMS.Application.Services.Encoders;
-using MMS.Communication;
+using MMS.Communication.Responses.User;
 using MMS.Domain.Enums;
 using MMS.Domain.Repositories.Company;
 using MMS.Domain.Services.LoggedUser;
@@ -13,13 +13,13 @@ public class ListCompanyUsersUseCase(
     IIdEncoder idEncoder,
     ILoggedUser loggedUser,
     ICompanyReadOnlyRepository repository
-    ) : IListCompanyUsersUseCase
+) : IListCompanyUsersUseCase
 {
     private readonly IIdEncoder _idEncoder = idEncoder;
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyReadOnlyRepository _repository = repository;
 
-    public async Task<ResponseListCompanyUser> Execute()
+    public async Task<ResponseListShortUser> Execute()
     {
         var loggedUser = await _loggedUser.User();
         CanGetUsers(loggedUser);
@@ -41,9 +41,10 @@ public class ListCompanyUsersUseCase(
         if (loggedUser.IsAdmin)
             return;
 
-        List<UserRolesEnum> validRoles = [
+        List<UserRolesEnum> validRoles =
+        [
             UserRolesEnum.MANAGER, UserRolesEnum.SUB_MANAGER, UserRolesEnum.RH
-            ];
+        ];
 
         bool roleIsValid = validRoles.Any(role => loggedUser.Role == role);
         if (!roleIsValid)

@@ -3,8 +3,9 @@ using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Services.LoggedUser;
 using MMS.Application.UseCases.Company.ListUsers;
-using MMS.Communication;
+using MMS.Communication.Responses.User;
 using MMS.Domain.Enums;
+using MMS.Domain.Services.LoggedUser;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 using Shouldly;
@@ -46,10 +47,10 @@ public class ListCompanyUsersUseCaseTest
 
     private static ListCompanyUsersUseCase CreateUseCase(Entity.User user, int numberOfUsers = 5)
     {
-        var idEncoder = new IdEncoderBuilder();
+        IdEncoderBuilder idEncoder = new();
         idEncoder.Encoder();
-        var loggedUser = LoggedUserBuilder.Build(user);
-        var repository = new CompanyReadOnlyRepositoryBuilder().ListUsers(amount: numberOfUsers);
+        ILoggedUser loggedUser = LoggedUserBuilder.Build(user);
+        CompanyReadOnlyRepositoryBuilder repository = new CompanyReadOnlyRepositoryBuilder().ListUsers(numberOfUsers);
 
         return new ListCompanyUsersUseCase(idEncoder.Build(), loggedUser, repository.Build());
     }

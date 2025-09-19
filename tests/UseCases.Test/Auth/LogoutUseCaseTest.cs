@@ -26,8 +26,7 @@ public class LogoutUseCaseTest
         var refreshTokenHandler = new RefreshTokenHandlerBuilder()
             .ValidateAccessTokenAndGetData(userIdentifier)
             .Delete(userIdentifier);
-        var logger = NullLogger.Instance;
         
-        return new LogoutUseCase(refreshTokenHandler.Build(), logger);
+        return new LogoutUseCase(refreshTokenHandler.Build());
     }
 }

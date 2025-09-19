@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MMS.Application.UseCases.Company.ListUsers;
-using MMS.Communication;
+using MMS.Communication.Responses.User;
 
 namespace MMS.API.Controllers;
 
@@ -9,10 +9,10 @@ namespace MMS.API.Controllers;
 public class CompanyController : MMSBaseController
 {
     [HttpGet("Users")]
-    [ProducesResponseType(typeof(ResponseListCompanyUser), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseListShortUser), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListUsers(
         [FromServices] IListCompanyUsersUseCase useCase
-        )
+    )
     {
         var response = await useCase.Execute();
         return Ok(response);

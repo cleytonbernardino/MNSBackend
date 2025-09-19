@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Results;
 using MMS.Application.Extensions;
 using MMS.Application.Services.Encoders;
-using MMS.Communication;
+using MMS.Communication.Requests.User;
 using MMS.Domain.Enums;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.User;
@@ -41,16 +41,15 @@ public class UpdateUserUseCase(
 
         await Validate(user, request);
 
-        user = user.Join(request);
-        user.UpdatedOn = DateTime.UtcNow;
+        user = request.Join(user);
 
         _updateOnlyRepository.UpdateUser(user);
         await _unitOfWork.Commit();
     }
 
-    private static bool CanUpdateUser(Entity.User loggedUser, int targetUserRole)
+    private static bool CanUpdateUser(Entity.User loggedUser, short targetUserRole)
     {
-        if (loggedUser.IsAdmin || loggedUser.Role == UserRolesEnum.MANAGER && loggedUser.Role != UserRolesEnum.ADMIN)
+        if (loggedUser.IsAdmin || (loggedUser.Role == UserRolesEnum.MANAGER && loggedUser.Role != UserRolesEnum.ADMIN))
             return true;
 
         return loggedUser.Role > (UserRolesEnum)targetUserRole;
@@ -61,7 +60,7 @@ public class UpdateUserUseCase(
         UpdateUserValidator validator = new();
         var result = await validator.ValidateAsync(request);
 
-        if(userToUpdate.Email != request.Email)
+        if (userToUpdate.Email != request.Email)
         {
             bool exist = await _readOnlyRepository.ExistActiveUserWithEmail(request.Email);
             if (exist)

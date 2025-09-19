@@ -1,8 +1,8 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Responses.User;
 
 namespace MMS.Application.UseCases.Company.ListUsers;
 
 public interface IListCompanyUsersUseCase
 {
-    Task<ResponseListCompanyUser> Execute();
+    Task<ResponseListShortUser> Execute();
 }

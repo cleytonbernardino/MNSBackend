@@ -1,21 +1,30 @@
 ﻿using MMS.Application.Extensions;
 using MMS.Application.Services.Encoders;
-using MMS.Communication;
+using MMS.Communication.Responses.Company;
 using MMS.Domain.Repositories.Company;
+using MMS.Domain.Services.LoggedUser;
+using MMS.Exceptions.ExceptionsBase;
 
 namespace MMS.Application.UseCases.Company.List;
 
 public class ListCompaniesUseCase(
+    ILoggedUser loggedUser,
     ICompanyReadOnlyRepository repository,
     IIdEncoder idEncoder
     ) : IListCompaniesUseCase
 {
-    private readonly ICompanyReadOnlyRepository _repository = repository;
     private readonly IIdEncoder _idEncoder = idEncoder;
+    private readonly ILoggedUser _loggedUser = loggedUser;
+    private readonly ICompanyReadOnlyRepository _repository = repository;
 
-    public ResponseShortCompanies Execute()
+    public async Task<ResponseShortCompanies> Execute()
     {
-        var companies = _repository.ListCompanies();
+        var loggedUser = await _loggedUser.User();
+
+        if (loggedUser.IsAdmin == false)
+            throw new NoPermissionException();
+
+        var companies = _repository.ListShortCompanies();
 
         var responseShortCompanies = new ResponseShortCompanies();
 

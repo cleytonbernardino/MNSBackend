@@ -1,4 +1,5 @@
 ﻿using CommonTestUtilities.Requests;
+using MMS.Communication.Requests.WhatsAppMessage;
 using Shouldly;
 using System.Net;
 

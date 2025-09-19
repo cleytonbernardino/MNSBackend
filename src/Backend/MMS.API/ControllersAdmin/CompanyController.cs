@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.Register;
-using MMS.Communication;
+using MMS.Communication.Requests.Company;
+using MMS.Communication.Responses;
+using MMS.Communication.Responses.Company;
 
 namespace MMS.API.ControllersAdmin;
 
@@ -14,7 +16,7 @@ public class CompanyController : MmsAdminBaseController
     public async Task<IActionResult> Register(
         [FromBody] RequestRegisterCompany request,
         [FromServices] IRegisterCompanyUseCase useCase
-        )
+    )
     {
         await useCase.Execute(request);
         return Created("", null);
@@ -22,11 +24,11 @@ public class CompanyController : MmsAdminBaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(ResponseShortCompanies), StatusCodes.Status200OK)]
-    public IActionResult ListCompanies(
+    public async Task<IActionResult> ListCompanies(
         [FromServices] IListCompaniesUseCase useCase
-        )
+    )
     {
-        var response = useCase.Execute();
+        var response = await useCase.Execute();
         return Ok(response);
     }
 }

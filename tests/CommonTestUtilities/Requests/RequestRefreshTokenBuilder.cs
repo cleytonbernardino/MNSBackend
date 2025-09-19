@@ -1,13 +1,13 @@
 ﻿using Bogus;
-using MMS.Communication;
+using MMS.Communication.Requests.Auth;
 
 namespace CommonTestUtilities.Requests;
 
 public static class RequestRefreshTokenBuilder
 {
-    public static RequestRefreshAccessToken Build()
+    public static RequestRefreshToken Build()
     {
-        return new Faker<RequestRefreshAccessToken>()
+        return new Faker<RequestRefreshToken>()
             .RuleFor(req => req.AccessToken, f => f.Lorem.Sentence(3));
     }
 }

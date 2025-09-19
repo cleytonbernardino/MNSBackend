@@ -1,8 +1,8 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Requests.WhatsAppMessage;
 
 namespace MMS.Application.UseCases.WhatsApp.ReceiverJson;
 
 public interface IReceiverJsonUseCase
 {
-    Task Execute(RequestWhatsAppMessage request);
+    Task Execute(RequestWhatsAppWebHook request);
 }

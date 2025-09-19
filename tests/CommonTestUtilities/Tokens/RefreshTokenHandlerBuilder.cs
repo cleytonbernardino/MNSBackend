@@ -25,7 +25,7 @@ public class RefreshTokenHandlerBuilder
     
     public RefreshTokenHandlerBuilder GetToken(RefreshToken token)
     {
-        _mock.Setup(mock => mock.GetToken(
+        _mock.Setup(mock => mock.GetRefreshToken(
             It.IsAny<string>(),
             It.IsAny<Guid>()
             )).ReturnsAsync(token);

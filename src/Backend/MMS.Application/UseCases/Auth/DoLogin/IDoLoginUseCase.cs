@@ -1,8 +1,10 @@
-﻿using MMS.Communication;
+﻿using MMS.Communication.Requests.Auth;
+using MMS.Communication.Responses.Auth;
 
-namespace MMS.Application.UseCases.Login.DoLogin;
+namespace MMS.Application.UseCases.Auth.DoLogin;
 
 public interface IDoLoginUseCase
 {
-    Task<ResponseRegisteredUser> Execute(RequestLogin request);
+    Task<ResponseDoLogin> Execute(RequestDoLogin request);
+    string? GetRefreshToken();
 }
