@@ -12,31 +12,8 @@
     <None Remove="Protos\SubscriptionsPlan.proto" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.32.0" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.72.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-	 <Protobuf Include="Protos\CompanySubscription.proto" />
-	 <Protobuf Include="Protos\Login.proto" GrpcServices="Server" />
-	 <Protobuf Include="Protos\ShortCompanies.proto">
-	   <GrpcServices>Server</GrpcServices>
-	 </Protobuf>
-	 <Protobuf Include="Protos\Company.proto" GrpcServices="Server" />
-	 <Protobuf Include="Protos\User.proto" GrpcServices="Server" />
-	 <Protobuf Include="Protos\Error.proto" GrpcServices="Server" />
-	 <Protobuf Include="Protos\SubscriptionsPlan.proto" />
-	  <Protobuf Include="Protos\Token.proto" GrpcServices="Server" />
-	 <Protobuf Include="Protos\WhatsAppMessage.proto" GrpcServices="Server" />
-  </ItemGroup>
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}"/>
+    </ItemGroup>
 
 </Project>
