@@ -59,4 +59,23 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
             .ShouldHaveSingleItem()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_REFRESH_TOKEN", new CultureInfo(culture)));
     }
+    
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_No_Access_Token(string culture)
+    {
+        string accessToken = string.Empty;
+        string refreshToken = factory.TokenRefresh.Token!;
+
+        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken, culture);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;
+        errors!.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe(
+                ResourceMessagesException.ResourceManager
+                    .GetString("INVALID_ACCESS_TOKEN", new CultureInfo(culture))
+            );
+    }
 }

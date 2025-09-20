@@ -49,16 +49,16 @@ public class AuthController : ControllerBase
     )
     {
         string? refreshToken = Request.Cookies[MMSConst.REFRESH_TOKEN_COOKIE_KEY];
-        if (refreshToken is null)
+        if (string.IsNullOrWhiteSpace(refreshToken))
             throw new ErrorOnValidationException([ResourceMessagesException.NO_REFRESH_TOKEN]);
 
-        string? accessToken = Request.Headers.Authorization.ToString()["Bearer ".Length..];
-        if (accessToken is null)
+        string? accessToken = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+        if (string.IsNullOrWhiteSpace(accessToken))
             throw new ErrorOnValidationException([ResourceMessagesException.INVALID_ACCESS_TOKEN]);
         
         var responseResult = await useCase.Execute(refreshToken: refreshToken, accessToken: accessToken);
         string? token = useCase.GetRefreshToken();
-        if (token is not null)
+        if (string.IsNullOrWhiteSpace(token))
             Response.Cookies.Append(MMSConst.REFRESH_TOKEN_COOKIE_KEY, token, _secureTokenParam);
 
         return Ok(responseResult);
@@ -72,11 +72,11 @@ public class AuthController : ControllerBase
     )
     {
         string? refreshToken = Request.Cookies[MMSConst.REFRESH_TOKEN_COOKIE_KEY];
-        if (refreshToken is null)
+        if (string.IsNullOrWhiteSpace(refreshToken))
             throw new ErrorOnValidationException([ResourceMessagesException.NO_REFRESH_TOKEN]);
 
-        string? accessToken = Request.Headers.Authorization.ToString()["Bearer ".Length..];
-        if (accessToken is null)
+        string? accessToken = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+        if (string.IsNullOrWhiteSpace(accessToken))
             throw new ErrorOnValidationException([ResourceMessagesException.INVALID_ACCESS_TOKEN]);
         
         await useCase.Execute(refreshToken: refreshToken, accessToken: accessToken);
