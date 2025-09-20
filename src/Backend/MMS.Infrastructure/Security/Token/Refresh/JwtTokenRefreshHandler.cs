@@ -47,6 +47,7 @@ public class JwtTokenRefreshHandler(
     public (Guid userIdentifier, string role) ValidateAccessTokenAndGetData(string token)
     {
         var validationParaments = _accessTokenValidator.GetParameters();
+        validationParaments.ValidateLifetime = false;
 
         JwtSecurityTokenHandler tokenHandler = new();
         var principal = tokenHandler.ValidateToken(token, validationParaments, out _);

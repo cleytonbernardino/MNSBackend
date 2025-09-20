@@ -1,5 +1,4 @@
 using Microsoft.OpenApi.Models;
-using Serilog;
 using MMS.API.Filter;
 using MMS.API.Middleware;
 using MMS.API.Token;
@@ -8,6 +7,8 @@ using MMS.Domain.Security.Token;
 using MMS.Infrastructure;
 using MMS.Infrastructure.Extensions;
 using MMS.Infrastructure.Migrations;
+using Serilog;
+
 //using MMS.Infrastructure.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -88,11 +89,13 @@ app.UseMiddleware<CultureMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors();
 
 MigrationDatabase();
 

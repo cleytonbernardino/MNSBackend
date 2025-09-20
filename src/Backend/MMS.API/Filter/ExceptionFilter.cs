@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.IdentityModel.Tokens;
 using MMS.Communication.Responses;
+using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 #if !DEBUG
 using MMS.Exceptions;
@@ -16,6 +18,10 @@ public class ExceptionFilter : IExceptionFilter
         {
             HandleProjectException(context);
         }
+        else if (context.Exception is SecurityTokenValidationException)
+        {
+            HandleTokenException(context);
+        }
         else
         {
             ThrowUnknowException(context);
@@ -27,7 +33,7 @@ public class ExceptionFilter : IExceptionFilter
         ResponseError responseError = new();
         switch (context.Exception)
         {
-            case NoPermissionException or InvalidLoginException:
+            case NoPermissionException  or InvalidLoginException:
                 responseError.Errors.Add(context.Exception.Message);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Result = new UnauthorizedObjectResult(responseError);
@@ -45,6 +51,19 @@ public class ExceptionFilter : IExceptionFilter
         }
     }
 
+    private static void HandleTokenException(ExceptionContext context)
+    {
+        ResponseError responseError = new();
+        switch (context.Exception)
+        {
+            case SecurityTokenExpiredException:
+                responseError.Errors.Add(ResourceMessagesException.EXPIRED_TOKEN);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Result = new UnauthorizedObjectResult(responseError);
+                break;
+        }
+    }
+    
     private static void ThrowUnknowException(ExceptionContext context)
     {
         var responseError = new ResponseError().Errors;
