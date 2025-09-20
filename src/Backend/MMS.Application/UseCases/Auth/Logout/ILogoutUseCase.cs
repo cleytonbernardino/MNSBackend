@@ -4,5 +4,5 @@ namespace MMS.Application.UseCases.Auth.Logout;
 
 public interface ILogoutUseCase
 {
-    Task Execute(RequestRefreshToken request, string refreshToken);
+    Task Execute(string refreshToken, string accessToken);
 }

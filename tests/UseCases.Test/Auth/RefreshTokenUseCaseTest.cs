@@ -16,7 +16,7 @@ public class RefreshTokenUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var refreshRequest = RequestRefreshTokenBuilder.Build();
+        string refreshRequest = "RefreshToken";
         
         var token = RefreshTokenBuilder.Build();
         
@@ -32,7 +32,7 @@ public class RefreshTokenUseCaseTest
     {
         var user = UserBuilder.Build();
 
-        var refreshRequest = RequestRefreshTokenBuilder.Build();
+        string refreshRequest = "RefreshToken";
         
         var token = RefreshTokenBuilder.Build();
         
@@ -41,27 +41,7 @@ public class RefreshTokenUseCaseTest
         async Task act() => await useCase.Execute(refreshRequest, "Invalid");
         
         var errors = await act().ShouldThrowAsync<NoPermissionException>();
-        errors.Message.ShouldBe(ResourceMessagesException.NO_PERMISSION);
-    }
-
-    [Fact]
-    public async Task Error_AccessToken_Empty()
-    {
-        var user = UserBuilder.Build();
-
-        var refreshRequest = RequestRefreshTokenBuilder.Build();
-        refreshRequest.AccessToken = String.Empty;
-
-        var token = RefreshTokenBuilder.Build();
-        
-        var useCase = CreateUseCase(user, token);
-        
-        async Task act() => await useCase.Execute(refreshRequest, token.Token!);
-        
-        var errors = await act().ShouldThrowAsync<ErrorOnValidationException>();
-        errors.ErrorMessages
-            .ShouldHaveSingleItem()
-            .ShouldBe(ResourceMessagesException.INVALID_ACCESS_TOKEN);
+        errors.Message.ShouldBe(ResourceMessagesException.REFRESH_TOKEN_NOT_FOUND);
     }
     
     private static RefreshTokenUseCase CreateUseCase(
@@ -74,7 +54,7 @@ public class RefreshTokenUseCaseTest
             .GenerateTokenAndSave(user.UserIdentifier, token.Token)
             .ValidateAccessTokenAndGetData(user.UserIdentifier);
         if (!invalidRequestToken)
-            refreshTokenGenerator.GetToken(token);
+            refreshTokenGenerator.GetRefreshToken(token);
         
         return new RefreshTokenUseCase(refreshTokenGenerator.Build(), accessTokenGenerator);
     }

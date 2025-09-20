@@ -5,6 +5,6 @@ namespace MMS.Application.UseCases.Auth.RefreshToken;
 
 public interface IRefreshTokenUseCase
 {
-    Task<ResponseRefreshToken> Execute(RequestRefreshToken request, string refreshToken);
+    Task<ResponseRefreshToken> Execute(string refreshToken, string accessToken);
     string? GetRefreshToken();
 }

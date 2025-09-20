@@ -1,8 +1,8 @@
-﻿using MMS.Communication.Requests.Auth;
-using MMS.Communication.Responses.Auth;
+﻿using MMS.Communication.Responses.Auth;
 using MMS.Domain.Enums;
 using MMS.Domain.Security.Token;
 using MMS.Domain.ValueObjects;
+using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 
 namespace MMS.Application.UseCases.Auth.RefreshToken;
@@ -17,16 +17,14 @@ public class RefreshTokenUseCase(
 
     private string? _refreshToken;
 
-    public async Task<ResponseRefreshToken> Execute(RequestRefreshToken request, string refreshToken)
+    public async Task<ResponseRefreshToken> Execute(string refreshToken, string accessToken)
     {
-        await Validate(request);
-
         (Guid userIdentifier, string role) accessTokenData =
-            _refreshTokenHandler.ValidateAccessTokenAndGetData(request.AccessToken);
+            _refreshTokenHandler.ValidateAccessTokenAndGetData(accessToken);
 
         var refreshTokenValidated = await _refreshTokenHandler.GetRefreshToken(refreshToken, accessTokenData.userIdentifier);
         if (refreshTokenValidated is null)
-            throw new NoPermissionException();
+            throw new NoPermissionException(ResourceMessagesException.REFRESH_TOKEN_NOT_FOUND);
 
         if (refreshTokenValidated.ExpiryDate < DateTime.UtcNow.AddDays(MMSConst.SECURITY_DAYS_TO_REMAKE_TOKEN))
             refreshTokenValidated.Token =
@@ -41,14 +39,4 @@ public class RefreshTokenUseCase(
     }
 
     public string? GetRefreshToken() => _refreshToken;
-
-    private static async Task Validate(RequestRefreshToken request)
-    {
-        RefreshTokenValidator validator = new();
-        var result = await validator.ValidateAsync(request);
-
-        if (!result.IsValid)
-            throw new ErrorOnValidationException(
-                result.Errors.Select(e => e.ErrorMessage).ToArray());
-    }
 }

@@ -12,7 +12,7 @@ public class LogoutUseCaseTest
     public async Task Success()
     {
         var userIdentifier = Guid.NewGuid();
-        var request = RequestRefreshTokenBuilder.Build();
+        var request = "RefreshToken";
         
         var useCase = CreateUseCase(userIdentifier);
 

@@ -217,4 +217,7 @@
   <data name="NO_REFRESH_TOKEN" xml:space="preserve">
     <value>There is no refresh token in the current request.</value>
   </data>
+  <data name="REFRESH_TOKEN_NOT_FOUND" xml:space="preserve">
+    <value>There is no valid user with this refresh token.</value>
+  </data>
 </root>

@@ -19,9 +19,9 @@ public class TokenRepository(
     {
         return await _DbContext.RefreshTokens
             .AsNoTracking()
-            .FirstOrDefaultAsync(token =>
+            .Where(token =>
                 token.UserIdentifier == userIdentifier && token.Token == refreshToken
-            );
+            ).FirstAsync();
     }
 
     public async Task<bool> Delete(string refreshToken, Guid userIdentifier)

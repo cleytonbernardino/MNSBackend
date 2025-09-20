@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using MMS.Communication.Requests.Auth;
-using MMS.Domain.Security.Token;
+﻿using MMS.Domain.Security.Token;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 
@@ -12,10 +10,10 @@ public class LogoutUseCase(
 {
     private readonly IRefreshTokenHandler _tokenHandler = tokenHandler;
 
-    public async Task Execute(RequestRefreshToken request, string refreshToken)
+    public async Task Execute(string refreshToken, string accessToken)
     {
         (Guid userIdentifier, string role) accessTokenData =
-            _tokenHandler.ValidateAccessTokenAndGetData(request.AccessToken);
+            _tokenHandler.ValidateAccessTokenAndGetData(accessToken);
         bool status = await _tokenHandler.Delete(refreshToken, accessTokenData.userIdentifier);
 
         if (!status)

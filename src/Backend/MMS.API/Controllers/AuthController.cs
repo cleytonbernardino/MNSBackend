@@ -40,20 +40,23 @@ public class AuthController : ControllerBase
         return Ok(responseResult);
     }
 
-    [HttpPost]
+    [HttpGet]
     [ProducesResponseType(typeof(ResponseRefreshToken), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh(
-        [FromServices] IRefreshTokenUseCase useCase,
-        [FromBody] RequestRefreshToken request
+        [FromServices] IRefreshTokenUseCase useCase
     )
     {
         string? refreshToken = Request.Cookies[MMSConst.REFRESH_TOKEN_COOKIE_KEY];
         if (refreshToken is null)
             throw new ErrorOnValidationException([ResourceMessagesException.NO_REFRESH_TOKEN]);
 
-        var responseResult = await useCase.Execute(request, refreshToken);
+        string? accessToken = Request.Headers.Authorization.ToString()["Bearer ".Length..];
+        if (accessToken is null)
+            throw new ErrorOnValidationException([ResourceMessagesException.INVALID_ACCESS_TOKEN]);
+        
+        var responseResult = await useCase.Execute(refreshToken: refreshToken, accessToken: accessToken);
         string? token = useCase.GetRefreshToken();
         if (token is not null)
             Response.Cookies.Append(MMSConst.REFRESH_TOKEN_COOKIE_KEY, token, _secureTokenParam);
@@ -61,20 +64,23 @@ public class AuthController : ControllerBase
         return Ok(responseResult);
     }
 
-    [HttpPost]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Logout(
-        [FromServices] ILogoutUseCase useCase,
-        [FromBody] RequestRefreshToken request
+        [FromServices] ILogoutUseCase useCase
     )
     {
         string? refreshToken = Request.Cookies[MMSConst.REFRESH_TOKEN_COOKIE_KEY];
         if (refreshToken is null)
             throw new ErrorOnValidationException([ResourceMessagesException.NO_REFRESH_TOKEN]);
 
+        string? accessToken = Request.Headers.Authorization.ToString()["Bearer ".Length..];
+        if (accessToken is null)
+            throw new ErrorOnValidationException([ResourceMessagesException.INVALID_ACCESS_TOKEN]);
+        
+        await useCase.Execute(refreshToken: refreshToken, accessToken: accessToken);
         Response.Cookies.Delete(MMSConst.REFRESH_TOKEN_COOKIE_KEY, _secureTokenParam);
-        await useCase.Execute(request, refreshToken);
 
         return NoContent();
     }

@@ -16,19 +16,20 @@ public class MmsClassFixture(CustomWebApplicationFactory factory) : IClassFixtur
         return await _client.PostAsJsonAsync(method, request);
     }
     
-    protected async Task<HttpResponseMessage> DoPostWithRefreshTokenAsync(
-        string method, object request, string refreshToken, string culture = "en"
-        )
-    {
-        ChangeRequestCulture(culture);
-        _client.DefaultRequestHeaders.Add("Cookie", $"{MMSConst.REFRESH_TOKEN_COOKIE_KEY}={refreshToken}");
-        return await _client.PostAsJsonAsync(method, request);
-    }
-    
     protected async Task<HttpResponseMessage> DoGetAsync(string method, string token = "", string culture = "en")
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
+        return await _client.GetAsync(method);
+    }
+    
+    protected async Task<HttpResponseMessage> DoGetWithRefreshTokenAsync(
+        string method, string refreshToken, string accessToken = "", string culture = "en"
+    )
+    {
+        ChangeRequestCulture(culture);
+        AuthorizeRequest(accessToken);
+        _client.DefaultRequestHeaders.Add("Cookie", $"{MMSConst.REFRESH_TOKEN_COOKIE_KEY}={refreshToken}");
         return await _client.GetAsync(method);
     }
 
@@ -66,6 +67,7 @@ public class MmsClassFixture(CustomWebApplicationFactory factory) : IClassFixtur
     /// Avoid disposing the document before you finish accessing the element. 
     /// If a standalone object is required, consider cloning the element using <c>JsonDocument.Parse(element.GetRawText())</c>.
     /// </remarks>
+    [Obsolete("Deserializing json with response.Content.ReadFromJsonAsync<T>(), is a better solution.")]
     protected static async Task<JsonElement> GetRootElement(HttpResponseMessage response)
     {
         await using Stream responseBody = await response.Content.ReadAsStreamAsync();
@@ -88,6 +90,7 @@ public class MmsClassFixture(CustomWebApplicationFactory factory) : IClassFixtur
     /// It will throw a <see cref="KeyNotFoundException"/> if the property does not exist.
     /// Consider adding validation with <c>TryGetProperty</c> to avoid exceptions.
     /// </remarks>
+    [Obsolete("Deserializing json with response.Content.ReadFromJsonAsync<T>(), is a better solution.")]
     protected static async Task<JsonElement.ArrayEnumerator> GetArrayFromResponse(HttpResponseMessage response, string key = "errors")
     {
         var jsonElement = await GetRootElement(response);

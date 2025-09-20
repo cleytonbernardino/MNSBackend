@@ -23,7 +23,7 @@ public class RefreshTokenHandlerBuilder
         return this;
     }
     
-    public RefreshTokenHandlerBuilder GetToken(RefreshToken token)
+    public RefreshTokenHandlerBuilder GetRefreshToken(RefreshToken token)
     {
         _mock.Setup(mock => mock.GetRefreshToken(
             It.IsAny<string>(),
