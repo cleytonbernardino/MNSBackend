@@ -8,7 +8,7 @@ public static class RequestRegisterCompanyBuilder
     public static RequestRegisterCompany Build()
     {
         return new Faker<RequestRegisterCompany>()
-            .RuleFor(req => req.CNPJ, () => "75006871000111")
+            .RuleFor(req => req.CNPJ, () => "64.381.128/0001-25")
             .RuleFor(req => req.LegalName, f => f.Company.CompanyName())
             .RuleFor(req => req.DoingBusinessAs, f => f.Name.LastName())
             .RuleFor(req => req.CEP, () => "08141730")

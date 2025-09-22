@@ -157,7 +157,7 @@
     <value>CEP não é valido</value>
   </data>
   <data name="CNPJ_INVALID" xml:space="preserve">
-    <value>CNPJ não é valido</value>
+    <value>CNPJ não é valido.</value>
   </data>
   <data name="LEGAL_NAME_EMPTY" xml:space="preserve">
     <value>Nome legal não pode está vazio.</value>

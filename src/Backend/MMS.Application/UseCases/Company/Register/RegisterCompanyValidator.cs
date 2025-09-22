@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MMS.Application.SharedValidators;
 using MMS.Communication.Requests.Company;
 using MMS.Exceptions;
 
@@ -8,7 +9,7 @@ public class RegisterCompanyValidator : AbstractValidator<RequestRegisterCompany
 {
     public RegisterCompanyValidator()
     {
-        RuleFor(req => req.CNPJ).NotEmpty().WithMessage(ResourceMessagesException.CNPJ_EMPTY);
+        RuleFor(req => req.CNPJ).SetValidator(new CnpjValidator<RequestRegisterCompany>());
         RuleFor(req => req.LegalName).NotEmpty().WithMessage(ResourceMessagesException.LEGAL_NAME_EMPTY)
             .MaximumLength(100);
         RuleFor(req => req.DoingBusinessAs).MaximumLength(100).WithMessage(ResourceMessagesException.DBA_MAX_LENGTH);
@@ -22,10 +23,6 @@ public class RegisterCompanyValidator : AbstractValidator<RequestRegisterCompany
         When(req => !string.IsNullOrWhiteSpace(req.PhoneNumber), () =>
             RuleFor(request => request.PhoneNumber).Matches(@"^\(?\d{2}\)?\s?9\d{4}-?\d{4}$")
                 .WithMessage(ResourceMessagesException.PHONE_NOT_VALID)
-        );
-        When(req => !string.IsNullOrWhiteSpace(req.CNPJ), () =>
-            RuleFor(request => request.CNPJ).Matches(@"^\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}$")
-                .WithMessage(ResourceMessagesException.CNPJ_INVALID)
         );
         When(req => !string.IsNullOrWhiteSpace(req.CEP), () =>
             RuleFor(request => request.CEP).Matches(@"^\d{5}-?\d{3}$")
