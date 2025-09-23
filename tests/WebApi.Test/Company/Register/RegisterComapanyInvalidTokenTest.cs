@@ -1,15 +1,15 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Domain.Enums;
 using Shouldly;
 using System.Net;
-using MMS.Domain.Enums;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Company.Register;
 
 public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/admin/Company";
+    protected override string Method => "api/admin/Company";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
@@ -17,7 +17,7 @@ public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory)
     {
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPostAsync(METHOD, request, token: "TokenInvalid", culture);
+        var response = await DoPostAsync(request, token: "TokenInvalid", culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -27,7 +27,7 @@ public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory)
     {
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPostAsync(METHOD, request, token: "", culture: culture);
+        var response = await DoPostAsync(request, token: "", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -39,7 +39,7 @@ public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory)
 
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoPostAsync(METHOD, request, token, culture);
+        var response = await DoPostAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

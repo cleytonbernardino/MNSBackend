@@ -12,7 +12,7 @@ namespace WebApi.Test.Auth.RefreshToken;
 
 public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/auth/refresh";
+    protected override string Method => "api/auth/refresh";
     
     [Fact]
     public async Task Success()
@@ -21,7 +21,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
             factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
     
         var response = await DoGetWithRefreshTokenAsync(
-            METHOD, accessToken: accessToken, refreshToken: factory.TokenRefresh.Token
+            accessToken: accessToken, refreshToken: factory.TokenRefresh.Token!
             );
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -34,7 +34,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
             factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
         string refreshToken = string.Empty;
         
-        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken, culture:culture);
+        var response = await DoGetWithRefreshTokenAsync(refreshToken, accessToken, culture:culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;
@@ -51,7 +51,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
             factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
         string refreshToken = "Invalid refresh Token";
 
-        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken, culture:culture);
+        var response = await DoGetWithRefreshTokenAsync(refreshToken, accessToken, culture:culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;
@@ -67,7 +67,7 @@ public class RefreshTokenTest(CustomWebApplicationFactory factory) : MmsClassFix
         string accessToken = string.Empty;
         string refreshToken = factory.TokenRefresh.Token!;
 
-        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken, culture);
+        var response = await DoGetWithRefreshTokenAsync(refreshToken, accessToken, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;

@@ -1,9 +1,11 @@
 ﻿using CommonTestUtilities.Requests;
 using MMS.Communication.Requests.Auth;
+using MMS.Communication.Responses;
 using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Auth.DoLogin;
@@ -12,14 +14,14 @@ public class DoLoginTest(
     CustomWebApplicationFactory factory
 ) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/auth/login";
+    protected override string Method => "api/auth/login";
 
     [Fact]
     public async Task Success()
     {
         RequestDoLogin request = new() { Email = factory.ManagerUser.Email, Password = factory.UserPassword };
 
-        var response = await DoPostAsync(METHOD, request);
+        var response = await DoPostAsync(request);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
@@ -29,12 +31,11 @@ public class DoLoginTest(
     {
         RequestDoLogin request = new() { Email = "tes@email.com", Password = factory.UserPassword };
 
-        var response = await DoPostAsync(METHOD, request, culture: culture);
+        var response = await DoPostAsync(request, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID",
@@ -47,12 +48,11 @@ public class DoLoginTest(
     {
         RequestDoLogin request = new() { Email = factory.ManagerUser.Email, Password = factory.UserPassword + "abc" };
 
-        var response = await DoPostAsync(METHOD, request, culture: culture);
+        var response = await DoPostAsync(request, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID",
@@ -66,15 +66,16 @@ public class DoLoginTest(
         RequestDoLogin request = RequestLoginBuilder.Build();
         request.Email = "tes";
 
-        var response = await DoPostAsync(METHOD, request, culture: culture);
+        var response = await DoPostAsync(request, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem()
             .ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("INVALID_EMAIL", new CultureInfo(culture)));
+            .ShouldBe(
+                ResourceMessagesException.ResourceManager.GetString("INVALID_EMAIL", new CultureInfo(culture))
+                );
     }
 
     [Theory]
@@ -84,12 +85,11 @@ public class DoLoginTest(
         RequestDoLogin request = RequestLoginBuilder.Build();
         request.Password = string.Empty;
 
-        var response = await DoPostAsync(METHOD, request, culture: culture);
+        var response = await DoPostAsync(request, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PASSWORD_EMPTY", new CultureInfo(culture)));

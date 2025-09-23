@@ -1,18 +1,20 @@
 ﻿using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Tokens;
+using MMS.Communication.Responses;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Delete;
 
 public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/user";
+    protected override string Method => "api/user";
     
     private readonly IdEncoderForTests _idEncoder = new();
     
@@ -21,11 +23,11 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     {
         var userToDelete = factory.InjectUser(UserBuilder.Build());
 
-        string url = $"{METHOD}/{_idEncoder.Encode(userToDelete.Id)}";
+        string url = $"{Method}/{_idEncoder.Encode(userToDelete.Id)}";
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
         
-        var response = await DoDeleteAsync(url, token);
+        var response = await DoDeleteAsync(customUrl: url, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -33,15 +35,15 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Without_Permission(string culture)
     {
-        string url = $"{METHOD}/{_idEncoder.Encode(factory.AdminUser.Id)}";
+        string url = $"{Method}/{_idEncoder.Encode(factory.AdminUser.Id)}";
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.EmployeeUser.UserIdentifier, UserRolesEnum.MANAGER);
         
-        var response = await DoDeleteAsync(url, token, culture: culture);
+        var response = await DoDeleteAsync(customUrl: url, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
         
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_PERMISSION", new CultureInfo(culture)));
@@ -50,11 +52,11 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     [Fact]
     public async Task Error_Authorize_Denies_Invalid_Roles()
     {
-        string url = $"{METHOD}/{_idEncoder.Encode(factory.EmployeeUser.Id)}";
+        string url = $"{Method}/{_idEncoder.Encode(factory.EmployeeUser.Id)}";
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.EMPLOYEE);
         
-        var response = await DoDeleteAsync(url, token);
+        var response = await DoDeleteAsync(customUrl: url, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

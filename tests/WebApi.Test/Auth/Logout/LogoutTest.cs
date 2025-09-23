@@ -13,7 +13,7 @@ namespace WebApi.Test.Auth.Logout;
 
 public class LogoutTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/auth/logout";
+    protected override string Method => "api/auth/logout";
 
     [Fact]
     public async Task Success()
@@ -23,7 +23,7 @@ public class LogoutTest(CustomWebApplicationFactory factory) : MmsClassFixture(f
 
         string refreshToken = factory.TokenRefresh.Token!;
 
-        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken);
+        var response = await DoGetWithRefreshTokenAsync(refreshToken, accessToken);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -34,7 +34,7 @@ public class LogoutTest(CustomWebApplicationFactory factory) : MmsClassFixture(f
         string accessToken = JwtTokenGeneratorBuilder.Build().Generate(
             factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoGetAsync(METHOD, accessToken, culture);
+        var response = await DoGetAsync(accessToken, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;
@@ -53,7 +53,7 @@ public class LogoutTest(CustomWebApplicationFactory factory) : MmsClassFixture(f
         string accessToken = string.Empty;
         string refreshToken = factory.TokenRefresh.Token!;
 
-        var response = await DoGetWithRefreshTokenAsync(METHOD, refreshToken, accessToken, culture);
+        var response = await DoGetWithRefreshTokenAsync(refreshToken, accessToken, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;

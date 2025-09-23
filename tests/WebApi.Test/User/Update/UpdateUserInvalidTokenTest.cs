@@ -1,15 +1,15 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Domain.Enums;
 using Shouldly;
 using System.Net;
-using MMS.Domain.Enums;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Update;
 
 public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/user";
+    protected override string Method => "api/user";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
@@ -17,7 +17,7 @@ public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : M
     {
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPutAsync(METHOD, request, token: "TokenInvalid", culture);
+        var response = await DoPutAsync(request, token: "TokenInvalid", culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -27,7 +27,7 @@ public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : M
     {
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPutAsync(METHOD, request, token: "", culture: culture);
+        var response = await DoPutAsync(request, token: "", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -39,7 +39,7 @@ public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : M
 
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture);
+        var response = await DoPutAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

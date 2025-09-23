@@ -1,18 +1,20 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
 using MMS.Communication.Requests.User;
+using MMS.Communication.Responses;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Update;
 
 public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/user/change-password";
+    protected override string Method => "api/user/change-password";
 
     [Fact]
     public async Task Success()
@@ -23,7 +25,7 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token);
+        var response = await DoPutAsync(request, token);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
     
@@ -37,11 +39,11 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture);
+        var response = await DoPutAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CURRENT_PASSWORD_INCORRECT", new CultureInfo(culture)));
@@ -60,11 +62,11 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture);
+        var response = await DoPutAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PASSWORD_EMPTY", new CultureInfo(culture)));
@@ -83,11 +85,11 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture);
+        var response = await DoPutAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(

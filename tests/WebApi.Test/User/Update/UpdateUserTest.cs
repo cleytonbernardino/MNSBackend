@@ -2,18 +2,20 @@
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Communication.Responses;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Update;
 
 public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/User";
+    protected override string Method => "api/User";
     private readonly IdEncoderForTests _idEncoder = new();
 
     [Fact]
@@ -26,7 +28,7 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token);
+        var response = await DoPutAsync(request, token);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -42,11 +44,11 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture: culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("ROLE_INVALID", new CultureInfo(culture)));
@@ -63,11 +65,11 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.EmployeeUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture: culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("NO_PERMISSION", new CultureInfo(culture)));
@@ -80,7 +82,7 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.EmployeeUser.UserIdentifier, UserRolesEnum.EMPLOYEE);
 
-        var response = await DoPutAsync(METHOD, request, token);
+        var response = await DoPutAsync(request, token);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 
@@ -96,11 +98,11 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture: culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("INVALID_EMAIL", new CultureInfo(culture)));
@@ -118,11 +120,11 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(METHOD, request, token, culture: culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_NOT_VALID", new CultureInfo(culture)));

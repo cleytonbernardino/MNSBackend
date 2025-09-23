@@ -1,17 +1,19 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Communication.Responses;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Company.Register;
 
 public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/admin/Company";
+    protected override string Method => "api/admin/Company";
 
     [Fact]
     public async Task Success()
@@ -20,7 +22,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
 
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response  = await DoPostAsync(method: METHOD, request: request, token: token);
+        var response  = await DoPostAsync(request: request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -32,7 +34,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.DoingBusinessAs = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token);
+        var response = await DoPostAsync(request: request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -44,7 +46,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.BusinessEmail = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token);
+        var response = await DoPostAsync(request: request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -56,7 +58,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.WebSite = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token);
+        var response = await DoPostAsync(request: request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -69,7 +71,7 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
 
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPostAsync(METHOD, request, token, culture);
+        var response = await DoPostAsync(request, token, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
     
@@ -82,11 +84,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.CNPJ = "750068710001";
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CNPJ_INVALID", new CultureInfo(culture)));
@@ -101,11 +103,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.CNPJ = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CNPJ_EMPTY", new CultureInfo(culture)));
@@ -120,11 +122,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.LegalName = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("LEGAL_NAME_EMPTY", new CultureInfo(culture)));
@@ -139,11 +141,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.CEP = "0814173";
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CEP_INVALID", new CultureInfo(culture)));
@@ -158,11 +160,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.CEP = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CEP_EMPTY", new CultureInfo(culture)));
@@ -177,11 +179,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.AddressNumber = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("ADDRESS_NUMBER_EMPTY", new CultureInfo(culture)));
@@ -196,11 +198,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.PhoneNumber = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_EMPTY", new CultureInfo(culture)));
@@ -215,11 +217,11 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
         var request = RequestRegisterCompanyBuilder.Build();
         request.PhoneNumber = "11 9873-1345";
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errors = await GetArrayFromResponse(response);
-        errors
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
             .ShouldHaveSingleItem()
             .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_NOT_VALID", new CultureInfo(culture)));

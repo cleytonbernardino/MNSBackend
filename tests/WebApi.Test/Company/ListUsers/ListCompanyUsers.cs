@@ -1,26 +1,26 @@
 ﻿using CommonTestUtilities.Tokens;
+using MMS.Communication.Responses.User;
 using Shouldly;
 using System.Net;
 using MMS.Domain.Enums;
+using System.Net.Http.Json;
 
 namespace WebApi.Test.Company.ListUsers;
 
 public class ListCompanyUsers(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/company/users";
+    protected override string Method => "api/company/users";
 
     [Fact]
     public async Task Success()
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoGetAsync(method: METHOD, token: token);
+        var response = await DoGetAsync(token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var rootElement = await GetRootElement(response);
-        var responseObject = rootElement.GetProperty("users").EnumerateArray();
-
-        responseObject
+        var result = await response.Content.ReadFromJsonAsync<ResponseListShortUsers>();
+        result!.Users
             .Count()
             .ShouldBe(factory.UserInDataBase);
     }
@@ -30,7 +30,7 @@ public class ListCompanyUsers(CustomWebApplicationFactory factory) : MmsClassFix
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.EMPLOYEE);
 
-        var response = await DoGetAsync(method: METHOD, token: token);
+        var response = await DoGetAsync(token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 

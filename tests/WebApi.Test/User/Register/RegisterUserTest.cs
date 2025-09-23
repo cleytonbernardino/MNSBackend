@@ -1,10 +1,12 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
+using MMS.Communication.Responses;
+using MMS.Domain.Enums;
+using MMS.Exceptions;
 using Shouldly;
 using System.Globalization;
 using System.Net;
-using MMS.Domain.Enums;
-using MMS.Exceptions;
+using System.Net.Http.Json;
 using WebApi.Test.InlineData;
 
 namespace WebApi.Test.User.Register;
@@ -13,7 +15,7 @@ public class RegisterUserTest(
     CustomWebApplicationFactory factory
     ) : MmsClassFixture(factory)
 {
-    private const string METHOD = "api/user";
+    protected override string Method => "api/user";
 
     [Fact]
     public async Task Success()
@@ -23,7 +25,7 @@ public class RegisterUserTest(
 
         var request = RequestRegisterUseBuilder.Build();
 
-        var response = await DoPostAsync(METHOD, request, token: token);
+        var response = await DoPostAsync(request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -37,7 +39,7 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.LastName = lastName;
 
-        var response = await DoPostAsync(METHOD, request, token: token);
+        var response = await DoPostAsync(request, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
@@ -50,13 +52,12 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.FirstName = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-
-        var errorList = await GetArrayFromResponse(response);
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem().ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("FIRST_NAME_EMPTY", new CultureInfo(culture)));
     }
@@ -70,12 +71,11 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.Email = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem().ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("EMAIL_EMPTY", new CultureInfo(culture)));
     }
@@ -89,12 +89,11 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.Email = factory.ManagerUser.Email;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem().ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("EMAIL_IN_USE", new CultureInfo(culture)));
     }
@@ -108,12 +107,11 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.Phone = string.Empty;
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem().ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_EMPTY", new CultureInfo(culture)));
     }
@@ -127,12 +125,11 @@ public class RegisterUserTest(
         var request = RequestRegisterUseBuilder.Build();
         request.Phone = "(11) 91741824";
 
-        var response = await DoPostAsync(method: METHOD, request: request, token: token, culture: culture);
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var errorList = await GetArrayFromResponse(response);
-
-        errorList
+        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errorList!.Errors
             .ShouldHaveSingleItem().ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_NOT_VALID", new CultureInfo(culture)));
     }
