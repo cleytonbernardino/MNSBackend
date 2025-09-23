@@ -50,4 +50,13 @@ public class CompanyRepository(
             .Companies
             .AddAsync(company);
     }
+
+    public async Task Delete(long id)
+    {
+        var company = await _dbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
+        if (company is null)
+            return;
+
+        _dbContext.Companies.Remove(company);
+    }
 }

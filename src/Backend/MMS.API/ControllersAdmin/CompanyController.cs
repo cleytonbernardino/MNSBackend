@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MMS.API.Binders;
+using MMS.Application.UseCases.Company.Delete;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Communication.Requests.Company;
@@ -30,5 +32,17 @@ public class CompanyController : MmsAdminBaseController
     {
         var response = await useCase.Execute();
         return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Delete(
+        [FromRoute] [ModelBinder(typeof(MmsIdBinder))] long id,
+        [FromServices] IDeleteCompanyUseCase useCase
+        )
+    {
+        await useCase.Execute(id);
+        return NoContent();
     }
 }
