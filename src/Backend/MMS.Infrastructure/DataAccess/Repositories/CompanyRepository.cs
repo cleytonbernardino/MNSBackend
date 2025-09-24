@@ -6,7 +6,7 @@ namespace MMS.Infrastructure.DataAccess.Repositories;
 
 public class CompanyRepository(
     MmsDbContext dbContext
-) : ICompanyWriteOnlyRepository, ICompanyReadOnlyRepository
+) : ICompanyWriteOnlyRepository, ICompanyReadOnlyRepository, ICompanyUpdateOnlyRepository
 {
     private readonly MmsDbContext _dbContext = dbContext;
 
@@ -59,4 +59,11 @@ public class CompanyRepository(
 
         _dbContext.Companies.Remove(company);
     }
+
+    public async Task<Company?> GetById(long id)
+    {
+        return await _dbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
+    }
+
+    public void UpdateAsync(Company company) => _dbContext.Companies.Update(company);
 }

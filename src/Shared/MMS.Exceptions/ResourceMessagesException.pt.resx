@@ -219,4 +219,10 @@
   <data name="REFRESH_TOKEN_NOT_FOUND" xml:space="preserve">
     <value>Não existe usuário valido com esse refresh token.</value>
   </data>
+  <data name="COMPANY_NOT_FOUND" xml:space="preserve">
+    <value>A Empresa solicitada não pode ser encontrada, ou não existe.</value>
+  </data>
+  <data name="DBA_EMPTY" xml:space="preserve">
+    <value>O nome fantasia não pode está vazio.</value>
+  </data>
 </root>

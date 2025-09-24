@@ -13,12 +13,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceMessagesException.resx</DependentUpon>
     </Compile>
+    <Compile Update="LogMessages\CriticalMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CriticalMessages.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="ResourceMessagesException.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceMessagesException.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="LogMessages\CriticalMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CriticalMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

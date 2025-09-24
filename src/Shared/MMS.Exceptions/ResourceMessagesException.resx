@@ -220,4 +220,10 @@
   <data name="REFRESH_TOKEN_NOT_FOUND" xml:space="preserve">
     <value>There is no valid user with this refresh token.</value>
   </data>
+  <data name="COMPANY_NOT_FOUND" xml:space="preserve">
+    <value>The requested Company cannot be found, or does not exist.</value>
+  </data>
+  <data name="DBA_EMPTY" xml:space="preserve">
+    <value>Doing Business As cannot be empty.</value>
+  </data>
 </root>

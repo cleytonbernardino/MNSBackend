@@ -20,4 +20,18 @@ public static class CompanyRequestToCompany
 
         return company;
     }
+
+    public static Company Join(this Company company, RequestUpdateCompany request)
+    {
+        return new Company
+        {
+            DoingBusinessAs = request.DoingBusinessAs,
+            CEP = request.CEP, 
+            AddressNumber = request.AddressNumber,
+            BusinessEmail = request.BusinessEmail,
+            PhoneNumber = request.PhoneNumber,
+            WhatsappAPINumber = request.WhatsappApiNumber,
+            Website = request.WebSite
+        };
+    }
 }

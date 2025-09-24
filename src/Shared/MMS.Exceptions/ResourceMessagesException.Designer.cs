@@ -105,11 +105,29 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The requested Company cannot be found, or does not exist..
+        /// </summary>
+        public static string COMPANY_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("COMPANY_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current password is incorrect..
         /// </summary>
         public static string CURRENT_PASSWORD_INCORRECT {
             get {
                 return ResourceManager.GetString("CURRENT_PASSWORD_INCORRECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing Business As cannot be empty..
+        /// </summary>
+        public static string DBA_EMPTY {
+            get {
+                return ResourceManager.GetString("DBA_EMPTY", resourceCulture);
             }
         }
         

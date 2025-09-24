@@ -3,6 +3,7 @@ using MMS.API.Binders;
 using MMS.Application.UseCases.Company.Delete;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.Register;
+using MMS.Application.UseCases.Company.Update;
 using MMS.Communication.Requests.Company;
 using MMS.Communication.Responses;
 using MMS.Communication.Responses.Company;
@@ -34,6 +35,21 @@ public class CompanyController : MmsAdminBaseController
         return Ok(response);
     }
 
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(
+        [FromRoute] [ModelBinder(typeof(MmsIdBinder))] long id,
+        [FromBody] RequestUpdateCompany request,
+        [FromServices] IUpdateCompanyUseCase useCase
+        )
+    {
+        await useCase.Execute(request, id);
+        return NoContent();
+    }
+    
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
