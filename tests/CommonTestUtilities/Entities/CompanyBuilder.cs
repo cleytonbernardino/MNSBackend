@@ -5,7 +5,7 @@ namespace CommonTestUtilities.Entities;
 
 public static class CompanyBuilder
 {
-    public static Company Build(User? manager)
+    public static Company Build(User? manager = null)
     {
         Faker<Company>? company = new Faker<Company>()
             .RuleFor(company => company.Id, 1)
@@ -23,7 +23,11 @@ public static class CompanyBuilder
         if (manager is null)
             company.RuleFor(company => company.Manager, UserBuilder.Build);
         else
-            company.RuleFor(company => company.Manager, manager);
+        {
+            //company.RuleFor(company => company.Manager, manager);
+            company.RuleFor(company => company.ManagerId, manager.Id);
+        }
+            
 
         return company.Generate();
     }
@@ -35,7 +39,7 @@ public static class CompanyBuilder
         for (int i = 1; i <= count; i++)
         {
             Company company = Build(manager);
-            company.Id = i;
+            company.Id = i + 200;
             if (manager is null)
                 company.Manager!.Id = ++userId;
 

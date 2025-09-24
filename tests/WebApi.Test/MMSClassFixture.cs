@@ -35,11 +35,13 @@ public abstract class MmsClassFixture(CustomWebApplicationFactory factory) : ICl
         return await _client.GetAsync(Method);
     }
 
-    protected async Task<HttpResponseMessage> DoPutAsync( object request, string token, string culture = "en")
+    protected async Task<HttpResponseMessage> DoPutAsync(
+        object request, string token, string culture = "en", string? customUrl = null
+        )
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
-        return await _client.PutAsJsonAsync(Method, request);
+        return await _client.PutAsJsonAsync(customUrl ?? Method, request);
     }
 
     protected async Task<HttpResponseMessage> DoDeleteAsync(

@@ -11,6 +11,8 @@ namespace WebApi.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private IList<Entity.Company> _companiesDb = [];
+    
     public Entity.User EmployeeUser { get; private set; }
     public Entity.User RHUser { get; private set; }
     public Entity.User SubManagerUser { get; private set; }
@@ -33,18 +35,35 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         dbContext.SaveChanges();
         return user;
     }
+    
+    public IList<Entity.Company> RegisterCompaniesAndGetCompanies(IList<Entity.Company>? companies = null)
+    {
+        if (_companiesDb.Count != 0 && companies is null)
+            return _companiesDb;
+        
+        using IServiceScope scope = Services.CreateScope();
+        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
+        
+        companies ??= CompanyBuilder.BuildInBatch();
+        foreach (var company in companies)
+        {
+            company.Id = 0;
+        }
+        
+        dbContext.Companies.AddRange(companies);
+        dbContext.SaveChanges();
+        return RefreshCompanies();
+        
+    }
 
-    public IList<Entity.Company> RegisterCompanies(IList<Entity.Company>? companies = null)
+    public IList<Entity.Company> RefreshCompanies()
     {
         using IServiceScope scope = Services.CreateScope();
         MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
-
-        if (companies is null)
-            companies = CompanyBuilder.BuildInBatch();
-
-        dbContext.Companies.AddRange(companies);
-        dbContext.SaveChanges();
-        return companies;
+        _companiesDb = dbContext.Companies.Include(
+            company => company.Manager).Where(company => company.Id != 0
+        ).ToArray();
+        return _companiesDb;
     }
 
     private void RegisterInitialUsers(MmsDbContext dbContext)
