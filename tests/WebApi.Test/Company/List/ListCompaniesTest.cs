@@ -14,7 +14,7 @@ public class ListCompaniesTest(CustomWebApplicationFactory factory) : MmsClassFi
     [Fact]
     public async Task Success()
     {
-        var registeredCompanies = factory.RegisterCompanies();
+        var registeredCompanies = factory.RegisterCompaniesAndGetCompanies();
 
         string token = JwtTokenGeneratorBuilder.Build().Generate(
             factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);

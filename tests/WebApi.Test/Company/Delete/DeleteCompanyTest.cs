@@ -44,6 +44,6 @@ public class DeleteCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
     private IList<Entity.Company> RegisterCompaniesInDataBase(uint count = 3)
     {
         var companies= CompanyBuilder.BuildInBatch(count: count);
-        return factory.RegisterCompanies(companies);
+        return factory.RegisterCompaniesAndGetCompanies(companies);
     }
 }
