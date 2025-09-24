@@ -4,9 +4,11 @@ using MMS.Application.UseCases.Auth.DoLogin;
 using MMS.Application.UseCases.Auth.Logout;
 using MMS.Application.UseCases.Auth.RefreshToken;
 using MMS.Application.UseCases.Company.Delete;
+using MMS.Application.UseCases.Company.Get;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
+using MMS.Application.UseCases.Company.Update;
 using MMS.Application.UseCases.User.Delete;
 using MMS.Application.UseCases.User.Register;
 using MMS.Application.UseCases.User.Update;
@@ -39,6 +41,7 @@ public static class DependencyInjectionExtension
     private static void AddCompanyUseCase(IServiceCollection service)
     {
         service.AddScoped<IListCompanyUsersUseCase, ListCompanyUsersUseCase>();
+        service.AddScoped<IGetCompanyUseCase, GetCompanyUseCase>();
         service.AddScoped<IReceiverJsonUseCase, ReceiverJsonUseCase>();
         service.AddScoped<IRegisterCompanyUseCase, RegisterCompanyUseCase>();
         service.AddScoped<IUpdateCompanyUseCase, UpdateCompanyUseCase>();

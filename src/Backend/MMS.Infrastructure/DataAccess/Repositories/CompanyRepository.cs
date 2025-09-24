@@ -44,6 +44,19 @@ public class CompanyRepository(
             .ToList();
     }
 
+    public async Task<Company?> GetById(User user, long companyId)
+    {
+        var query = _dbContext.Companies
+            .AsNoTracking()
+            .Include(company => company.Manager)
+            .Where(company => company.Id == companyId);
+        if (user.IsAdmin)
+            return await query.FirstOrDefaultAsync();
+        
+        query = query.Where(company => company.ManagerId == user.Id && company.Active);
+        return await query.FirstOrDefaultAsync();
+    }
+
     public async Task RegisterCompany(Company company)
     {
         await _dbContext

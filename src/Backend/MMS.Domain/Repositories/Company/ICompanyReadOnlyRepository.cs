@@ -1,9 +1,10 @@
-﻿using MMS.Domain.Entities;
+﻿using Entity = MMS.Domain.Entities;
 
 namespace MMS.Domain.Repositories.Company;
 
 public interface ICompanyReadOnlyRepository
 {
-    IList<ShortCompany> ListShortCompanies();
-    IList<ShortUser> ListUsers(long companyId);
+    IList<Entity.ShortCompany> ListShortCompanies();
+    IList<Entity.ShortUser> ListUsers(long companyId);
+    Task<Entity.Company?> GetById(Entity.User user, long companyId);
 }
