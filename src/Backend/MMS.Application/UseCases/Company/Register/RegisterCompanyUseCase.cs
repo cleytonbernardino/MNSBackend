@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MMS.Application.Extensions;
 using MMS.Communication.Requests.Company;
 using MMS.Domain.Repositories;

@@ -12,7 +12,7 @@ public class Version0000002 : VersionBase
     {
         CreateTable(TableNames.TABLE_COMPANIES)
             .WithColumn("UpdatedOn").AsDateTime().NotNullable()
-            .WithColumn("CNPJ").AsString(14).NotNullable()
+            .WithColumn("CNPJ").AsString(18).NotNullable()
             .WithColumn("LegalName").AsString(100).NotNullable()
             .WithColumn("DoingBusinessAs").AsString(100).Nullable()
             .WithColumn("BusinessSector").AsString(50).Nullable()
