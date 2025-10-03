@@ -17,6 +17,7 @@ public static class CompanyToResponse
             DoingBusinessAs = company.DoingBusinessAs,
             BusinessSector = company.BusinessSector,
             CEP = company.CEP,
+            Address = company.Address,
             AddressNumber = company.AddressNumber,
             BusinessEmail = company.BusinessEmail,
             PhoneNumber = company.PhoneNumber,

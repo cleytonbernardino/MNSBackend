@@ -60,6 +60,15 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address cannot be empty..
+        /// </summary>
+        public static string ADDRESS_EMPTY {
+            get {
+                return ResourceManager.GetString("ADDRESS_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address number cannot be empty..
         /// </summary>
         public static string ADDRESS_NUMBER_EMPTY {
@@ -294,7 +303,7 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password cannot be empty..
+        ///   Looks up a localized string similar to Phone cannot be empty..
         /// </summary>
         public static string PHONE_EMPTY {
             get {

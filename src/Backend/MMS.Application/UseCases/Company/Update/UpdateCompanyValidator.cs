@@ -10,6 +10,7 @@ public class UpdateCompanyValidator: AbstractValidator<RequestUpdateCompany>
     {
         RuleFor(req => req.DoingBusinessAs).NotEmpty().WithMessage(ResourceMessagesException.DBA_EMPTY);
         RuleFor(req => req.CEP).NotEmpty().WithMessage(ResourceMessagesException.CEP_EMPTY);
+        RuleFor(req => req.Address).NotEmpty().WithMessage(ResourceMessagesException.ADDRESS_EMPTY);
         RuleFor(req => req.AddressNumber).NotEmpty().WithMessage(ResourceMessagesException.ADDRESS_NUMBER_EMPTY);
         RuleFor(req => req.PhoneNumber).NotEmpty().WithMessage(ResourceMessagesException.PHONE_EMPTY);
         When(req => !string.IsNullOrWhiteSpace(req.DoingBusinessAs), () =>

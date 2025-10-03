@@ -13,6 +13,7 @@ public static class CompanyRequestToCompany
             LegalName = request.LegalName,
             DoingBusinessAs = request.DoingBusinessAs ?? string.Empty,
             CEP = request.CEP,
+            Address = request.Address,
             AddressNumber = request.AddressNumber,
             BusinessEmail = request.BusinessEmail,
             PhoneNumber = request.PhoneNumber
@@ -27,6 +28,7 @@ public static class CompanyRequestToCompany
         {
             DoingBusinessAs = request.DoingBusinessAs,
             CEP = request.CEP, 
+            Address = request.Address,
             AddressNumber = request.AddressNumber,
             BusinessEmail = request.BusinessEmail,
             PhoneNumber = request.PhoneNumber,

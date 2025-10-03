@@ -83,6 +83,22 @@ public class UpdateCompanyValidatorTest
     }
 
     [Fact]
+    public void Error_Address_Empty()
+    {
+        var request = RequestUpdateCompanyBuilder.Build();
+        request.Address = string.Empty;
+
+        UpdateCompanyValidator validator = new();
+        var result = validator.Validate(request);
+
+        result.IsValid.ShouldBeFalse();
+        result.Errors
+            .Single()
+            .ToString()
+            .ShouldBe(ResourceMessagesException.ADDRESS_EMPTY);
+    }
+    
+    [Fact]
     public void Error_Address_Number_Empty()
     {
         var request = RequestUpdateCompanyBuilder.Build();

@@ -17,6 +17,7 @@ public class Version0000002 : VersionBase
             .WithColumn("DoingBusinessAs").AsString(100).Nullable()
             .WithColumn("BusinessSector").AsString(50).Nullable()
             .WithColumn("CEP").AsString(8).NotNullable()
+            .WithColumn("Address").AsString().NotNullable()
             .WithColumn("AddressNumber").AsString(10).NotNullable()
             .WithColumn("BusinessEmail").AsString().Nullable()
             .WithColumn("PhoneNumber").AsString(13).NotNullable()

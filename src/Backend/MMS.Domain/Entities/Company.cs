@@ -8,6 +8,7 @@ public class Company : EntityBase
     public string? DoingBusinessAs { get; set; }
     public string? BusinessSector { get; set; }
     public string CEP { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
     public string AddressNumber { get; set; } = string.Empty;
     public string? BusinessEmail { get; set; }
     public string PhoneNumber { get; set; } = string.Empty;

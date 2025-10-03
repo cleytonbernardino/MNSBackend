@@ -14,6 +14,7 @@ public class RegisterCompanyValidator : AbstractValidator<RequestRegisterCompany
             .MaximumLength(100);
         RuleFor(req => req.DoingBusinessAs).MaximumLength(100).WithMessage(ResourceMessagesException.DBA_MAX_LENGTH);
         RuleFor(req => req.CEP).NotEmpty().WithMessage(ResourceMessagesException.CEP_EMPTY);
+        RuleFor(req => req.Address).NotEmpty().WithMessage(ResourceMessagesException.ADDRESS_EMPTY);
         RuleFor(req => req.AddressNumber).NotEmpty().WithMessage(ResourceMessagesException.ADDRESS_NUMBER_EMPTY);
         RuleFor(req => req.PhoneNumber).NotEmpty().WithMessage(ResourceMessagesException.PHONE_EMPTY);
         When(req => !string.IsNullOrWhiteSpace(req.BusinessEmail), () =>

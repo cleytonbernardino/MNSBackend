@@ -6,6 +6,7 @@ public record RequestRegisterCompany
     public string LegalName { get; set; } = string.Empty;
     public string? DoingBusinessAs { get; set; } = string.Empty;
     public string CEP { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
     public string AddressNumber { get; set; } = string.Empty;
     public string? BusinessEmail { get; set; }
     public string PhoneNumber { get; set; } = string.Empty;

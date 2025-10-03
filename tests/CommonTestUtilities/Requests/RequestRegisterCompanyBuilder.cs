@@ -12,6 +12,7 @@ public static class RequestRegisterCompanyBuilder
             .RuleFor(req => req.LegalName, f => f.Company.CompanyName())
             .RuleFor(req => req.DoingBusinessAs, f => f.Name.LastName())
             .RuleFor(req => req.CEP, () => "08141730")
+            .RuleFor(req => req.Address, f => f.Address.StreetAddress())
             .RuleFor(req => req.AddressNumber, () => "22")
             .RuleFor(req => req.BusinessEmail, f => f.Internet.Email())
             .RuleFor(req => req.PhoneNumber, () => "11987125344")

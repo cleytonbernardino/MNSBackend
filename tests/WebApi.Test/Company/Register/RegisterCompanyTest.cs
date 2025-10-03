@@ -172,6 +172,25 @@ public class RegisterCompanyTest(CustomWebApplicationFactory factory) : MmsClass
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_Address_Empty(string culture)
+    {
+        var token = JwtTokenGeneratorBuilder.Build().Generate(factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);
+
+        var request = RequestRegisterCompanyBuilder.Build();
+        request.Address = string.Empty;
+
+        var response = await DoPostAsync(request: request, token: token, culture: culture);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
+        errors!.Errors
+            .ShouldHaveSingleItem()
+            .ToString()
+            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("ADDRESS_EMPTY", new CultureInfo(culture)));
+    }
+    
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Address_Number_Empty(string culture)
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);

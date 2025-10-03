@@ -124,7 +124,7 @@
     <value>First name cannot be empty.</value>
   </data>
   <data name="PHONE_EMPTY" xml:space="preserve">
-    <value>Password cannot be empty.</value>
+    <value>Phone cannot be empty.</value>
   </data>
   <data name="PASSWORD_EMPTY" xml:space="preserve">
     <value>Password cannot be empty</value>
@@ -225,5 +225,8 @@
   </data>
   <data name="DBA_EMPTY" xml:space="preserve">
     <value>Doing Business As cannot be empty.</value>
+  </data>
+  <data name="ADDRESS_EMPTY" xml:space="preserve">
+    <value>Address cannot be empty.</value>
   </data>
 </root>
