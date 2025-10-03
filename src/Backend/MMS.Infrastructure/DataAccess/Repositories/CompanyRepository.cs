@@ -78,5 +78,5 @@ public class CompanyRepository(
         return await _dbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
     }
 
-    public void UpdateAsync(Company company) => _dbContext.Companies.Update(company);
+    public void Update(Company company) => _dbContext.Companies.Update(company);
 }

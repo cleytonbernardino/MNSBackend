@@ -36,9 +36,9 @@ public class UpdateCompanyUseCase(
         var company = await _repository.GetById(id);
         if (company is null)
             throw new NotFoundException(ResourceMessagesException.COMPANY_NOT_FOUND);
-        company.Join(request);
+        company = company.Join(request);
         
-        _repository.UpdateAsync(company);
+        _repository.Update(company);
         await _unitOfWork.Commit();
     }
 

@@ -22,6 +22,6 @@ public class CompanyUpdateOnlyRepositoryBuilder
 
     private void MockFunctionsWithoutReturns()
     {
-        _mock.Setup(mock => mock.UpdateAsync(It.IsAny<Company>()));
+        _mock.Setup(mock => mock.Update(It.IsAny<Company>()));
     }
 }

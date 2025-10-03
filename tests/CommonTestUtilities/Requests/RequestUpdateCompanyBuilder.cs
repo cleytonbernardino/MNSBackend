@@ -10,6 +10,7 @@ public static class RequestUpdateCompanyBuilder
         return new Faker<RequestUpdateCompany>()
             .RuleFor(req => req.DoingBusinessAs, f => f.Company.CompanySuffix())
             .RuleFor(req => req.CEP, f => f.Address.ZipCode("#####-###"))
+            .RuleFor(req => req.Address, f => f.Address.StreetAddress())
             .RuleFor(req => req.AddressNumber, f => f.Address.BuildingNumber())
             .RuleFor(req => req.BusinessEmail, f => f.Internet.Email())
             .RuleFor(req => req.PhoneNumber, f => f.Phone.PhoneNumber("(##) 9####-####"))
