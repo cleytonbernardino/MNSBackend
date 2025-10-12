@@ -1,4 +1,5 @@
 ﻿using CommonTestUtilities.Cryptography;
+using CommonTestUtilities.Entities;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
 using MMS.Communication.Responses;
@@ -21,17 +22,16 @@ public class UpdateCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
     [Fact]
     public async Task Success()
     {
-        var companies = factory.RegisterCompaniesAndGetCompanies();
+        var companies = CompanyBuilder.BuildInBatch(count: 5);
+        factory.InjectInDatabase(companies);
         
         string token = JwtTokenGeneratorBuilder.Build().Generate(
             factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN
             );
         var request = RequestUpdateCompanyBuilder.Build();
-
         string id = _idEncoder.Encode(companies.Last().Id);
-        string url = $"{Method}/{id}";
         
-        var response = await DoPutAsync(request, token, customUrl: url);
+        var response = await DoPutAsync(request, token, parameter: id);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -43,11 +43,9 @@ public class UpdateCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
             factory.ManagerUser.UserIdentifier, UserRolesEnum.ADMIN
         );
         var request = RequestUpdateCompanyBuilder.Build();
-
         string id = _idEncoder.Encode(1);
-        string url = $"{Method}/{id}";
         
-        var response = await DoPutAsync(request, token, culture: culture, customUrl: url);
+        var response = await DoPutAsync(request, token, culture: culture, parameter: id);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
@@ -66,11 +64,10 @@ public class UpdateCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
         );
         var request = RequestUpdateCompanyBuilder.Build();
         request.DoingBusinessAs = new string('A', 200);
-
-        string id = _idEncoder.Encode(1);
-        string url = $"{Method}/{id}";
         
-        var response = await DoPutAsync(request, token, culture: culture, customUrl: url);
+        string id = _idEncoder.Encode(1);
+        
+        var response = await DoPutAsync(request, token, culture: culture, parameter: id);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();

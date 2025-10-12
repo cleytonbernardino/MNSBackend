@@ -17,7 +17,7 @@ public class UpdateCompanyInvalidTokenTest(CustomWebApplicationFactory factory) 
     {
         RequestUpdateCompany request = new();
         
-        var response = await DoPutAsync(request, token: "TokenInvalid", culture);
+        var response = await DoPutAsync(request, token: "TokenInvalid", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -38,7 +38,7 @@ public class UpdateCompanyInvalidTokenTest(CustomWebApplicationFactory factory) 
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
         RequestUpdateCompany request = new();
         
-        var response = await DoPutAsync(request,token, culture);
+        var response = await DoPutAsync(request,token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

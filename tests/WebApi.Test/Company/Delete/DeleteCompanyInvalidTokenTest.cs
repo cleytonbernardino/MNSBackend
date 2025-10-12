@@ -14,9 +14,7 @@ public class DeleteCompanyInvalidTokenTest(CustomWebApplicationFactory factory) 
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Invalid_Token(string culture)
     {
-        string url = $"{Method}/yyy";
-        
-        var response = await DoDeleteAsync(token: "TokenInvalid", culture, customUrl:url);
+        var response = await DoDeleteAsync(token: "TokenInvalid",  parameter: "invalidId", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -24,9 +22,7 @@ public class DeleteCompanyInvalidTokenTest(CustomWebApplicationFactory factory) 
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Without_Token(string culture)
     {
-        string url = $"{Method}/yyy";
-        
-        var response = await DoDeleteAsync(token: "", culture: culture, customUrl:url);
+        var response = await DoDeleteAsync(token: "", parameter: "invalidId", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -34,10 +30,9 @@ public class DeleteCompanyInvalidTokenTest(CustomWebApplicationFactory factory) 
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Token_Without_User(string culture)
     {
-        string url = $"{Method}/yyy";
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoDeleteAsync(token, culture, customUrl:url);
+        var response = await DoDeleteAsync(token, parameter: "invalidId", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

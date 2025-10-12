@@ -43,8 +43,8 @@ internal static class UserCommunicationToUserEntity
         return new ResponseShortUser
         {
             FirstName = user.FirstName,
-            LastName = user.LastName ?? "",
-            LastLogin = user.LastLogin,
+            Email = user.Email,
+            Status = user.Active,
             Role = user.Role.ToString()
         };
     }

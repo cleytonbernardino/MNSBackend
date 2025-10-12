@@ -18,11 +18,16 @@ public abstract class MmsClassFixture(CustomWebApplicationFactory factory) : ICl
     }
     
     protected async Task<HttpResponseMessage> DoGetAsync(
-        string token = "", string culture = "en", string? customUrl = null)
+        string token = "", string parameter = "", string culture = "en")
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
-        return await _client.GetAsync(customUrl ?? Method);
+
+        string url = Method;
+        if (!string.IsNullOrEmpty(parameter))
+            url = $"{Method}/{parameter}";
+        
+        return await _client.GetAsync(requestUri: url);
     }
     
     protected async Task<HttpResponseMessage> DoGetWithRefreshTokenAsync(
@@ -36,20 +41,30 @@ public abstract class MmsClassFixture(CustomWebApplicationFactory factory) : ICl
     }
 
     protected async Task<HttpResponseMessage> DoPutAsync(
-        object request, string token, string culture = "en", string? customUrl = null
+        object request, string token, string parameter = "", string culture = "en"
         )
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
-        return await _client.PutAsJsonAsync(customUrl ?? Method, request);
+    
+        string url = Method;
+        if (!string.IsNullOrEmpty(parameter))
+            url = $"{Method}/{parameter}";
+        
+        return await _client.PutAsJsonAsync(requestUri: url, request);
     }
 
     protected async Task<HttpResponseMessage> DoDeleteAsync(
-        string token, string culture = "en", string? customUrl = null)
+        string token, string parameter = "", string culture = "en")
     {
         ChangeRequestCulture(culture);
         AuthorizeRequest(token);
-        return await _client.DeleteAsync(customUrl ?? Method);
+    
+        string url = Method;
+        if (!string.IsNullOrEmpty(parameter))
+            url = $"{Method}/{parameter}";
+        
+        return await _client.DeleteAsync(requestUri: url);
     }
     
     private void AuthorizeRequest(string? token)

@@ -21,13 +21,13 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     [Fact]
     public async Task Success()
     {
-        var userToDelete = factory.InjectUser(UserBuilder.Build());
+        var userToDelete = factory.InjectInDatabase(UserBuilder.Build());
 
-        string url = $"{Method}/{_idEncoder.Encode(userToDelete.Id)}";
+        string id = _idEncoder.Encode(userToDelete.Id);
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
         
-        var response = await DoDeleteAsync(customUrl: url, token: token);
+        var response = await DoDeleteAsync(parameter: id, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -35,11 +35,11 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Without_Permission(string culture)
     {
-        string url = $"{Method}/{_idEncoder.Encode(factory.AdminUser.Id)}";
+        string id = _idEncoder.Encode(factory.AdminUser.Id);
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.EmployeeUser.UserIdentifier, UserRolesEnum.MANAGER);
         
-        var response = await DoDeleteAsync(customUrl: url, token: token, culture: culture);
+        var response = await DoDeleteAsync(parameter: id, token: token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
@@ -52,11 +52,11 @@ public class DeleteUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     [Fact]
     public async Task Error_Authorize_Denies_Invalid_Roles()
     {
-        string url = $"{Method}/{_idEncoder.Encode(factory.EmployeeUser.Id)}";
+        string id = _idEncoder.Encode(factory.EmployeeUser.Id);
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.EMPLOYEE);
         
-        var response = await DoDeleteAsync(customUrl: url, token: token);
+        var response = await DoDeleteAsync(parameter: id, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

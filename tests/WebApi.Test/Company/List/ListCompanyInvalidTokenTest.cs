@@ -14,7 +14,7 @@ public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : 
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Invalid_Token(string culture)
     {
-        var response = await DoGetAsync(token: "TokenInvalid", culture);
+        var response = await DoGetAsync(token: "TokenInvalid", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -32,7 +32,7 @@ public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : 
     {
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoGetAsync(token, culture);
+        var response = await DoGetAsync(token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

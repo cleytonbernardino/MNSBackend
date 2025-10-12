@@ -9,7 +9,7 @@ namespace WebApi.Test.User.Update;
 
 public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    protected override string Method => "api/user";
+    protected override string Method => "api/user/change-password";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
@@ -17,7 +17,7 @@ public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : M
     {
         var request = RequestRegisterCompanyBuilder.Build();
 
-        var response = await DoPutAsync(request, token: "TokenInvalid", culture);
+        var response = await DoPutAsync(request, token: "TokenInvalid", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -39,7 +39,7 @@ public class UpdateUserInvalidTokenTest(CustomWebApplicationFactory factory) : M
 
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(request, token, culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

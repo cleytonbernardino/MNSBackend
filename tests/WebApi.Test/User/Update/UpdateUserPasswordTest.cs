@@ -39,13 +39,12 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(request, token, culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
         errors!.Errors
             .ShouldHaveSingleItem()
-            .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("CURRENT_PASSWORD_INCORRECT", new CultureInfo(culture)));
     }
     
@@ -62,13 +61,12 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(request, token, culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
         errors!.Errors
             .ShouldHaveSingleItem()
-            .ToString()
             .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PASSWORD_EMPTY", new CultureInfo(culture)));
     }
     
@@ -85,13 +83,12 @@ public class UpdateUserPasswordTest(CustomWebApplicationFactory factory) : MmsCl
         string token = JwtTokenGeneratorBuilder.Build()
             .Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoPutAsync(request, token, culture);
+        var response = await DoPutAsync(request, token, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();
         errors!.Errors
             .ShouldHaveSingleItem()
-            .ToString()
             .ShouldBe(
                 ResourceMessagesException.ResourceManager.GetString("PASSWORD_LENGTH_IS_INVALID", new CultureInfo(culture))
                 );

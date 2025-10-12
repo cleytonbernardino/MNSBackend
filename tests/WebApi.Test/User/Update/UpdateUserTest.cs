@@ -133,7 +133,7 @@ public class UpdateUserTest(CustomWebApplicationFactory factory) : MmsClassFixtu
     private string InjectNewUser()
     {
         var user = UserBuilder.Build();
-        factory.InjectUser(user);
+        factory.InjectInDatabase(user);
         return _idEncoder.Encode(user.Id);
     }
 }

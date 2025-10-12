@@ -17,14 +17,13 @@ public class DeleteCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
     [Fact]
     public async Task Success()
     {
-        var companies = RegisterCompaniesInDataBase();
+        var company = factory.InjectInDatabase(CompanyBuilder.Build());
         string token = JwtTokenGeneratorBuilder.Build().Generate(
             factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN
         );
-        string id = _idEncoder.Encode(companies.Last().Id);
-        string url = $"{Method}/{id}"; 
+        string id = _idEncoder.Encode(company.Id); 
         
-        var response = await DoDeleteAsync(customUrl: url, token: token);
+        var response = await DoDeleteAsync(parameter: id, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 
@@ -34,16 +33,9 @@ public class DeleteCompanyTest(CustomWebApplicationFactory factory): MmsClassFix
         string token = JwtTokenGeneratorBuilder.Build().Generate(
             factory.ManagerUser.UserIdentifier, UserRolesEnum.ADMIN
         );
-        string id = _idEncoder.Encode(3);
-        string url = $"{Method}/{id}"; 
+        string id = _idEncoder.Encode(3); 
         
-        var response = await DoDeleteAsync(customUrl: url, token: token);
+        var response = await DoDeleteAsync(parameter: id, token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
-    }
-    
-    private IList<Entity.Company> RegisterCompaniesInDataBase(uint count = 3)
-    {
-        var companies= CompanyBuilder.BuildInBatch(count: count);
-        return factory.RegisterCompaniesAndGetCompanies(companies);
     }
 }

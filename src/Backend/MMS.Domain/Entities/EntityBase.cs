@@ -1,8 +1,12 @@
 ﻿namespace MMS.Domain.Entities;
 
-public class EntityBase
+public class EntityBase<T>
 {
-    public long Id { get; set; }
+    public T Id { get; set; }
     public DateTime CreatedOn { get; } = DateTime.UtcNow;
     public bool Active { get; set; } = true;
+}
+
+public class EntityBase : EntityBase<long>
+{
 }

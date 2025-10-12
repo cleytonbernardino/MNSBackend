@@ -8,13 +8,13 @@ namespace WebApi.Test.Company.ListUsers;
 
 public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    protected override string Method => "api/company/users";
+    protected override string Method => "api/admin/company/users/yyy";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Invalid_Token(string culture)
     {
-        var response = await DoGetAsync(token: "TokenInvalid", culture);
+        var response = await DoGetAsync(token: "TokenInvalid", culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
@@ -32,7 +32,7 @@ public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : 
     {
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
-        var response = await DoGetAsync(token, culture);
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        var response = await DoGetAsync(token, culture: culture);
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

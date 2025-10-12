@@ -1,4 +1,5 @@
-﻿using CommonTestUtilities.Tokens;
+﻿using CommonTestUtilities.Entities;
+using CommonTestUtilities.Tokens;
 using MMS.Communication.Responses.Company;
 using MMS.Domain.Enums;
 using Shouldly;
@@ -14,7 +15,13 @@ public class ListCompaniesTest(CustomWebApplicationFactory factory) : MmsClassFi
     [Fact]
     public async Task Success()
     {
-        var registeredCompanies = factory.RegisterCompaniesAndGetCompanies();
+        var companies = CompanyBuilder.BuildInBatch(count: 10);
+        foreach (var company in companies)
+        {
+            company.Id = 0;
+        }
+        
+        var registeredCompanies = factory.InjectInDatabase(companies);
 
         string token = JwtTokenGeneratorBuilder.Build().Generate(
             factory.AdminUser.UserIdentifier, UserRolesEnum.ADMIN);
@@ -23,6 +30,6 @@ public class ListCompaniesTest(CustomWebApplicationFactory factory) : MmsClassFi
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var result = await response.Content.ReadFromJsonAsync<ResponseShortCompanies>();
-        result!.Companies.Count().ShouldBe(registeredCompanies.Count);
+        result!.Companies.Count().ShouldBe(registeredCompanies.Length);
     }
 }

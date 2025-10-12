@@ -14,8 +14,15 @@ public class MmsDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MmsDbContext).Assembly);
-        modelBuilder.Entity<Company>().HasOne(company => company.Manager)
+        modelBuilder.Entity<Company>()
+            .HasOne(company => company.Manager)
             .WithOne()
             .HasForeignKey<Company>(company => company.ManagerId);
+        modelBuilder.Entity<EntityBase>()
+            .Property(entity => entity.Id)
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<EntityBase<short>>()
+            .Property(entity => entity.Id)
+            .ValueGeneratedOnAdd();
     }
 }

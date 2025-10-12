@@ -11,59 +11,36 @@ namespace WebApi.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    private IList<Entity.Company> _companiesDb = [];
+    #region Standard Entities
     
-    public Entity.User EmployeeUser { get; private set; }
-    public Entity.User RHUser { get; private set; }
-    public Entity.User SubManagerUser { get; private set; }
-    public Entity.User ManagerUser { get; private set; }
-    public Entity.User AdminUser { get; private set; }
-
-    public int UserInDataBase { get; private set; } = 1;
-
-    // Only manager User
+    public Entity.User EmployeeUser { get; private set; } = null!;
+    public Entity.User RHUser { get; private set; } = null!;
+    public Entity.User SubManagerUser { get; private set; } = null!;
+    public Entity.User ManagerUser { get; private set; } = null!;
+    public Entity.User AdminUser { get; private set; } = null!;
     public string UserPassword { get; private set; } = string.Empty;
     public Entity.RefreshToken TokenRefresh { get; private set; } = null!;
 
-    public Entity.User InjectUser(Entity.User user)
+    #endregion
+    
+    public T[] InjectInDatabase<T>(T[] entities) where T : Entity.EntityBase
     {
         using IServiceScope scope = Services.CreateScope();
         MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
 
-        user.Id = ++UserInDataBase;
-        dbContext.Add(user);
+        foreach (T entity in entities)
+            entity.Id = 0;
+        
+        dbContext.AddRange(entities);
+
         dbContext.SaveChanges();
-        return user;
+        return entities;
     }
     
-    public IList<Entity.Company> RegisterCompaniesAndGetCompanies(IList<Entity.Company>? companies = null)
+    public T InjectInDatabase<T>(T entity) where T : Entity.EntityBase
     {
-        if (_companiesDb.Count != 0 && companies is null)
-            return _companiesDb;
-        
-        using IServiceScope scope = Services.CreateScope();
-        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
-        
-        companies ??= CompanyBuilder.BuildInBatch();
-        foreach (var company in companies)
-        {
-            company.Id = 0;
-        }
-        
-        dbContext.Companies.AddRange(companies);
-        dbContext.SaveChanges();
-        return RefreshCompanies();
-        
-    }
-
-    public IList<Entity.Company> RefreshCompanies()
-    {
-        using IServiceScope scope = Services.CreateScope();
-        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
-        _companiesDb = dbContext.Companies.Include(
-            company => company.Manager).Where(company => company.Id != 0
-        ).ToArray();
-        return _companiesDb;
+        T[] array = [entity];
+        return InjectInDatabase(array)[0];
     }
 
     private void RegisterInitialUsers(MmsDbContext dbContext)
@@ -71,31 +48,23 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         (ManagerUser, UserPassword) = UserBuilder.BuildWithPassword();
 
         EmployeeUser = UserBuilder.Build();
-        EmployeeUser.Id = ++UserInDataBase;
         EmployeeUser.Role = UserRolesEnum.EMPLOYEE;
 
         RHUser = UserBuilder.Build();
-        RHUser.Id = ++UserInDataBase;
         RHUser.Role = UserRolesEnum.RH;
 
         SubManagerUser = UserBuilder.Build();
-        SubManagerUser.Id = ++UserInDataBase;
         SubManagerUser.Role = UserRolesEnum.SUB_MANAGER;
 
         AdminUser = UserBuilder.Build();
-        AdminUser.Id = ++UserInDataBase;
         AdminUser.IsAdmin = true;
         AdminUser.Role = UserRolesEnum.ADMIN;
 
-        dbContext.Add(EmployeeUser);
-        dbContext.Add(RHUser);
-        dbContext.Add(SubManagerUser);
-        dbContext.Add(ManagerUser);
-        dbContext.Add(AdminUser);
-
-        RegisterRefreshTokenFor(ManagerUser, dbContext);
-
-        dbContext.SaveChanges();
+        dbContext.Users.Add(EmployeeUser);
+        dbContext.Users.Add(RHUser);
+        dbContext.Users.Add(SubManagerUser);
+        dbContext.Users.Add(ManagerUser);
+        dbContext.Users.Add(AdminUser);
     }
 
     private void RegisterRefreshTokenFor(Entity.User user, MmsDbContext dbContext)
@@ -133,6 +102,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 dbContext.Database.EnsureDeleted();
 
                 RegisterInitialUsers(dbContext);
+                RegisterRefreshTokenFor(ManagerUser, dbContext);
+                dbContext.SaveChanges();
             });
     }
 }

@@ -7,8 +7,8 @@ public static class CompanyBuilder
 {
     public static Company Build(User? manager = null)
     {
-        Faker<Company>? company = new Faker<Company>()
-            .RuleFor(company => company.Id, 1)
+        Faker<Company> company = new Faker<Company>()
+            .RuleFor(company => company.Id, 0)
             .RuleFor(company => company.UpdatedOn, () => DateTime.UtcNow)
             .RuleFor(company => company.CNPJ, f => f.Random.Replace("##.###.###/####-##"))
             .RuleFor(company => company.LegalName, f => f.Company.CompanyName())
@@ -20,32 +20,27 @@ public static class CompanyBuilder
             .RuleFor(company => company.CompanySubscription, () => null)
             .RuleFor(company => company.SubscriptionStatus, true);
 
-        if (manager is null)
-            company.RuleFor(company => company.Manager, UserBuilder.Build);
-        else
+        if (manager is not null)
         {
-            //company.RuleFor(company => company.Manager, manager);
+           // company.RuleFor(company => company.Manager, manager);
             company.RuleFor(company => company.ManagerId, manager.Id);
         }
             
-
+        
         return company.Generate();
     }
 
-    public static IList<Company> BuildInBatch(User? manager = null, uint count = 5)
+    public static Company[] BuildInBatch(User? manager = null, uint count = 5, bool withId = false)
     {
         List<Company> companies = [];
-        uint userId = 10000;
         for (int i = 1; i <= count; i++)
         {
             Company company = Build(manager);
-            company.Id = i + 200;
-            if (manager is null)
-                company.Manager!.Id = ++userId;
-
+            if (withId)
+                company.Id = i;
             companies.Add(company);
         }
-
-        return companies;
+        
+        return companies.ToArray();
     }
 }

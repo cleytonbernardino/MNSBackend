@@ -10,19 +10,19 @@ public static class ShortUserBuilder
     {
         return new Faker<ShortUser>()
             .RuleFor(user => user.Id, f => f.Random.Int(1, 1000))
-            .RuleFor(user => user.LastLogin, () => DateTime.UtcNow)
+            .RuleFor(user => user.Active, true)
             .RuleFor(user => user.FirstName, f => f.Name.FirstName())
-            .RuleFor(user => user.LastName, f => f.Name.LastName())
+            .RuleFor(user => user.Email, f => f.Internet.Email())
             .RuleFor(user => user.Role, () => UserRolesEnum.MANAGER);
     }
 
-    public static IList<ShortUser> BuildInBatch(int amount = 5)
+    public static ShortUser[] BuildInBatch(int amount = 5)
     {
         List<ShortUser> users = new();
         for (int i = 0; i < amount; i++)
         {
             users.Add(Build());
         }
-        return users;
+        return users.ToArray();
     }
 }

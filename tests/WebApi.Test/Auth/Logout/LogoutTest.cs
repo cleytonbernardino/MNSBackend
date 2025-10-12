@@ -34,7 +34,7 @@ public class LogoutTest(CustomWebApplicationFactory factory) : MmsClassFixture(f
         string accessToken = JwtTokenGeneratorBuilder.Build().Generate(
             factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
-        var response = await DoGetAsync(accessToken, culture);
+        var response = await DoGetAsync(accessToken, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         
         var errors = await response.Content.ReadFromJsonAsync<ResponseError>();;
