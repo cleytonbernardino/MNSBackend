@@ -23,7 +23,7 @@ public class ListCompanyUsersUseCaseTest
         var user = UserBuilder.Build();
 
         var useCase = CreateUseCase(user, numberOfUsers);
-        async Task<ResponseListShortUsers> act() => await useCase.Execute();
+        async Task<ResponseListShortUsers> act() => await useCase.Execute(user.CompanyId);
 
         var response = await act();
         response.Users
@@ -32,14 +32,30 @@ public class ListCompanyUsersUseCaseTest
     }
 
     [Fact]
+    public async Task Success_Admin_Ignores_Validation()
+    {
+        int numberOfUsers = 5;
+
+        var user = UserBuilder.Build();
+        user.IsAdmin = true;
+
+        var useCase = CreateUseCase(user, numberOfUsers);
+        async Task<ResponseListShortUsers> act() => await useCase.Execute(user.CompanyId);
+
+        var response = await act();
+        response.Users
+            .Count
+            .ShouldBe(numberOfUsers);
+    }
+    
+    [Fact]
     public async Task Error_User_Without_Permission()
     {
         var user = UserBuilder.Build();
-        user.IsAdmin = false;
-        user.Role = UserRolesEnum.EMPLOYEE;
+        user.Role = UserRolesEnum.CUSTOMER;
 
         var useCase = CreateUseCase(user);
-        async Task act() => await useCase.Execute();
+        async Task act() => await useCase.Execute(user.CompanyId);
 
         var errors = await act().ShouldThrowAsync<NoPermissionException>();
         errors.Message.ShouldBe(ResourceMessagesException.NO_PERMISSION);

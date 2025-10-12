@@ -28,20 +28,20 @@ public class CompanyRepository(
             }).ToList();
     }
 
-    public IList<ShortUser> ListUsers(long companyId)
+    public ShortUser[] ListUsers(long companyId)
     {
         return _dbContext.Users
             .AsNoTracking()
-            .Where(user => user.CompanyId == companyId && user.Active)
+            .Where(user => user.CompanyId == companyId)
             .Select(field => new ShortUser
             {
                 Id = field.Id,
                 FirstName = field.FirstName,
-                LastName = field.LastName,
+                Email = field.Email,
                 Role = field.Role,
-                LastLogin = field.LastLogin
+                Active = field.Active
             })
-            .ToList();
+            .ToArray();
     }
 
     public async Task<Company?> GetById(User user, long companyId)

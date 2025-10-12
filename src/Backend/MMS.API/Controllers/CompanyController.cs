@@ -10,14 +10,16 @@ namespace MMS.API.Controllers;
 
 public class CompanyController : MMSBaseController
 {
-    [HttpGet("Users")]
+    [HttpGet]
+    [Route("users/{id}")]
     [ProducesResponseType(typeof(ResponseListShortUsers), StatusCodes.Status200OK)]
-    [Authorize(Roles = "ADMIN,RH,SUB_MANAGER,MANAGER")]
+    [Authorize(Roles = "ADMIN, MANAGER, SUB_MANAGER, RH")]
     public async Task<IActionResult> ListUsers(
-        [FromServices] IListCompanyUsersUseCase useCase
+        [FromServices] IListCompanyUsersUseCase useCase,
+        [FromRoute] [ModelBinder(typeof(MmsIdBinder))] long id
     )
     {
-        var response = await useCase.Execute();
+        var response = await useCase.Execute(id);
         return Ok(response);
     }
     

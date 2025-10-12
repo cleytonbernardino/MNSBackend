@@ -6,9 +6,9 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Company.ListUsers;
 
-public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
+public class ListCompanyUsersInvalidTokenTest(CustomWebApplicationFactory factory) : MmsClassFixture(factory)
 {
-    protected override string Method => "api/admin/company/users/yyy";
+    protected override string Method => "api/company/users/yyy";
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
@@ -33,6 +33,6 @@ public class ListCompanyInvalidTokenTest(CustomWebApplicationFactory factory) : 
         string token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid(), UserRolesEnum.MANAGER);
 
         var response = await DoGetAsync(token, culture: culture);
-        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

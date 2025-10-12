@@ -19,12 +19,12 @@ public class ListCompanyUsersUseCase(
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyReadOnlyRepository _repository = repository;
 
-    public async Task<ResponseListShortUsers> Execute()
+    public async Task<ResponseListShortUsers> Execute(long companyId)
     {
         var loggedUser = await _loggedUser.User();
-        CanGetUsers(loggedUser);
+        CanGetUsers(loggedUser, companyId);
 
-        var users = _repository.ListUsers(loggedUser.CompanyId);
+        var users = _repository.ListUsers(companyId);
         var response = new ResponseListShortUsers();
         foreach(var user in users)
         {
@@ -36,7 +36,7 @@ public class ListCompanyUsersUseCase(
         return response;
     }
 
-    private static void CanGetUsers(Entity.User loggedUser)
+    private static void CanGetUsers(Entity.User loggedUser, long companyId)
     {
         if (loggedUser.IsAdmin)
             return;
@@ -47,7 +47,7 @@ public class ListCompanyUsersUseCase(
         ];
 
         bool roleIsValid = validRoles.Any(role => loggedUser.Role == role);
-        if (!roleIsValid)
+        if (!roleIsValid || loggedUser.CompanyId != companyId)
             throw new NoPermissionException();
     }
 }
