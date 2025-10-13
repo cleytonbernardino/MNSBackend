@@ -45,43 +45,6 @@ public class RegisterUserTest(
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
-    public async Task Error_First_Name_Empty(string culture)
-    {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
-
-        var request = RequestRegisterUseBuilder.Build();
-        request.FirstName = string.Empty;
-
-        var response = await DoPostAsync(request: request, token: token, culture: culture);
-
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
-        errorList!.Errors
-            .ShouldHaveSingleItem().ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("FIRST_NAME_EMPTY", new CultureInfo(culture)));
-    }
-
-    [Theory]
-    [ClassData(typeof(CultureInlineDataTest))]
-    public async Task Error_Email_Empty(string culture)
-    {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
-
-        var request = RequestRegisterUseBuilder.Build();
-        request.Email = string.Empty;
-
-        var response = await DoPostAsync(request: request, token: token, culture: culture);
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
-        errorList!.Errors
-            .ShouldHaveSingleItem().ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("EMAIL_EMPTY", new CultureInfo(culture)));
-    }
-
-    [Theory]
-    [ClassData(typeof(CultureInlineDataTest))]
     public async Task Error_Email_In_Use(string culture)
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
@@ -100,7 +63,7 @@ public class RegisterUserTest(
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
-    public async Task Error_Phone_Empty(string culture)
+    public async Task Error_Validator(string culture)
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
 
@@ -118,19 +81,14 @@ public class RegisterUserTest(
 
     [Theory]
     [ClassData(typeof(CultureInlineDataTest))]
-    public async Task Error_Phone_Is_Returning_Error_With_Incorrect_Patterns(string culture)
+    public async Task Error_User_Does_Not_Have_Permission(string culture)
     {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(factory.ManagerUser.UserIdentifier, UserRolesEnum.MANAGER);
+        string token = JwtTokenGeneratorBuilder.Build()
+            .Generate(factory.EmployeeUser.UserIdentifier, UserRolesEnum.EMPLOYEE);
 
         var request = RequestRegisterUseBuilder.Build();
-        request.Phone = "(11) 91741824";
 
         var response = await DoPostAsync(request: request, token: token, culture: culture);
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        var errorList = await response.Content.ReadFromJsonAsync<ResponseError>();
-        errorList!.Errors
-            .ShouldHaveSingleItem().ToString()
-            .ShouldBe(ResourceMessagesException.ResourceManager.GetString("PHONE_NOT_VALID", new CultureInfo(culture)));
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

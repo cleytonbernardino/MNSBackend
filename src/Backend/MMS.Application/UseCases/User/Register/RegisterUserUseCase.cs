@@ -46,6 +46,9 @@ public class RegisterUserUseCase(
         user.Password = _encrypter.Encrypt(request.Password);
         user.CompanyId = loggedUser.CompanyId;
 
+        if ((UserRolesEnum)request.Role == UserRolesEnum.ADMIN && loggedUser.IsAdmin)
+            user.IsAdmin = true;
+
         await _writeOnlyRepository.RegisterUser(user);
         await _unityOfWork.Commit();
     }

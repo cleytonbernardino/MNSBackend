@@ -3,14 +3,12 @@ using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
-using CommonTestUtilities.Tokens;
 using Microsoft.Extensions.Logging.Abstractions;
 using MMS.Application.UseCases.User.Register;
 using MMS.Domain.Enums;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 using Shouldly;
-using UseCases.Test.Tokens;
 using Entity = MMS.Domain.Entities;
 
 namespace UseCases.Test.User.Register;
@@ -31,6 +29,37 @@ public class RegisterUserUseCaseTest
     }
 
     [Fact]
+    public async Task Success_Admin_User_Created()
+    {
+        var user = UserBuilder.Build();
+        user.IsAdmin = true;
+        
+        var request = RequestRegisterUseBuilder.Build();
+        request.Role = (short)UserRolesEnum.ADMIN;
+
+        var useCase = CreateUseCase(user);
+
+        async Task act() => await useCase.Execute(request);
+
+        await act().ShouldNotThrowAsync();
+    }
+    
+    [Fact]
+    public async Task Error_User_Cannot_Create_An_Admin()
+    {
+        var user = UserBuilder.Build();
+        
+        var request = RequestRegisterUseBuilder.Build();
+        request.Role = (short)UserRolesEnum.ADMIN;
+
+        var useCase = CreateUseCase(user);
+
+        async Task act() => await useCase.Execute(request);
+
+        await act().ShouldThrowAsync<NoPermissionException>();
+    }
+    
+    [Fact]
     public async Task Error_First_Name_Empty()
     {
         var user = UserBuilder.Build();
@@ -47,7 +76,7 @@ public class RegisterUserUseCaseTest
     }
 
     [Fact]
-    public async Task Error_Email_In_Use()
+    public async Task Error_Validator()
     {
         var user = UserBuilder.Build();
         var request = RequestRegisterUseBuilder.Build();
