@@ -3,6 +3,7 @@ using MMS.Application.Extensions;
 using MMS.Communication.Requests.Company;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.Company;
+using MMS.Domain.Services.Cache;
 using MMS.Domain.Services.LoggedUser;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
@@ -13,14 +14,18 @@ namespace MMS.Application.UseCases.Company.Update;
 public class UpdateCompanyUseCase(
     ILoggedUser loggedUser,
     ICompanyUpdateOnlyRepository repository,
+    ICacheService cache,
     IUnitOfWork unitOfWork,
     ILogger<UpdateCompanyUseCase> logger
     ) : IUpdateCompanyUseCase
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ICompanyUpdateOnlyRepository _repository = repository;
+    private readonly ICacheService _cache = cache;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ILogger<UpdateCompanyUseCase> _logger = logger;
+    
+    private const string CACHE_KEY = "Companies";
     
     public async Task Execute(RequestUpdateCompany request, long id)
     {
@@ -40,6 +45,7 @@ public class UpdateCompanyUseCase(
         
         _repository.Update(company);
         await _unitOfWork.Commit();
+        await _cache.DeleteCache(CACHE_KEY);
     }
 
     private static async Task Validated(RequestUpdateCompany request)

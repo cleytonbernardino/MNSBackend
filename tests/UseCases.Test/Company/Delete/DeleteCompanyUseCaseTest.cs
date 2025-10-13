@@ -1,4 +1,5 @@
-﻿using CommonTestUtilities.Entities;
+﻿using CommonTestUtilities.Cache;
+using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Services.LoggedUser;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -40,9 +41,10 @@ public class DeleteCompanyUseCaseTest
     {
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = CompanyWriteOnlyRepositoryBuilder.Build();
+        var cacheService = new CacheServiceBuilder().Build();
         var unityOfWork = UnitOfWorkBuilder.Build();
         var logger = NullLogger<DeleteCompanyUseCase>.Instance;
         
-        return new DeleteCompanyUseCase(loggedUser, repository, unityOfWork, logger);
+        return new DeleteCompanyUseCase(loggedUser, repository, cacheService, unityOfWork, logger);
     }
 }

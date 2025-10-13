@@ -6,6 +6,7 @@ using MMS.Domain.Enums;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.User;
 using MMS.Domain.Security.Cryptography;
+using MMS.Domain.Services.Cache;
 using MMS.Domain.Services.LoggedUser;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
@@ -17,6 +18,7 @@ public class RegisterUserUseCase(
     ILoggedUser loggedUser,
     IUserReadOnlyRepository readOnlyRepository,
     IUserWriteOnlyRepository writeOnlyRepository,
+    ICacheService cache,
     IPasswordEncrypter encrypter,
     IUnitOfWork unitOfWork,
     ILogger<RegisterUserUseCase> logger
@@ -29,7 +31,8 @@ public class RegisterUserUseCase(
     private readonly IUserReadOnlyRepository _readOnlyRepository = readOnlyRepository;
     private readonly IUnitOfWork _unityOfWork = unitOfWork;
     private readonly IUserWriteOnlyRepository _writeOnlyRepository = writeOnlyRepository;
-
+    private readonly ICacheService _cache = cache;
+    
     public async Task Execute(RequestRegisterUser request)
     {
         var loggedUser = await _loggedUser.User();
@@ -51,6 +54,7 @@ public class RegisterUserUseCase(
 
         await _writeOnlyRepository.RegisterUser(user);
         await _unityOfWork.Commit();
+        await _cache.DeleteCache($"Companies/Users/id:{user.CompanyId}");
     }
 
     private async Task Validate(RequestRegisterUser request)

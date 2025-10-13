@@ -11,7 +11,9 @@ using MMS.Domain.Repositories.Token;
 using MMS.Domain.Repositories.User;
 using MMS.Domain.Security.Cryptography;
 using MMS.Domain.Security.Token;
+using MMS.Domain.Services.Cache;
 using MMS.Domain.Services.LoggedUser;
+using MMS.Infrastructure.Cache;
 using MMS.Infrastructure.DataAccess;
 using MMS.Infrastructure.DataAccess.Repositories;
 using MMS.Infrastructure.Extensions;
@@ -30,6 +32,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection service, IConfiguration configuration)
     {
         AddRepositories(service);
+        AddCacheService(service, configuration);
         AddEncryptors(service);
         AddJwtToken(service, configuration);
         //AddQueue(service);
@@ -52,6 +55,16 @@ public static class DependencyInjectionExtension
         service.AddScoped<ICompanyReadOnlyRepository, CompanyRepository>();
         service.AddScoped<IRefreshTokenRepository, TokenRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+
+    private static void AddCacheService(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetValue<string>("Redis:Configuration");
+            options.InstanceName = configuration.GetValue<string>("Redis:InstanceName");
+        });
+        services.AddScoped<ICacheService, CacheService>();
     }
 
     private static void AddEncryptors(IServiceCollection services)

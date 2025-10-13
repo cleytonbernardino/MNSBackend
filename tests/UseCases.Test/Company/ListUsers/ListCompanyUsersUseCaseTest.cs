@@ -1,11 +1,11 @@
-﻿using CommonTestUtilities.Cryptography;
+﻿using CommonTestUtilities.Cache;
+using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Services.LoggedUser;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Communication.Responses.User;
 using MMS.Domain.Enums;
-using MMS.Domain.Services.LoggedUser;
 using MMS.Exceptions;
 using MMS.Exceptions.ExceptionsBase;
 using Shouldly;
@@ -65,9 +65,11 @@ public class ListCompanyUsersUseCaseTest
     {
         IdEncoderBuilder idEncoder = new();
         idEncoder.Encoder();
-        ILoggedUser loggedUser = LoggedUserBuilder.Build(user);
-        CompanyReadOnlyRepositoryBuilder repository = new CompanyReadOnlyRepositoryBuilder().ListUsers(numberOfUsers);
+        
+        var loggedUser = LoggedUserBuilder.Build(user);
+        var repository = new CompanyReadOnlyRepositoryBuilder().ListUsers(numberOfUsers);
+        var cacheService = new CacheServiceBuilder().Build();
 
-        return new ListCompanyUsersUseCase(idEncoder.Build(), loggedUser, repository.Build());
+        return new ListCompanyUsersUseCase(idEncoder.Build(), loggedUser, repository.Build(), cacheService);
     }
 }

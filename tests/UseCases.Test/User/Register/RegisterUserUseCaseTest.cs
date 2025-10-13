@@ -1,4 +1,5 @@
-﻿using CommonTestUtilities.Cryptography;
+﻿using CommonTestUtilities.Cache;
+using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
@@ -124,6 +125,7 @@ public class RegisterUserUseCaseTest
         var loggedUser = LoggedUserBuilder.Build(user);
         UserReadOnlyRepositoryBuilder readOnlyRepository = new();
         var writeOnlyRepository = UserWriteOnlyRepositoryBuilder.Build();
+        var cacheService = new CacheServiceBuilder().Build();
         var passwordEncrypter = PasswordEncrypterBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var logger = NullLogger<RegisterUserUseCase>.Instance;
@@ -132,7 +134,7 @@ public class RegisterUserUseCaseTest
             readOnlyRepository.ExistActiveUserWithEmail(email);
 
         return new RegisterUserUseCase(
-           loggedUser, readOnlyRepository.Build(), writeOnlyRepository,
+           loggedUser, readOnlyRepository.Build(), writeOnlyRepository, cacheService,
            passwordEncrypter, unitOfWork, logger
         );
     }

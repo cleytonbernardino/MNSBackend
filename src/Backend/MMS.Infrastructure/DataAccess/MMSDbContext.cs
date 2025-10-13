@@ -18,10 +18,10 @@ public class MmsDbContext(
             .HasOne(company => company.Manager)
             .WithOne()
             .HasForeignKey<Company>(company => company.ManagerId);
-        modelBuilder.Entity<EntityBase>()
+        modelBuilder.Entity<Company>()
             .Property(entity => entity.Id)
             .ValueGeneratedOnAdd();
-        modelBuilder.Entity<EntityBase<short>>()
+        modelBuilder.Entity<User>()
             .Property(entity => entity.Id)
             .ValueGeneratedOnAdd();
     }

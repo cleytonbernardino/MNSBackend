@@ -1,4 +1,5 @@
-﻿using CommonTestUtilities.Entities;
+﻿using CommonTestUtilities.Cache;
+using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
@@ -67,9 +68,10 @@ public class UpdateCompanyUseCaseTest
     {
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = new CompanyUpdateOnlyRepositoryBuilder().GetById(company);
+        var cacheService = new CacheServiceBuilder().Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var logger = NullLogger<UpdateCompanyUseCase>.Instance;
         
-        return new UpdateCompanyUseCase(loggedUser, repository.Build(), unitOfWork, logger);
+        return new UpdateCompanyUseCase(loggedUser, repository.Build(), cacheService, unitOfWork, logger);
     }
 }
