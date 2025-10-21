@@ -31,4 +31,12 @@ public class SubscriptionPlanRepository(
     {
         _dbContext.SubscriptionsPlans.Update(subscriptionPlan);
     }
+
+    public async Task Delete(short id)
+    {
+        var plan = await GetById(id);
+        if (plan is null)
+            return;
+        _dbContext.SubscriptionsPlans.Remove(plan);
+    }
 }

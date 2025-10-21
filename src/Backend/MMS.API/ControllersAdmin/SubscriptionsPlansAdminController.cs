@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MMS.API.Binders;
+using MMS.Application.UseCases.SubscriptionPlan.Delete;
 using MMS.Application.UseCases.SubscriptionPlan.Register;
 using MMS.Application.UseCases.SubscriptionPlan.Update;
 using MMS.Communication.Requests.SubscriptionsPlans;
@@ -32,6 +33,23 @@ public class SubscriptionsPlansAdminController : MmsAdminBaseController
         )
     {
         await useCase.Execute(request);
+        return NoContent();
+    }
+    
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(
+        [FromRoute] [ModelBinder(typeof(MmsIdBinder))] long id,
+        [FromServices] IDeleteSubscriptionPlanUseCase useCase
+        )
+    {
+        bool idValid = short.TryParse(id.ToString(), out short shortId);
+        if (!idValid)
+            return NotFound();
+    
+        await useCase.Execute(shortId);
         return NoContent();
     }
 }

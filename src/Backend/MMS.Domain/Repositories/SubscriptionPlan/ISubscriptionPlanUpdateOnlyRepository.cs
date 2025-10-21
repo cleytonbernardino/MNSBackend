@@ -6,4 +6,5 @@ public interface ISubscriptionPlanUpdateOnlyRepository
 {
     Task<SubscriptionsPlan?> GetById(short id);
     void Update(SubscriptionsPlan subscriptionsPlan);
+    Task Delete(short id);
 }
