@@ -23,18 +23,25 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     #endregion
     
-    public T[] InjectInDatabase<T>(T[] entities) where T : Entity.EntityBase
+    public T[] InjectInDatabase<TKey, T>(T[] entities)
+        where TKey :  struct
+        where T :  Entity.EntityBase<TKey>
     {
         using IServiceScope scope = Services.CreateScope();
         MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
 
         foreach (T entity in entities)
-            entity.Id = 0;
+            entity.Id = default(TKey);
         
         dbContext.AddRange(entities);
 
         dbContext.SaveChanges();
         return entities;
+    }
+    
+    public T[] InjectInDatabase<T>(T[] entities) where T : Entity.EntityBase
+    {
+        return InjectInDatabase<long, T>(entities);
     }
     
     public T InjectInDatabase<T>(T entity) where T : Entity.EntityBase
