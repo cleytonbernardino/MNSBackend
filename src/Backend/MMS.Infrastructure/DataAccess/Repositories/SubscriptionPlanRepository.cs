@@ -6,7 +6,7 @@ namespace MMS.Infrastructure.DataAccess.Repositories;
 
 public class SubscriptionPlanRepository(
     MmsDbContext dbContext
-    ) : ISubscriptionPlanWriteOnlyRepository, ISubscriptionPlanReadOnlyRepository
+    ) : ISubscriptionPlanWriteOnlyRepository, ISubscriptionPlanReadOnlyRepository, ISubscriptionPlanUpdateOnlyRepository
 {
     private readonly MmsDbContext _dbContext = dbContext;
     
@@ -18,5 +18,17 @@ public class SubscriptionPlanRepository(
     public async Task<SubscriptionsPlan[]> List()
     {
         return await _dbContext.SubscriptionsPlans.ToArrayAsync();
+    }
+
+    public async Task<SubscriptionsPlan?> GetById(short id)
+    {
+        return await _dbContext.SubscriptionsPlans
+            .FirstOrDefaultAsync(subscriptionPlans =>
+                subscriptionPlans.Id == id);
+    }
+
+    public void Update(SubscriptionsPlan subscriptionPlan)
+    {
+        _dbContext.SubscriptionsPlans.Update(subscriptionPlan);
     }
 }

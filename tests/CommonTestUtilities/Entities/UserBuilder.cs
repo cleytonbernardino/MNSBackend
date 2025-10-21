@@ -7,13 +7,13 @@ namespace CommonTestUtilities.Entities;
 
 public static class UserBuilder
 {
-    private static Faker<User> GenerateUser()
+    private static Faker<User> GenerateUser(bool isAdmin)
     {
         return new Faker<User>()
             .RuleFor(user => user.Id, 0)
             .RuleFor(user => user.UpdatedOn, () => DateTime.UtcNow)
             .RuleFor(user => user.LastLogin, () => DateTime.UtcNow)
-            .RuleFor(user => user.IsAdmin, () => false)
+            .RuleFor(user => user.IsAdmin, isAdmin)
             .RuleFor(user => user.UserIdentifier, Guid.NewGuid())
             .RuleFor(user => user.Email, f => f.Internet.Email())
             .RuleFor(user => user.Phone, () => "(11) 981628391")
@@ -22,9 +22,9 @@ public static class UserBuilder
             .RuleFor(user => user.Role, () => UserRolesEnum.MANAGER);
     }
 
-    public static User Build()
+    public static User Build(bool isAdmin = false)
     {
-        return GenerateUser()
+        return GenerateUser(isAdmin)
             .RuleFor(user => user.Password, f => f.Internet.Password());
     }
 
@@ -44,7 +44,7 @@ public static class UserBuilder
         var password = new Faker().Internet.Password();
 
         return (
-            user: GenerateUser().RuleFor(user => user.Password, () =>
+            user: GenerateUser(isAdmin: false).RuleFor(user => user.Password, () =>
             {
                 var passwordEncrypter = PasswordEncrypterBuilder.Build();
                 return passwordEncrypter.Encrypt(password);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MMS.API.Binders;
 using MMS.Application.UseCases.SubscriptionPlan.Register;
+using MMS.Application.UseCases.SubscriptionPlan.Update;
 using MMS.Communication.Requests.SubscriptionsPlans;
 using MMS.Communication.Responses;
 
@@ -20,5 +21,17 @@ public class SubscriptionsPlansAdminController : MmsAdminBaseController
     {
         await useCase.Execute(request);
         return Created("", null);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(
+        [FromBody] RequestUpdateSubscriptionPlan request,
+        [FromServices] IUpdateSubscriptionPlanUseCase useCase
+        )
+    {
+        await useCase.Execute(request);
+        return NoContent();
     }
 }
