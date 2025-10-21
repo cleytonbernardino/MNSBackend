@@ -229,4 +229,13 @@
   <data name="ADDRESS_EMPTY" xml:space="preserve">
     <value>Address cannot be empty.</value>
   </data>
+  <data name="NAME_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Name Cannot Be Empty.</value>
+  </data>
+  <data name="DESCRIPTION_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Description Cannot Be Empty.</value>
+  </data>
+  <data name="PLAN_NOT_FOUND" xml:space="preserve">
+    <value>No plans were found with that id.</value>
+  </data>
 </root>

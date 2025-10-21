@@ -9,6 +9,7 @@ using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Application.UseCases.Company.Update;
+using MMS.Application.UseCases.SubscriptionPlan.Register;
 using MMS.Application.UseCases.User.Delete;
 using MMS.Application.UseCases.User.Register;
 using MMS.Application.UseCases.User.Update;
@@ -24,6 +25,7 @@ public static class DependencyInjectionExtension
     {
         AddUserUseCase(service);
         AddCompanyUseCase(service);
+        AddSubscriptionPlan(service);
         AddIdEncoder(service, configuration);
     }
 
@@ -47,6 +49,11 @@ public static class DependencyInjectionExtension
         service.AddScoped<IUpdateCompanyUseCase, UpdateCompanyUseCase>();
         service.AddScoped<IListCompaniesUseCase, ListCompaniesUseCase>();
         service.AddScoped<IDeleteCompanyUseCase, DeleteCompanyUseCase>();
+    }
+
+    private static void AddSubscriptionPlan(IServiceCollection service)
+    {
+        service.AddScoped<IRegisterSubscriptionPlanUseCase, RegisterSubscriptionPlan>();
     }
 
     private static void AddIdEncoder(IServiceCollection services,  IConfiguration configuration)

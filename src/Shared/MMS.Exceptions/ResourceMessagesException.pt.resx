@@ -228,4 +228,13 @@
   <data name="ADDRESS_EMPTY" xml:space="preserve">
     <value>Endereço não pode está vazio.</value>
   </data>
+  <data name="NAME_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Nome Não Pode Está Vazio.</value>
+  </data>
+  <data name="DESCRIPTION_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Descrição Não Pode Está Vazio.</value>
+  </data>
+  <data name="PLAN_NOT_FOUND" xml:space="preserve">
+    <value>Nenhum plano foi encontrado com esse id.</value>
+  </data>
 </root>

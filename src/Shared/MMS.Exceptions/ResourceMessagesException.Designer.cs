@@ -150,6 +150,15 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description Cannot Be Empty..
+        /// </summary>
+        public static string DESCRIPTION_CANNOT_BE_EMPTY {
+            get {
+                return ResourceManager.GetString("DESCRIPTION_CANNOT_BE_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email cannot be empty..
         /// </summary>
         public static string EMAIL_EMPTY {
@@ -258,6 +267,15 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name Cannot Be Empty..
+        /// </summary>
+        public static string NAME_CANNOT_BE_EMPTY {
+            get {
+                return ResourceManager.GetString("NAME_CANNOT_BE_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permission too low to perform this action..
         /// </summary>
         public static string NO_PERMISSION {
@@ -317,6 +335,15 @@ namespace MMS.Exceptions {
         public static string PHONE_NOT_VALID {
             get {
                 return ResourceManager.GetString("PHONE_NOT_VALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No plans were found with that id..
+        /// </summary>
+        public static string PLAN_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("PLAN_NOT_FOUND", resourceCulture);
             }
         }
         
