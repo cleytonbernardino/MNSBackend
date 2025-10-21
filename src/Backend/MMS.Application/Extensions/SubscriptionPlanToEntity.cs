@@ -37,4 +37,16 @@ public static class SubscriptionPlanToEntity
             Price = request.Price ?? entity.Price
         };
     }
+    
+    private static ResponseSubscriptionPlan CreateSubscriptionPlanResponse(SubscriptionsPlan subscriptionsPlan)
+    {
+        return new ResponseSubscriptionPlan
+        {
+            Id = subscriptionsPlan.Id.ToString(),
+            Active = subscriptionsPlan.Active,
+            Name = subscriptionsPlan.Name,
+            Description = subscriptionsPlan.Description,
+            Price = subscriptionsPlan.Price
+        };
+    }
 }
