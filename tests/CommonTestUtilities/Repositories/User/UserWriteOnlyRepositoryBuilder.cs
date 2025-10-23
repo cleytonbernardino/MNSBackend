@@ -1,7 +1,7 @@
 ﻿using MMS.Domain.Repositories.User;
 using Moq;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.User;
 
 public static class UserWriteOnlyRepositoryBuilder
 {

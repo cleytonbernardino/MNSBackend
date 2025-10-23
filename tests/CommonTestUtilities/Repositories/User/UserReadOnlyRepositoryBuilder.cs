@@ -1,8 +1,8 @@
-﻿using Moq;
-using MMS.Domain.Repositories.User;
+﻿using MMS.Domain.Repositories.User;
+using Moq;
 using Entity = MMS.Domain.Entities;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.User;
 
 public class UserReadOnlyRepositoryBuilder
 {

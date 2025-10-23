@@ -1,7 +1,7 @@
 ﻿using MMS.Domain.Repositories.Company;
 using Moq;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.Company;
 
 public static class CompanyWriteOnlyRepositoryBuilder
 {

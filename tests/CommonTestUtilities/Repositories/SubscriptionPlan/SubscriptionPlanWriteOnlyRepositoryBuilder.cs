@@ -2,7 +2,7 @@
 using MMS.Domain.Repositories.SubscriptionPlan;
 using Moq;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.SubscriptionPlan;
 
 public static class SubscriptionPlanWriteOnlyRepositoryBuilder
 {

@@ -2,7 +2,7 @@
 using Moq;
 using Entity = MMS.Domain.Entities;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.SubscriptionPlan;
 
 public class SubscriptionPlanUpdateOnlyRepositoryBuilder
 {

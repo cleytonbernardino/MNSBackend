@@ -2,7 +2,7 @@
 using Moq;
 using Entity = MMS.Domain.Entities;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.SubscriptionPlan;
 
 public class SubscriptionPlanReadOnlyRepositoryBuilder
 {
@@ -14,5 +14,11 @@ public class SubscriptionPlanReadOnlyRepositoryBuilder
         return this;
     }
 
+    public SubscriptionPlanReadOnlyRepositoryBuilder Exists(bool exist)
+    {
+        _mock.Setup(mock => mock.Exists(It.IsAny<short>())).ReturnsAsync(exist);
+        return this;
+    }
+    
     public ISubscriptionPlanReadOnlyRepository Build() => _mock.Object;
 }

@@ -3,7 +3,7 @@ using MMS.Domain.Repositories.Company;
 using Moq;
 using Entity = MMS.Domain.Entities;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.Company;
 
 public class CompanyReadOnlyRepositoryBuilder
 {
@@ -22,6 +22,12 @@ public class CompanyReadOnlyRepositoryBuilder
     public CompanyReadOnlyRepositoryBuilder ListShortCompanies(IList<Entity.ShortCompany> companiesToMock)
     {
         _mock.Setup(rep => rep.ListShortCompanies()).Returns(companiesToMock);
+        return this;
+    }
+
+    public CompanyReadOnlyRepositoryBuilder Exists(bool exist)
+    {
+        _mock.Setup(mock => mock.Exists(It.IsAny<long>())).ReturnsAsync(exist);
         return this;
     }
 }

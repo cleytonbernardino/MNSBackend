@@ -1,8 +1,8 @@
-﻿using MMS.Domain.Entities;
-using MMS.Domain.Repositories.Company;
+﻿using MMS.Domain.Repositories.Company;
 using Moq;
+using Entity = MMS.Domain.Entities;
 
-namespace CommonTestUtilities.Repositories;
+namespace CommonTestUtilities.Repositories.Company;
 
 public class CompanyUpdateOnlyRepositoryBuilder
 {
@@ -14,7 +14,7 @@ public class CompanyUpdateOnlyRepositoryBuilder
         return _mock.Object;
     }
 
-    public CompanyUpdateOnlyRepositoryBuilder GetById(Company company)
+    public CompanyUpdateOnlyRepositoryBuilder GetById(Entity.Company company)
     {
         _mock.Setup(mock => mock.GetById(company.Id)).ReturnsAsync(company);
         return this;
@@ -22,6 +22,6 @@ public class CompanyUpdateOnlyRepositoryBuilder
 
     private void MockFunctionsWithoutReturns()
     {
-        _mock.Setup(mock => mock.Update(It.IsAny<Company>()));
+        _mock.Setup(mock => mock.Update(It.IsAny<Entity.Company>()));
     }
 }
