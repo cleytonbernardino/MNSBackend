@@ -50,6 +50,22 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         return InjectInDatabase(array)[0];
     }
 
+    public T[] UpdateInDatabase<T>(T[] entities) where T : Entity.EntityBase
+    {
+        using IServiceScope scope = Services.CreateScope();
+        MmsDbContext dbContext = scope.ServiceProvider.GetRequiredService<MmsDbContext>();
+
+        dbContext.UpdateRange(entities);
+
+        dbContext.SaveChanges();
+        return entities;
+    }
+
+    public T UpdateInDataBase<T>(T entity) where T : Entity.EntityBase
+    {
+        return UpdateInDatabase([entity])[0];
+    }
+    
     private void RegisterInitialUsers(MmsDbContext dbContext)
     {
         (ManagerUser, UserPassword) = UserBuilder.BuildWithPassword();
