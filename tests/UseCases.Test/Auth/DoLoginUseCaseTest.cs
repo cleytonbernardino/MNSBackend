@@ -1,5 +1,6 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.User;
 using CommonTestUtilities.Tokens;
 using MMS.Application.UseCases.Auth.DoLogin;
 using MMS.Communication.Requests.Auth;

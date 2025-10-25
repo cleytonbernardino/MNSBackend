@@ -1,6 +1,7 @@
 ﻿using CommonTestUtilities.Cache;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.SubscriptionPlan;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
 using Microsoft.Extensions.Logging.Abstractions;

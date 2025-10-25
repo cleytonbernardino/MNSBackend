@@ -14,7 +14,7 @@ public class Version0000004 : VersionBase
                 .OnDelete(Rule.SetNull);
 
         Alter.Table(TableNames.TABLE_COMPANY_SUBSCRIPTION)
-            .AddColumn("CompanyId").AsInt64().NotNullable()
+            .AddColumn("CompanyId").AsInt64().Unique().NotNullable()
                 .ForeignKey("fk_company_id", TableNames.TABLE_COMPANIES, "Id")
                 .OnDelete(Rule.Cascade);
     }

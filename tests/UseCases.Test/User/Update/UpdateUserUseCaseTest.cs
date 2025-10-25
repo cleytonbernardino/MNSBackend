@@ -1,6 +1,7 @@
 ﻿using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.User;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Services.LoggedUser;
 using Shouldly;

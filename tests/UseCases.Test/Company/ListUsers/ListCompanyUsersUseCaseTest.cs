@@ -2,6 +2,7 @@
 using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.Company;
 using CommonTestUtilities.Services.LoggedUser;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Communication.Responses.User;

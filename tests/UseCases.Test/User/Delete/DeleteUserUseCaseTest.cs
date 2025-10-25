@@ -1,5 +1,6 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.User;
 using CommonTestUtilities.Services.LoggedUser;
 using MMS.Application.UseCases.User.Delete;
 using MMS.Domain.Enums;
