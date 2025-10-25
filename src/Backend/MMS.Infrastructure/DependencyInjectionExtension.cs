@@ -63,6 +63,11 @@ public static class DependencyInjectionExtension
 
     private static void AddCacheService(IServiceCollection services, IConfiguration configuration)
     {
+        if (configuration.IsUnitTestEnvironment())
+        {
+            services.AddScoped<ICacheService, CacheServiceTest>();
+            return;
+        }
         services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = configuration.GetValue<string>("Redis:Configuration");
