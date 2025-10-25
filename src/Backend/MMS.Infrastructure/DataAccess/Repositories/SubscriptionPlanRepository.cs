@@ -8,17 +8,36 @@ public class SubscriptionPlanRepository(
     MmsDbContext dbContext
     ) : ISubscriptionPlanWriteOnlyRepository, ISubscriptionPlanReadOnlyRepository, ISubscriptionPlanUpdateOnlyRepository
 {
+    #region Dependency Injection
+
     private readonly MmsDbContext _dbContext = dbContext;
+
+    #endregion
     
+    #region Write Only
+
     public async Task Register(SubscriptionsPlan subscriptionPlan)
     {
         await _dbContext.SubscriptionsPlans.AddAsync(subscriptionPlan);
     }
 
+    #endregion
+    
+    #region Read Only
+
     public async Task<SubscriptionsPlan[]> List()
     {
-        return await _dbContext.SubscriptionsPlans.ToArrayAsync();
+        return await _dbContext.SubscriptionsPlans.AsNoTracking().ToArrayAsync();
     }
+
+    public async Task<bool> Exists(short id)
+    {
+        return await _dbContext.SubscriptionsPlans.AsNoTracking().AnyAsync(plan => plan.Id == id);
+    }
+
+    #endregion
+
+    #region Update Only
 
     public async Task<SubscriptionsPlan?> GetById(short id)
     {
@@ -39,4 +58,6 @@ public class SubscriptionPlanRepository(
             return;
         _dbContext.SubscriptionsPlans.Remove(plan);
     }
+
+    #endregion
 }

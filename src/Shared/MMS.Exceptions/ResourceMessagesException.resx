@@ -238,4 +238,16 @@
   <data name="PLAN_NOT_FOUND" xml:space="preserve">
     <value>No plans were found with that id.</value>
   </data>
+  <data name="EMPTY_COMPANY_ID" xml:space="preserve">
+    <value>Company ID cannot be empty.</value>
+  </data>
+  <data name="EMPTY_SUBSCRIPTION_ID" xml:space="preserve">
+    <value>A signature must be assigned.</value>
+  </data>
+  <data name="IS_BILLING_ANNUAL_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Is annual Billing cannot be empty.</value>
+  </data>
+  <data name="SUBSCRIPTION_DOES_NOT_EXIST" xml:space="preserve">
+    <value>The entered signature does not exist.</value>
+  </data>
 </root>

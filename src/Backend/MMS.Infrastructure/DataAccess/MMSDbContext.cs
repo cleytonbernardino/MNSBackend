@@ -10,6 +10,7 @@ public class MmsDbContext(
     public DbSet<User> Users { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<SubscriptionsPlan> SubscriptionsPlans { get; set; } 
+    public DbSet<CompanySubscription> CompanySubscriptions { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

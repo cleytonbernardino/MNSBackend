@@ -237,4 +237,16 @@
   <data name="PLAN_NOT_FOUND" xml:space="preserve">
     <value>Nenhum plano foi encontrado com esse id.</value>
   </data>
+  <data name="EMPTY_COMPANY_ID" xml:space="preserve">
+    <value>O Id da empresa não pode está vazio.</value>
+  </data>
+  <data name="EMPTY_SUBSCRIPTION_ID" xml:space="preserve">
+    <value>Deve ser atribuido uma assinatura.</value>
+  </data>
+  <data name="IS_BILLING_ANNUAL_CANNOT_BE_EMPTY" xml:space="preserve">
+    <value>Faturamento Anual não pode estar vazio.</value>
+  </data>
+  <data name="SUBSCRIPTION_DOES_NOT_EXIST" xml:space="preserve">
+    <value>A assinatura informada não existe.</value>
+  </data>
 </root>

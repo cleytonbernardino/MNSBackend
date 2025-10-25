@@ -4,6 +4,7 @@ using MMS.Application.UseCases.Company.Delete;
 using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Application.UseCases.Company.Update;
+using MMS.Application.UseCases.CompanySubscription.RegisterAndUpdate;
 using MMS.Communication.Requests.Company;
 using MMS.Communication.Responses;
 using MMS.Communication.Responses.Company;
@@ -20,6 +21,19 @@ public class CompanyController : MmsAdminBaseController
         [FromBody] RequestRegisterCompany request,
         [FromServices] IRegisterCompanyUseCase useCase
     )
+    {
+        await useCase.Execute(request);
+        return Created("", null);
+    }
+
+    [HttpPost("plan")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> RegisterPlan(
+        [FromBody] RequestRegisterCompanySubscription request,
+        [FromServices] IRegisterCompanySubscriptionUseCase useCase
+        )
     {
         await useCase.Execute(request);
         return Created("", null);
@@ -49,7 +63,20 @@ public class CompanyController : MmsAdminBaseController
         await useCase.Execute(request, id);
         return NoContent();
     }
-    
+
+    [HttpPut("plan")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UpdatePlan(
+        [FromBody] RequestRegisterCompanySubscription request,
+        [FromServices] IRegisterCompanySubscriptionUseCase useCase
+    )
+    {
+        await useCase.Execute(request);
+        return NoContent();
+    }
+
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

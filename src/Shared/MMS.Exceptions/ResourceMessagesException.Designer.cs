@@ -186,6 +186,24 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company ID cannot be empty..
+        /// </summary>
+        public static string EMPTY_COMPANY_ID {
+            get {
+                return ResourceManager.GetString("EMPTY_COMPANY_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A signature must be assigned..
+        /// </summary>
+        public static string EMPTY_SUBSCRIPTION_ID {
+            get {
+                return ResourceManager.GetString("EMPTY_SUBSCRIPTION_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired token..
         /// </summary>
         public static string EXPIRED_TOKEN {
@@ -236,6 +254,15 @@ namespace MMS.Exceptions {
         public static string INVALID_VALUE_TYPE {
             get {
                 return ResourceManager.GetString("INVALID_VALUE_TYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is annual Billing cannot be empty..
+        /// </summary>
+        public static string IS_BILLING_ANNUAL_CANNOT_BE_EMPTY {
+            get {
+                return ResourceManager.GetString("IS_BILLING_ANNUAL_CANNOT_BE_EMPTY", resourceCulture);
             }
         }
         
@@ -371,6 +398,15 @@ namespace MMS.Exceptions {
         public static string SID_CLAIM_NOT_FOUND {
             get {
                 return ResourceManager.GetString("SID_CLAIM_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entered signature does not exist..
+        /// </summary>
+        public static string SUBSCRIPTION_DOES_NOT_EXIST {
+            get {
+                return ResourceManager.GetString("SUBSCRIPTION_DOES_NOT_EXIST", resourceCulture);
             }
         }
         

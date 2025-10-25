@@ -7,6 +7,7 @@ using MMS.Application.Services.Encoders;
 using MMS.Application.Services.MessageQueue;
 using MMS.Domain.Repositories;
 using MMS.Domain.Repositories.Company;
+using MMS.Domain.Repositories.CompanySubscription;
 using MMS.Domain.Repositories.SubscriptionPlan;
 using MMS.Domain.Repositories.Token;
 using MMS.Domain.Repositories.User;
@@ -57,6 +58,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<ISubscriptionPlanReadOnlyRepository, SubscriptionPlanRepository>();
         service.AddScoped<ISubscriptionPlanWriteOnlyRepository, SubscriptionPlanRepository>();
         service.AddScoped<ISubscriptionPlanUpdateOnlyRepository, SubscriptionPlanRepository>();
+        service.AddScoped<ICompanySubscriptionWriteOnlyRepository, SubscriptionsRepository>();
         service.AddScoped<IRefreshTokenRepository, TokenRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
     }

@@ -9,6 +9,7 @@ using MMS.Application.UseCases.Company.List;
 using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Application.UseCases.Company.Update;
+using MMS.Application.UseCases.CompanySubscription.RegisterAndUpdate;
 using MMS.Application.UseCases.SubscriptionPlan.Delete;
 using MMS.Application.UseCases.SubscriptionPlan.List;
 using MMS.Application.UseCases.SubscriptionPlan.Register;
@@ -52,6 +53,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<IUpdateCompanyUseCase, UpdateCompanyUseCase>();
         service.AddScoped<IListCompaniesUseCase, ListCompaniesUseCase>();
         service.AddScoped<IDeleteCompanyUseCase, DeleteCompanyUseCase>();
+        service.AddScoped<IRegisterCompanySubscriptionUseCase, RegisterCompanySubscriptionUseCase>();
     }
 
     private static void AddSubscriptionPlan(IServiceCollection service)

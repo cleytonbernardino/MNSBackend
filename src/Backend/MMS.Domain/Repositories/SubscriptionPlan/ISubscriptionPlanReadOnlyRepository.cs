@@ -5,4 +5,5 @@ namespace MMS.Domain.Repositories.SubscriptionPlan;
 public interface ISubscriptionPlanReadOnlyRepository
 {
     Task<SubscriptionsPlan[]> List();
+    Task<bool> Exists(short id);
 }

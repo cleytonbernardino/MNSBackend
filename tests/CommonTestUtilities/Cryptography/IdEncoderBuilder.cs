@@ -7,11 +7,16 @@ public class IdEncoderBuilder : IdEncoderBase
 {
     private readonly Mock<IIdEncoder> _mock = new();
 
-    public IIdEncoder Build() => _mock.Object;
+    public IIdEncoder Build()
+    {
+        Encoder();
+        Decode();
+        return _mock.Object;
+    }
 
     public IdEncoderBuilder Encoder()
     {
-        _mock.Setup(encoder => encoder.Encode(It.IsAny<long>())).Returns<long>(id =>Sqids.Encode(id));
+        _mock.Setup(encoder => encoder.Encode(It.IsAny<long>())).Returns<long>(id => Sqids.Encode(id));
         return this;
     }
 

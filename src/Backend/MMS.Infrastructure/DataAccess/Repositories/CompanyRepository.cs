@@ -8,7 +8,13 @@ public class CompanyRepository(
     MmsDbContext dbContext
 ) : ICompanyWriteOnlyRepository, ICompanyReadOnlyRepository, ICompanyUpdateOnlyRepository
 {
+    #region Dependency Injection
+
     private readonly MmsDbContext _dbContext = dbContext;
+
+    #endregion
+
+    #region Read Only
 
     public IList<ShortCompany> ListShortCompanies()
     {
@@ -57,6 +63,18 @@ public class CompanyRepository(
         return await query.FirstOrDefaultAsync();
     }
 
+    public async Task<bool> Exists(long companyId)
+    {
+        return await _dbContext
+            .Companies
+            .AsNoTracking()
+            .AnyAsync(company => company.Id == companyId);
+    }
+
+    #endregion
+
+    #region Write Only
+
     public async Task RegisterCompany(Company company)
     {
         await _dbContext
@@ -73,10 +91,16 @@ public class CompanyRepository(
         _dbContext.Companies.Remove(company);
     }
 
+    #endregion
+
+    #region Update Only
+
     public async Task<Company?> GetById(long id)
     {
         return await _dbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
     }
 
     public void Update(Company company) => _dbContext.Companies.Update(company);
+
+    #endregion
 }

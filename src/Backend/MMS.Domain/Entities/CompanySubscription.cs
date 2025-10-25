@@ -3,6 +3,7 @@
 public class CompanySubscription : EntityBase
 {
     public long CompanyId { get; set; }
+    public short SubscriptionPlanId { get; set; }
     public SubscriptionsPlan SubscriptionPlan { get; set; }
     public bool IsBillingAnnual { get; set; }
     public short PaymentStatus { get; set; }
