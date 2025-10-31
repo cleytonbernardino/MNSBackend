@@ -21,6 +21,7 @@ public class InitialUser(
                 CNPJ = "00000000000000",
                 LegalName = "Delete-Me",
                 CEP = "00000000",
+                Address = "Rua One",
                 AddressNumber = "0000000000",
                 PhoneNumber = "00000000000"
             });

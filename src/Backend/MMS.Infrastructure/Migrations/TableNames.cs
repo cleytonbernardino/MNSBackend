@@ -2,9 +2,9 @@
 
 public class TableNames
 {
-    internal const string TABLE_USER = "users";
-    internal const string TABLE_COMPANIES = "companies";
-    internal const string TABLE_COMPANY_SUBSCRIPTION = "companySubscription";
-    internal const string TABLE_SUBSCRIPTIONS_PLANS = "subscriptionsPlans";
-    internal const string TABLE_REFRESH_TOKEN = "refreshTokens";
+    internal const string TABLE_USER = "Users";
+    internal const string TABLE_COMPANIES = "Companies";
+    internal const string TABLE_COMPANY_SUBSCRIPTION = "CompanySubscription";
+    internal const string TABLE_SUBSCRIPTIONS_PLANS = "SubscriptionsPlans";
+    internal const string TABLE_REFRESH_TOKEN = "RefreshTokens";
 }
