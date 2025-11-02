@@ -60,14 +60,14 @@ public class RegisterSubscriptionPlanUseCaseTest
         errors.ErrorMessages.ShouldHaveSingleItem().ShouldBe(ResourceMessagesException.NAME_CANNOT_BE_EMPTY);
     }
 
-    private static RegisterSubscriptionPlan CreateUseCase(Entity.User user)
+    private static RegisterSubscriptionPlanUseCase CreateUseCase(Entity.User user)
     {
         var loggedUser = LoggedUserBuilder.Build(user);
-        var logger = NullLogger<RegisterSubscriptionPlan>.Instance;
+        var logger = NullLogger<RegisterSubscriptionPlanUseCase>.Instance;
         var repository = SubscriptionPlanWriteOnlyRepositoryBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
         var cacheService = new CacheServiceBuilder().Build();
         
-        return new RegisterSubscriptionPlan(loggedUser, repository, logger, unitOfWork, cacheService);
+        return new RegisterSubscriptionPlanUseCase(loggedUser, repository, logger, unitOfWork, cacheService);
     }
 }

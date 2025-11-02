@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MMS.Domain.Entities;
+using System.Text.Json;
 
 namespace MMS.Infrastructure.DataAccess;
 
@@ -26,5 +27,10 @@ public class MmsDbContext(
         modelBuilder.Entity<User>()
             .Property(entity => entity.Id)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<SubscriptionsPlan>()
+            .Property(plan => plan.Properties)
+            .HasConversion(
+                properties => JsonSerializer.Serialize(properties, (JsonSerializerOptions)null),
+                properties => JsonSerializer.Deserialize<List<string>>(properties, (JsonSerializerOptions)null));
     }
 }

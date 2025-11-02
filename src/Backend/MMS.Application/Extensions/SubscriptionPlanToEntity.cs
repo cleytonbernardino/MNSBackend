@@ -12,6 +12,7 @@ public static class SubscriptionPlanToEntity
         {
             Name = request.Name,
             Description = request.Description,
+            Properties = request.Properties.ToList(),
             Price = request.Price
         };
     }
@@ -29,13 +30,17 @@ public static class SubscriptionPlanToEntity
 
     public static SubscriptionsPlan Update(this SubscriptionsPlan entity, RequestUpdateSubscriptionPlan request)
     {
-        return new SubscriptionsPlan
+        var result = new SubscriptionsPlan
         {
             Active = request.Active ?? entity.Active,
             Name = request.Name ?? entity.Name,
             Description = request.Description ?? entity.Description,
+            Properties = entity.Properties,
             Price = request.Price ?? entity.Price
         };
+        if (request.Properties.Length != 0)
+            result.Properties = request.Properties.ToList();
+        return result;
     }
     
     private static ResponseSubscriptionPlan CreateSubscriptionPlanResponse(SubscriptionsPlan subscriptionsPlan)
@@ -46,6 +51,7 @@ public static class SubscriptionPlanToEntity
             Active = subscriptionsPlan.Active,
             Name = subscriptionsPlan.Name,
             Description = subscriptionsPlan.Description,
+            Properties = subscriptionsPlan.Properties.ToArray(),
             Price = subscriptionsPlan.Price
         };
     }

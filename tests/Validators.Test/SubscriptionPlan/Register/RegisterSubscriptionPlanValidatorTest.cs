@@ -39,4 +39,16 @@ public class RegisterSubscriptionPlanValidatorTest
         var result = await validator.ValidateAsync(request);
         result.IsValid.ShouldBeFalse();
     }
+
+    [Fact]
+    public async Task Error_No_Properties()
+    {
+        var request = RequestRegisterSubscriptionPlanBuilder.Build();
+        request.Properties = [];
+
+        RegisterSubscriptionPlanValidator validator = new();
+
+        var result = await validator.ValidateAsync(request);
+        result.IsValid.ShouldBeFalse();
+    }
 }

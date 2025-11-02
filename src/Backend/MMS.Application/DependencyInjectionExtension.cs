@@ -58,7 +58,7 @@ public static class DependencyInjectionExtension
 
     private static void AddSubscriptionPlan(IServiceCollection service)
     {
-        service.AddScoped<IRegisterSubscriptionPlanUseCase, RegisterSubscriptionPlan>();
+        service.AddScoped<IRegisterSubscriptionPlanUseCase, RegisterSubscriptionPlanUseCase>();
         service.AddScoped<IListSubscriptionPlanUseCase, ListSubscriptionPlanUseCase>();
         service.AddScoped<IUpdateSubscriptionPlanUseCase, UpdateSubscriptionPlanUseCase>();
         service.AddScoped<IDeleteSubscriptionPlanUseCase, DeleteSubscriptionPlanUseCase>();

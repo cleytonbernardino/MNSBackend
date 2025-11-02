@@ -4,5 +4,6 @@ public class SubscriptionsPlan : EntityBase<short>
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+    public List<string> Properties { get; set; } = [];
     public double Price { get; set; }
 }

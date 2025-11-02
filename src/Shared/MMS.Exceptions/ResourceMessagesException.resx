@@ -250,4 +250,7 @@
   <data name="SUBSCRIPTION_DOES_NOT_EXIST" xml:space="preserve">
     <value>The entered signature does not exist.</value>
   </data>
+  <data name="EMPTY_PROPERTIES" xml:space="preserve">
+    <value>The signature must contain at least one property (benefit).</value>
+  </data>
 </root>

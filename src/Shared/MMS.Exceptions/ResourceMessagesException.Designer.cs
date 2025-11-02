@@ -195,6 +195,15 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The signature must contain at least one property (benefit)..
+        /// </summary>
+        public static string EMPTY_PROPERTIES {
+            get {
+                return ResourceManager.GetString("EMPTY_PROPERTIES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A signature must be assigned..
         /// </summary>
         public static string EMPTY_SUBSCRIPTION_ID {

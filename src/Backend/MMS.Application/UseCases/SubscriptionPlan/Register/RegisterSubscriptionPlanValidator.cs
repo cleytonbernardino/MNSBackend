@@ -10,5 +10,6 @@ public class RegisterSubscriptionPlanValidator : AbstractValidator<RequestRegist
     {
         RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_CANNOT_BE_EMPTY);
         RuleFor(request => request.Description).NotEmpty().WithMessage(ResourceMessagesException.DESCRIPTION_CANNOT_BE_EMPTY);
+        RuleFor(request => request.Properties).NotEmpty().WithMessage(ResourceMessagesException.EMPTY_PROPERTIES);
     }
 }

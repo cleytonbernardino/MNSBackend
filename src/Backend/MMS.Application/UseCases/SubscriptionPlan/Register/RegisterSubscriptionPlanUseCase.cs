@@ -9,17 +9,17 @@ using MMS.Exceptions.ExceptionsBase;
 
 namespace MMS.Application.UseCases.SubscriptionPlan.Register;
 
-public class RegisterSubscriptionPlan(
+public class RegisterSubscriptionPlanUseCase(
     ILoggedUser loggedUser,
     ISubscriptionPlanWriteOnlyRepository repository,
-    ILogger<RegisterSubscriptionPlan> logger,
+    ILogger<RegisterSubscriptionPlanUseCase> logger,
     IUnitOfWork unitOfWork,
     ICacheService cacheService
     ) : IRegisterSubscriptionPlanUseCase
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly ISubscriptionPlanWriteOnlyRepository _repository = repository;
-    private readonly ILogger<RegisterSubscriptionPlan> _logger = logger;
+    private readonly ILogger<RegisterSubscriptionPlanUseCase> _logger = logger;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICacheService _cacheService = cacheService;
 
