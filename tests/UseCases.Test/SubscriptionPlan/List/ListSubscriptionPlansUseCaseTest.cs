@@ -1,7 +1,6 @@
 ﻿using CommonTestUtilities.Cache;
 using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
-using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Repositories.SubscriptionPlan;
 using MMS.Application.UseCases.SubscriptionPlan.List;
 using Shouldly;
