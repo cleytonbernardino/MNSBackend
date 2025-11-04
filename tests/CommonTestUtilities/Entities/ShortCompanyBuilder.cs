@@ -12,10 +12,10 @@ public static class ShortCompanyBuilder
             .RuleFor(company => company.DoingBusinessAs, f => f.Company.CompanyName())
             .RuleFor(company => company.SubscriptionPlan, f => f.Commerce.Product())
             .RuleFor(company => company.ManagerName, f => f.Name.FirstName())
-            .RuleFor(company => company.SubscriptionStatus, true);
+            .RuleFor(company => company.Active, true);
     }
 
-    public static IList<ShortCompany> BuildInBatch(uint count = 5)
+    public static ShortCompany[] BuildInBatch(uint count = 5)
     {
         List<ShortCompany> companies = [];
         for (int i = 0; i < count; i++)
@@ -25,6 +25,6 @@ public static class ShortCompanyBuilder
             companies.Add(company);
         }
 
-        return companies;
+        return companies.ToArray();
     }
 }

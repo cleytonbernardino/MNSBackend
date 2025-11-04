@@ -2,6 +2,7 @@
 
 public class RequestUpdateCompany
 {
+    public bool Active { get; set; } = false;
     public string DoingBusinessAs { get; set; } = string.Empty;
     public string CEP { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;

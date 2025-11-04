@@ -9,7 +9,7 @@ namespace MMS.API.Controllers;
 public class SubscriptionsPlansController : ControllerBase
 {
     [HttpGet]
-    [ProducesResponseType(typeof(ResponseSubscriptionPlan), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseListSubscriptionPlans), StatusCodes.Status200OK)]
     public async Task<IActionResult> List([FromServices] IListSubscriptionPlanUseCase useCase)
     {
         var result = await useCase.Execute();

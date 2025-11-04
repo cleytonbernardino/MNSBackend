@@ -16,7 +16,7 @@ public class CompanyRepository(
 
     #region Read Only
 
-    public IList<ShortCompany> ListShortCompanies()
+    public ShortCompany[] ListShortCompanies()
     {
         return _dbContext
             .Companies
@@ -25,13 +25,13 @@ public class CompanyRepository(
             {
                 Id = field.Id,
                 DoingBusinessAs = field.LegalName,
-                SubscriptionStatus = field.SubscriptionStatus,
+                Active = field.Active,
                 SubscriptionPlan =
                     field.CompanySubscription != null
                         ? field.CompanySubscription.SubscriptionPlan.Name
                         : string.Empty,
                 ManagerName = field.Manager != null ? field.Manager.FirstName : string.Empty
-            }).ToList();
+            }).ToArray();
     }
 
     public ShortUser[] ListUsers(long companyId)

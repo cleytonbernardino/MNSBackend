@@ -2,6 +2,7 @@
 
 public record RequestRegisterCompany
 {
+    public bool Active { get; set; } = false;
     public string CNPJ { get; set; } = string.Empty;
     public string LegalName { get; set; } = string.Empty;
     public string? DoingBusinessAs { get; set; } = string.Empty;

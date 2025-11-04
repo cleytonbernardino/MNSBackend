@@ -32,6 +32,7 @@ public class ListSubscriptionPlanUseCase(
             subscriptionPlan.Id = _idEncoder.Encode(long.Parse(subscriptionPlan.Id));
         }
 
+        await _cacheService.SaveCache(CACHE_KEY, subscriptionPlans, expirationTime: 0);
         return subscriptionPlans;
     }
 }

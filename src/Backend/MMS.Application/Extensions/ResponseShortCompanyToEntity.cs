@@ -9,7 +9,7 @@ internal static class ResponseShortCompanyToEntity
     {
         return new ShortCompany
         {
-            DoingBusinessAs = response.DoingBusinessAs, SubscriptionStatus = response.SubscriptionStatus
+            DoingBusinessAs = response.DoingBusinessAs, Active = response.Active
         };
     }
 
@@ -19,7 +19,7 @@ internal static class ResponseShortCompanyToEntity
         {
             DoingBusinessAs = company.DoingBusinessAs,
             SubscriptionPlan = company.SubscriptionPlan!,
-            SubscriptionStatus = company.SubscriptionStatus,
+            Active = company.Active,
             ManagerName = company.ManagerName!
         };
     }

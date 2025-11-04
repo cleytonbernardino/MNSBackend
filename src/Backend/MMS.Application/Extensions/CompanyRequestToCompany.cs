@@ -9,6 +9,7 @@ public static class CompanyRequestToCompany
     {
         Company company = new()
         {
+            Active = request.Active,
             CNPJ = request.CNPJ,
             LegalName = request.LegalName,
             DoingBusinessAs = request.DoingBusinessAs ?? string.Empty,
@@ -24,6 +25,7 @@ public static class CompanyRequestToCompany
 
     public static Company Join(this Company company, RequestUpdateCompany request)
     {
+        company.Active = request.Active;
         company.DoingBusinessAs = request.DoingBusinessAs;
         company.CEP = request.CEP;
         company.Address = request.Address;

@@ -19,7 +19,7 @@ public class CompanyReadOnlyRepositoryBuilder
         return this;
     }
     
-    public CompanyReadOnlyRepositoryBuilder ListShortCompanies(IList<Entity.ShortCompany> companiesToMock)
+    public CompanyReadOnlyRepositoryBuilder ListShortCompanies(Entity.ShortCompany[] companiesToMock)
     {
         _mock.Setup(rep => rep.ListShortCompanies()).Returns(companiesToMock);
         return this;

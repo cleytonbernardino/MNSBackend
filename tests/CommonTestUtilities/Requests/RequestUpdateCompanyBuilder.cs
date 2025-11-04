@@ -8,6 +8,7 @@ public static class RequestUpdateCompanyBuilder
     public static RequestUpdateCompany Build()
     {
         return new Faker<RequestUpdateCompany>()
+            .RuleFor(req => req.Active, true)
             .RuleFor(req => req.DoingBusinessAs, f => f.Company.CompanySuffix())
             .RuleFor(req => req.CEP, f => f.Address.ZipCode("#####-###"))
             .RuleFor(req => req.Address, f => f.Address.StreetAddress())
