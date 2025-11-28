@@ -253,4 +253,16 @@
   <data name="EMPTY_PROPERTIES" xml:space="preserve">
     <value>The signature must contain at least one property (benefit).</value>
   </data>
+  <data name="EMPTY_TITLE" xml:space="preserve">
+    <value>The title cannot be empty.</value>
+  </data>
+  <data name="EMPTY_SERVICE_TYPE" xml:space="preserve">
+    <value>The service type cannot be empty.</value>
+  </data>
+  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
+    <value>Serviço não encontrado.</value>
+  </data>
+  <data name="EMPTY_SERVICES_ID" xml:space="preserve">
+    <value>The service ID is blank.</value>
+  </data>
 </root>

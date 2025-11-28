@@ -13,6 +13,7 @@ public class MmsDbContext(
     public DbSet<SubscriptionsPlan> SubscriptionsPlans { get; set; } 
     public DbSet<CompanySubscription> CompanySubscriptions { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<ServiceDefinition> ServiceDefinitions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

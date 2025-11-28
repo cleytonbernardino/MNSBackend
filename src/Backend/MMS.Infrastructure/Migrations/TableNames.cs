@@ -1,6 +1,5 @@
 ﻿namespace MMS.Infrastructure.Migrations;
 
-public class TableNames
 public static class TableNames
 {
     internal const string TABLE_USER = "Users";
@@ -8,4 +7,5 @@ public static class TableNames
     internal const string TABLE_COMPANY_SUBSCRIPTION = "CompanySubscription";
     internal const string TABLE_SUBSCRIPTIONS_PLANS = "SubscriptionsPlans";
     internal const string TABLE_REFRESH_TOKEN = "RefreshTokens";
+    internal const string TABLE_SERVICES = "ServiceDefinition";
 }

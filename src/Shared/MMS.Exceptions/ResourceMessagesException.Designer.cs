@@ -204,11 +204,38 @@ namespace MMS.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service type cannot be empty..
+        /// </summary>
+        public static string EMPTY_SERVICE_TYPE {
+            get {
+                return ResourceManager.GetString("EMPTY_SERVICE_TYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service ID is blank..
+        /// </summary>
+        public static string EMPTY_SERVICES_ID {
+            get {
+                return ResourceManager.GetString("EMPTY_SERVICES_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A signature must be assigned..
         /// </summary>
         public static string EMPTY_SUBSCRIPTION_ID {
             get {
                 return ResourceManager.GetString("EMPTY_SUBSCRIPTION_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The title cannot be empty..
+        /// </summary>
+        public static string EMPTY_TITLE {
+            get {
+                return ResourceManager.GetString("EMPTY_TITLE", resourceCulture);
             }
         }
         
@@ -398,6 +425,15 @@ namespace MMS.Exceptions {
         public static string ROLE_INVALID {
             get {
                 return ResourceManager.GetString("ROLE_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serviço não encontrado..
+        /// </summary>
+        public static string SERVICE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SERVICE_NOT_FOUND", resourceCulture);
             }
         }
         

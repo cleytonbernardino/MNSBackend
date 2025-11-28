@@ -252,4 +252,16 @@
   <data name="EMPTY_PROPERTIES" xml:space="preserve">
     <value>A assinatura deve conter pelo menos uma propriedade(beneficio).</value>
   </data>
+  <data name="EMPTY_TITLE" xml:space="preserve">
+    <value>O título não pode está vazio.</value>
+  </data>
+  <data name="EMPTY_SERVICE_TYPE" xml:space="preserve">
+    <value>O tipo de serviçõ não pode estar vazio.</value>
+  </data>
+  <data name="SERVICE_NOT_FOUND" xml:space="preserve">
+    <value>Service not found.</value>
+  </data>
+  <data name="EMPTY_SERVICES_ID" xml:space="preserve">
+    <value>Id do serviço está em branco.</value>
+  </data>
 </root>
