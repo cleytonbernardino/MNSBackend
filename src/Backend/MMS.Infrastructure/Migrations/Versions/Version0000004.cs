@@ -3,7 +3,7 @@ using System.Data;
 
 namespace MMS.Infrastructure.Migrations.Versions;
 
-[Migration(DatabaseVersions.Add_Foreign_Keys, "Adding relationships to the company table")]
+[Migration(DatabaseVersions.ADD_FOREIGN_KEYS, "Adding relationships to the company table")]
 public class Version0000004 : VersionBase
 {
     public override void Up()
