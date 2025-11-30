@@ -62,12 +62,11 @@ public class ListCompanyUsersUseCaseTest
 
     private static ListCompanyUsersUseCase CreateUseCase(Entity.User user, int numberOfUsers = 5)
     {
-        IdEncoderBuilder idEncoder = new();
-        idEncoder.Encoder();
+        var idEncoder = new IdEncoderBuilder().Build();
         
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = new CompanyReadOnlyRepositoryBuilder().ListUsers(numberOfUsers);
 
-        return new ListCompanyUsersUseCase(idEncoder.Build(), loggedUser, repository.Build());
+        return new ListCompanyUsersUseCase(idEncoder, loggedUser, repository.Build());
     }
 }

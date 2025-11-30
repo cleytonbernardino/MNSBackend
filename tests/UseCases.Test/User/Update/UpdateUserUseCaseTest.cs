@@ -77,7 +77,7 @@ public class UpdateUserUseCaseTest
 
     private UpdateUserUseCase CreateUseCase(Entity.User user, string encodedRequestId, string? email = null)
     {
-        var idEncoder = new IdEncoderBuilder().Decode();
+        var idEncoder = new IdEncoderBuilder().Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var readOnlyRepository = new UserReadOnlyRepositoryBuilder();
         var updateOnlyRepository = new UserUpdateOnlyRepositoryBuilder().GetById(_idEncoder.Decode(encodedRequestId), user);
@@ -87,7 +87,6 @@ public class UpdateUserUseCaseTest
             readOnlyRepository.ExistActiveUserWithEmail(email);
 
         return new UpdateUserUseCase(
-            idEncoder.Build(), loggedUser, readOnlyRepository.Build(), updateOnlyRepository.Build(), unitOfWork
-            );
+            idEncoder, loggedUser, readOnlyRepository.Build(), updateOnlyRepository.Build(), unitOfWork);
     }
 }

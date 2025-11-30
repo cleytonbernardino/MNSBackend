@@ -14,13 +14,13 @@ public class IdEncoderBuilder : IdEncoderBase
         return _mock.Object;
     }
 
-    public IdEncoderBuilder Encoder()
+    private IdEncoderBuilder Encoder()
     {
         _mock.Setup(encoder => encoder.Encode(It.IsAny<long>())).Returns<long>(id => Sqids.Encode(id));
         return this;
     }
 
-    public IdEncoderBuilder Decode()
+    private IdEncoderBuilder Decode()
     {
         _mock.Setup(encoder => encoder.Decode(It.IsAny<string>())).Returns((string id) => Sqids.Decode(id).Single());
         return this;
