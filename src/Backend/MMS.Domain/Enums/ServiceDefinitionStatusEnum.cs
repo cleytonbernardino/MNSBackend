@@ -1,6 +1,6 @@
 ﻿namespace MMS.Domain.Enums;
 
-public enum ServicesStatusEnum : short
+public enum ServicesStatusEnum : ushort
 {
     PENDING = 0,
     IN_PROGRESS = 1,

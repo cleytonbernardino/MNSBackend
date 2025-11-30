@@ -10,7 +10,10 @@ using MMS.Application.UseCases.Company.ListUsers;
 using MMS.Application.UseCases.Company.Register;
 using MMS.Application.UseCases.Company.Update;
 using MMS.Application.UseCases.CompanySubscription.RegisterAndUpdate;
+using MMS.Application.UseCases.ServiceDefinition.Delete;
+using MMS.Application.UseCases.ServiceDefinition.Get;
 using MMS.Application.UseCases.ServiceDefinition.Register;
+using MMS.Application.UseCases.ServiceDefinition.Update;
 using MMS.Application.UseCases.SubscriptionPlan.Delete;
 using MMS.Application.UseCases.SubscriptionPlan.List;
 using MMS.Application.UseCases.SubscriptionPlan.Register;
@@ -61,6 +64,9 @@ public static class DependencyInjectionExtension
     private static void AddCompanyServicesUseCase(IServiceCollection services)
     {
         services.AddScoped<IRegisterServicesUseCase, RegisterServicesUseCase>();
+        services.AddScoped<IUpdateServicesDefinitionUseCase, UpdateServicesDefinitionUseCase>();
+        services.AddScoped<IGetServiceDefinitionUseCase, GetServicesDefinitionUseCase>();
+        services.AddScoped<IDeleteServiceDefinitionUseCase, DeleteServiceDefinitionUseCase>();
     }
 
     private static void AddSubscriptionPlan(IServiceCollection service)

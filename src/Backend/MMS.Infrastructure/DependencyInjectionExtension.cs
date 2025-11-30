@@ -61,6 +61,8 @@ public static class DependencyInjectionExtension
         service.AddScoped<ISubscriptionPlanUpdateOnlyRepository, SubscriptionPlanRepository>();
         service.AddScoped<ICompanySubscriptionWriteOnlyRepository, SubscriptionsRepository>();
         service.AddScoped<IServiceDefinitionWriteOnlyRepository, ServiceRepository>();
+        service.AddScoped<IServiceDefinitionReadOnlyRepository, ServiceRepository>();
+        service.AddScoped<IServiceDefinitionUpdateOnlyRepository, ServiceRepository>();
         service.AddScoped<IRefreshTokenRepository, TokenRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
     }

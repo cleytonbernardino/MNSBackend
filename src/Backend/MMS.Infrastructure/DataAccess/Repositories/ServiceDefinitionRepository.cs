@@ -6,7 +6,7 @@ namespace MMS.Infrastructure.DataAccess.Repositories;
 
 public class ServiceRepository(
     MmsDbContext dbContext
-    ) : IServiceDefinitionWriteOnlyRepository
+    ) : IServiceDefinitionWriteOnlyRepository, IServiceDefinitionReadOnlyRepository, IServiceDefinitionUpdateOnlyRepository
 {
     private readonly MmsDbContext _dbContext = dbContext;
 
@@ -15,6 +15,38 @@ public class ServiceRepository(
     public async Task Register(ServiceDefinition serviceDefinition)
     {
         await _dbContext.ServiceDefinitions.AddAsync(serviceDefinition);
+    }
+
+    #endregion
+
+    #region READ ONLY
+
+    public async Task<ServiceDefinition?> GetById(User user, long id)
+    {
+        return await _dbContext.ServiceDefinitions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(service =>
+            service.Id == id && service.CompanyId == user.CompanyId);
+    }
+
+    #endregion
+
+    #region UPDATE ONLY
+
+    async Task<ServiceDefinition?> IServiceDefinitionUpdateOnlyRepository.GetById(User user, long id)
+    {
+        return await _dbContext.ServiceDefinitions.FirstOrDefaultAsync(service =>
+            service.Id == id && service.CompanyId == user.CompanyId);
+    }
+    
+    public void Update(ServiceDefinition service)
+    {
+        _dbContext.ServiceDefinitions.Update(service);
+    }
+    
+    public void Delete(ServiceDefinition serviceDefinition)
+    {
+        _dbContext.ServiceDefinitions.Remove(serviceDefinition);
     }
 
     #endregion

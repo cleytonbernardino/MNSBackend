@@ -1,4 +1,7 @@
 ﻿using MMS.Communication.Requests.ServiceDefinition;
+using MMS.Communication.Responses.ServiceDefinition;
+using MMS.Domain.Enums;
+using Entity = MMS.Domain.Entities;
 
 namespace MMS.Application.Extensions;
 
@@ -14,5 +17,32 @@ public static class UserServicesExtension
             Description = request.Description,
             ServiceType = request.ServiceType
         };
+    }
+
+    public static ResponseGetServiceDefinition ToResponse(this Entity.ServiceDefinition entity)
+    {
+        return new ResponseGetServiceDefinition
+        {
+            Title = entity.Title,
+            Description = entity.Description ?? string.Empty,
+            Status = (short)entity.Status,
+            ServiceType = entity.ServiceType
+        };
+    }
+
+    public static Entity.ServiceDefinition Join(this Entity.ServiceDefinition entity,
+        RequestUpdateServiceDefinition request)
+    {
+        entity.Title = request.Title ?? entity.Title;
+        entity.Description = request.Description ?? entity.Description;
+        entity.ServiceType = request.ServiceType ?? entity.ServiceType;
+
+        if (request.Status is not null)
+        {
+            var result = (ServicesStatusEnum)request.Status;
+            entity.Status = result;
+        }
+
+        return entity;
     }
 }

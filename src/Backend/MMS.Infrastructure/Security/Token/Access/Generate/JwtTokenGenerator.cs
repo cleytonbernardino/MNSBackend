@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using MMS.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MMS.Domain.Enums;
@@ -36,5 +37,10 @@ public class JwtTokenGenerator(
         SecurityToken securityToken = tokenHandle.CreateToken(tokenDescriptor);
 
         return tokenHandle.WriteToken(securityToken);
+    }
+    
+    public string Generate(User user)
+    {
+        return Generate(user.UserIdentifier, user.Role);
     }
 }
