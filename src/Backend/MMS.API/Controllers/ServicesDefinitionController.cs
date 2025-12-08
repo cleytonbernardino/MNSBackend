@@ -2,6 +2,7 @@
 using MMS.API.Binders;
 using MMS.Application.UseCases.ServiceDefinition.Delete;
 using MMS.Application.UseCases.ServiceDefinition.Get;
+using MMS.Application.UseCases.ServiceDefinition.List;
 using MMS.Application.UseCases.ServiceDefinition.Register;
 using MMS.Application.UseCases.ServiceDefinition.Update;
 using MMS.Communication.Requests.ServiceDefinition;
@@ -22,6 +23,15 @@ public class ServicesDefinitionController: MMSBaseController
     {
         await useCase.Execute(request);
         return Created("", null);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ResponseShortServicesDefinition), StatusCodes.Status200OK)]
+    public async Task<IActionResult> List(
+        [FromServices] IListServicesDefinitionUseCase useCase)
+    {
+        var response = await useCase.Execute();
+        return Ok(response);
     }
     
     [HttpGet]

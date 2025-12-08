@@ -2,14 +2,16 @@
 
 public class ShortServiceDefinition
 {
+    private string _description = string.Empty;
+
     public string Title { get; set; } = string.Empty;
 
     public string? Description
     {
-        get
+        get => _description;
+        set
         {
-            return Description ?? string.Empty;
+            _description = string.IsNullOrEmpty(value) ? string.Empty : value;
         }
-        set => Description = value;
     }
 }

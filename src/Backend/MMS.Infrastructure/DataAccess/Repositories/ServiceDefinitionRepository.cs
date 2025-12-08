@@ -29,6 +29,18 @@ public class ServiceRepository(
             service.Id == id && service.CompanyId == user.CompanyId);
     }
 
+    public async Task<ShortServiceDefinition[]> List(User user)
+    {
+        return await _dbContext.ServiceDefinitions
+            .AsNoTracking()
+            .Where(service => service.CompanyId == user.CompanyId)
+            .Select(service => new ShortServiceDefinition
+            {
+                Title = service.Title,
+                Description = service.Description
+            }).ToArrayAsync();
+    }
+
     #endregion
 
     #region UPDATE ONLY

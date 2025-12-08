@@ -15,4 +15,10 @@ public class ServiceDefinitionReadOnlyRepositoryBuilder
         _mock.Setup(rep => rep.GetById(user, service.Id)).ReturnsAsync(service);
         return this;
     }
+
+    public ServiceDefinitionReadOnlyRepositoryBuilder List(Entity.User user, Entity.ShortServiceDefinition[] services)
+    {
+        _mock.Setup(rep => rep.List(user)).ReturnsAsync(services);
+        return this;
+    }
 }

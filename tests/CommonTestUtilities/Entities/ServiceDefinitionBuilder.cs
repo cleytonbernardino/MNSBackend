@@ -18,13 +18,13 @@ public static class ServiceDefinitionBuilder
             .RuleFor(service => service.ServiceType, f => f.Commerce.ProductAdjective());
     }
 
-    public static ServiceDefinition[] BuildInBatch(uint count = 2)
+    public static ServiceDefinition[] BuildInBatch(uint count = 2, long? companyId = null, Guid? registeredBy = null)
     {
         ServiceDefinition[] services = new ServiceDefinition[count];
 
         for (int i = 0; i < count; i++)
         {
-            services[i] = Build();
+            services[i] = Build(companyId, registeredBy);
         }
 
         return services;

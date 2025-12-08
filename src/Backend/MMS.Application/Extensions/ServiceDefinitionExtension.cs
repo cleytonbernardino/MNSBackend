@@ -30,6 +30,21 @@ public static class UserServicesExtension
         };
     }
 
+    public static ResponseShortServiceDefinition[] ToResponse(this Entity.ShortServiceDefinition[] entities)
+    {
+        ResponseShortServiceDefinition[] response = new ResponseShortServiceDefinition[entities.Length];
+        for (int i = 0; i < entities.Length; i++)
+        {
+            var shortServiceDefinition = new ResponseShortServiceDefinition
+            {
+                Title = entities[i].Title, Description = entities[i].Description!
+            };
+            response[i] = shortServiceDefinition;
+        }
+
+        return response;
+    }
+
     public static Entity.ServiceDefinition Join(this Entity.ServiceDefinition entity,
         RequestUpdateServiceDefinition request)
     {
