@@ -11,7 +11,7 @@ using MMS.Communication.Responses.ServiceDefinition;
 namespace MMS.API.Controllers;
 
 [Route("api/services")]
-public class CompanyServicesController: MMSBaseController
+public class ServicesDefinitionController: MMSBaseController
 {
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -23,7 +23,7 @@ public class CompanyServicesController: MMSBaseController
         await useCase.Execute(request);
         return Created("", null);
     }
-
+    
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType(typeof(ResponseGetServiceDefinition), StatusCodes.Status200OK)]
