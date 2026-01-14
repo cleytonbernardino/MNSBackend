@@ -19,7 +19,7 @@ public class Version0000006 : VersionBase
                 .ForeignKey("fk_services_company_id", TableNames.TABLE_COMPANIES, "Id")
                 .OnDelete(Rule.Cascade)
             .WithColumn("RegisteredBy").AsGuid().NotNullable()
-                .ForeignKey("fk_users_id", TableNames.TABLE_USER, "Id")
+                .ForeignKey("fk_users_identifier", TableNames.TABLE_USER, "UserIdentifier")
                 .OnDelete(Rule.Cascade);
     }
 }
